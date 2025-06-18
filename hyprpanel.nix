@@ -38,22 +38,29 @@
 	mode = "light";
       };
 
+      notifications.ignore = [ "spotify" ];
+
         
       layout = {
         "bar.layouts" = {
           "*" = {
-            left = [ "dashboard" "workspaces" ];
-            right = [ "kbinput" "battery" "network" "bluetooth" "volume" "power"];
+            left = [ "workspaces" ];
+	    middle = [ "clock" ];
+            right = [ "volume" "network" "bluetooth" "battery" "power"];
           };
 	};
+      };
+
+      bar.clock = {
+        format = "%a %b %d  %H:%M:%S";
+	showIcon = false;
       };
 
       menus.clock = {
         time = {
           military = true;
-          hideSeconds = true;
         };
-        weather.unit = "metric";
+	weather.enabled = false;
       };
 
       menus.dashboard.directories.enabled = false;

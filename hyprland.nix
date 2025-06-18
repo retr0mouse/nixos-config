@@ -70,6 +70,7 @@
       # Keybinds
       bind = SUPER, Return, exec, $terminal
       bind = SUPER, Space, exec, $menu
+      bind = SUPER SHIFT, L, exec, hyprlock
       bind = SUPER SHIFT, Return, exec, $browser
       bind = SUPER SHIFT, Q, killactive,
       bind = SUPER, E, exec, dolphin
