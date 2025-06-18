@@ -119,6 +119,32 @@
       windowrulev2 = nofocus,class:^$,title:^$,xwayland:1,floating:1,fullscreen:0,pinned:0
 
       windowrulev2 = immediate, class:.*
+
+      # Resize mode using submap
+      bind = SUPER, R, submap, resize
+
+      submap = resize
+          bind = , H, resizeactive, -60 0
+          bind = , J, resizeactive, 0 60
+          bind = , K, resizeactive, 0 -60
+          bind = , L, resizeactive, 60 0
+          bind = , left, resizeactive, -60 0
+          bind = , down, resizeactive, 0 60
+          bind = , up, resizeactive, 0 -60
+          bind = , right, resizeactive, 60 0
+          bind = , Return, submap, reset
+          bind = , Escape, submap, reset
+      submap = reset
+      
+      # Laptop multimedia keys for volume and LCD brightness
+      bindel = ,XF86AudioRaiseVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+
+      bindel = ,XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-
+      bindel = ,XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
+      bindel = ,XF86AudioMicMute, exec, wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle
+      bindel = ,XF86MonBrightnessUp, exec, brightnessctl s 10%+
+      bindel = ,XF86MonBrightnessDown, exec, brightnessctl s 10%-
+      bindel = ,XF86KbdBrightnessDown, exec, brightnessctl -d asus::kbd_backlight set 1-
+      bindel = ,XF86KbdBrightnessUp, exec, brightnessctl -d asus::kbd_backlight set 1+
     '';
   };
 }
