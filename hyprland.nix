@@ -15,6 +15,10 @@
 
       # Autostart apps
       exec-once = hyprpanel &
+
+      xwayland {
+        force_zero_scaling = true
+      }
       
       # Disablee ALL animations
       animations {
@@ -40,16 +44,18 @@
 
       # General settings
       general {
-        gaps_in = 0
-        gaps_out = 0
+        gaps_in = 1
+        gaps_out = 2
         border_size = 0
         layout = dwindle
 	no_border_on_floating = 1
+	no_focus_fallback = 1
       }
       windowrulev2 = noborder, focus:0
       windowrulev2 = noshadow, focus:0
       decoration {
 	shadow:enabled = false
+	rounding = 4
       }
 
       # Dwindle layout
@@ -58,10 +64,14 @@
         preserve_split = true
       }
 
+      cursor {
+	no_warps = true
+      }
+
       # Window rules
       windowrule = pseudo, title:Telegram
       windowrule = size 500 700, title:Telegram
-      windowrulev2 = workspace 10 silent, class:^(Telegram)$
+      windowrulev2 = workspace 10 silent, title:Telegram
 
       # Mouse behavior for floating windows
       bindm = SUPER, mouse:272, movewindow

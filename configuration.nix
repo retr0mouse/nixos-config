@@ -7,10 +7,11 @@
       ./hardware-configuration.nix
     ];
 
+
   # xremap service
   services.xremap = {
     enable = true;
-    serviceMode = "system";
+    serviceMode = "user";
     withWlroots = true;
     userName = "retr0mouse";
     config = {
@@ -68,6 +69,7 @@
   # Wrap Wayland into UWSM
   programs.hyprland.withUWSM = true;
   programs.hyprland.enable = true;
+  programs.hyprland.xwayland.enable = true;
   programs.xwayland.enable = true;
 
   # Firefox hardware acceleration
@@ -116,30 +118,24 @@
   environment.sessionVariables = {
     NIXOS_OZONE_WL = "1"; # Force Wayland for electron apps
     WLR_NO_HARDWARE_CURSORS = "1"; # Fixes cursor issues
-    MOZ_ENABLE_WAYLAND = "1"; # Helps with some launchers
-    STEAM_FORCE_DESKTOPUI_SCALING = "1"; # UI scaling fix
-    SDL_VIDEODRIVER="wayland";
+    SDL_VIDEODRIVER="wayland,x11";
+    
+    #Wayland-specific
+    XDG_CURRENT_DESKTOP = "Hyprland";
+    GDK_BACKEND = "wayland,x11";
+    CLUTTER_BACKEND = "wayland";
+    QT_QPA_PLATFORM = "wayland";
+
+    #Wayland support for specific apps
+    MOZ_ENABLE_WAYLAND = "1";
+    ELECTRON_OZONE_PLATFORM_HINT = "wayland";
+
+    #For Anki
+    ANKI_WAYLAND = "1";
   };
 
 
   environment.variables = {
-    WLR_NO_HARDWARE_CURSORS="1";
-    MOZ_DISABLE_RDD_SANDBOX = "1";
-    NVD_BACKEND = "direct";
-    EGL_PLATFORM = "wayland";
-    XDG_SESSION_TYPE = "wayland";
-    XCURSOR_THEME = "Bibata-Modern-Classic";
-    XCURSOR_SIZE = "24";
-    QT_QPA_PLATFORMTHEME = "gnome";
-    QT_STYLE_OVERRIDE = "adwaita";
-    QT_QPA_PLATFORM_THEME = "gnome";
-    QT_QPA_PLATFORM = "wayland";
-    GDK_BACKEND = "wayland";
-    XDG_CURRENT_DESKTOP = "Hyprland";
-    XDG_SESSION_DESKTOP = "Hyprland";
-    SDL_VIDEODRIVER = "wayland";
-    MOZ_ENABLE_WAYLAND = "1";
-    CLUTTER_BACKEND = "wayland";
   };
 
   # Default apps
@@ -187,7 +183,18 @@
   };
 
   programs.firefox.enable = true;
-  programs.steam.enable = true;
+
+  programs.steam = {
+    enable = true;
+    remotePlay.openFirewall = true; 
+    dedicatedServer.openFirewall = true; 
+  };
+
+  programs.gamescope = {
+    enable = true;
+    capSysNice = true;
+  };
+
 
   # zsh 
   programs.zsh = {
@@ -211,6 +218,7 @@
   # OpenGL
   hardware.graphics = {
     enable = true;
+    enable32Bit = true;
   };
   
   services.xserver.enable = true;
@@ -218,6 +226,14 @@
     "amdgpu"
     "nvidia"
   ];
+
+  xdg.portal = {
+    enable = true;
+    extraPortals = [
+	pkgs.xdg-desktop-portal-gtk
+	pkgs.xdg-desktop-portal-hyprland
+    ];
+  };
 
 
     hardware.nvidia = {
@@ -324,6 +340,15 @@
     qdigidoc # DigiDoc client
     kdePackages.breeze-icons # Breeze icon theme
     papirus-icon-theme
+    gamescope # To run steam and games smoothly
+
+    qbittorrent
+    anki-bin
+    jetbrains.idea-ultimate
+    jetbrains.idea-community
+    openjdk8
+    maven
+    foliate # e-book reader
   ];
 
   system.stateVersion = "25.05";

@@ -33,19 +33,6 @@
 
   home.file = {
   };
-
-
-  home.sessionVariables = {
-    #Wayland-specific
-    XDG_CURRENT_DESKTOP = "Hyprland";
-    XDG_SESSION_TYPE = "wayland";
-    GDK_BACKEND = "wayland,x11";
-    CLUTTER_BACKEND = "wayland";
-
-    #Wayland support for specific apps
-    MOZ_ENABLE_WAYLAND = "1";
-    ELECTRON_OZONE_PLATFORM_HINT = "wayland";
-  };
   
   # zsh config
   programs.zsh = {
