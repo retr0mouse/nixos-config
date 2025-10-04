@@ -51,6 +51,13 @@
 
   services.upower.enable = true;
 
+  # Garbage collection
+  nix.gc = {
+    automatic = true;
+    dates = "weekly";
+    options = "--delete-older-than 3d";
+  };
+
   # Wifi 
   networking.wireless.iwd.enable = true;
   networking.networkmanager.enable = true;
@@ -118,7 +125,6 @@
   environment.sessionVariables = {
     NIXOS_OZONE_WL = "1"; # Force Wayland for electron apps
     WLR_NO_HARDWARE_CURSORS = "1"; # Fixes cursor issues
-    SDL_VIDEODRIVER="wayland,x11";
     
     #Wayland-specific
     XDG_CURRENT_DESKTOP = "Hyprland";
