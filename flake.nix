@@ -7,20 +7,15 @@
       url = "github:nix-community/home-manager/release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    hyprpanel = {
-      url = "github:Jas-SinghFSU/HyprPanel";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     xremap-flake.url = "github:xremap/nix-flake";
   };
 
-  outputs = inputs@{ self, nixpkgs, home-manager, hyprpanel, ... }:
+  outputs = inputs@{ self, nixpkgs, home-manager, ... }:
     let
       system = "x86_64-linux";
       pkgs = import nixpkgs {
         inherit system;
-        overlays = [ hyprpanel.overlay ];
       };
     in {
       homeConfigurations = {
@@ -37,7 +32,7 @@
       };
 
       nixosConfigurations = {
-        retr0mouseNixOs = nixpkgs.lib.nixosSystem {
+        reisdro = nixpkgs.lib.nixosSystem {
           inherit system;
           specialArgs = {
             inherit inputs;

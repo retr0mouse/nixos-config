@@ -14,7 +14,7 @@
       source = ~/.config/hypr/monitors.conf
 
       # Autostart apps
-      exec-once = hyprpanel &
+      exec-once = waybar &
 
       xwayland {
         force_zero_scaling = true

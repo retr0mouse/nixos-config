@@ -3,7 +3,6 @@
 {
   imports = [
     ./hyprland.nix
-    ./hyprpanel.nix
   ];
 
   home.username = "retr0mouse";

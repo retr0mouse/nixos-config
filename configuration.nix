@@ -59,14 +59,30 @@
   };
 
   # Wifi 
+  networking.networkmanager.enable = false;
   networking.wireless.iwd.enable = true;
-  networking.networkmanager.enable = true;
+  networking.wireless.iwd.settings = {
+	Settings = {
+		AutoConnect = true;
+	};
+  };
+
+  # Spotify sync local tracks
+  networking.firewall.allowedTCPPorts = [ 57621 ];
+
+  services.pcscd.enable = true;
+
+  # Tell p11-kit to load/proxy opensc-pkcs11.so, providing all available slots
+  # (PIN1 for authentication/decryption, PIN2 for signing).
+  environment.etc."pkcs11/modules/opensc-pkcs11".text = ''
+    module: ${pkgs.opensc}/lib/opensc-pkcs11.so
+  '';
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   nixpkgs.config.allowUnfree = true;
   
-  networking.hostName = "retr0mouseNixOs"; 
+  networking.hostName = "reisdro"; 
 
   # Display Mananger
   services.xserver.displayManager.gdm.enable = true;
@@ -110,9 +126,6 @@
   # Virtual file system and disks
   services.gvfs.enable = true;
   services.udisks2.enable = true;
-
-  # Power profiles with hyprpanel
-  services.power-profiles-daemon.enable = true;
 
   # Dolphine theming
   programs.dconf.enable = true;
@@ -169,8 +182,10 @@
   services.xserver.xkb.options = "grp:ctrl_space_toggle";
 
   # Enable sound.
+  security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
+    alsa.enable = true;
     pulse.enable = true;
     alsa.support32Bit = true;
   };
@@ -240,6 +255,8 @@
 	pkgs.xdg-desktop-portal-hyprland
     ];
   };
+
+
 
 
     hardware.nvidia = {
@@ -317,17 +334,7 @@
     vlc
     matugen # theme change
 
-    # hyprpanel requirements
-    ags
-    wireplumber
-    networkmanager
-    dart-sass
-    upower
-    gvfs
-    gtksourceview3
-    libgtop
-    bluez 
-    wf-recorder
+    waybar
 
     # gnome theming
     libsForQt5.qt5ct
@@ -355,6 +362,12 @@
     openjdk8
     maven
     foliate # e-book reader
+
+    impala # manage wifi connections
+    audacity
+    pulseaudio
+
+    sl # train say choo-choo
   ];
 
   system.stateVersion = "25.05";
