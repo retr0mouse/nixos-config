@@ -127,6 +127,9 @@
   services.gvfs.enable = true;
   services.udisks2.enable = true;
 
+  # fix to run dynamically linked executables
+  programs.nix-ld.enable = true;
+
   # Dolphine theming
   programs.dconf.enable = true;
   qt = {
@@ -309,9 +312,13 @@
     docker-compose
     thefuck
     lshw
-    slurp
-    grim
-    swappy
+
+    slurp # screen area selector
+    grim # screenshot taker
+    swappy # image editor
+
+    wf-recorder # video recorder
+    
     fastfetch
     chromedriver
     chromium
@@ -359,7 +366,6 @@
     anki-bin
     jetbrains.idea-ultimate
     jetbrains.idea-community
-    openjdk8
     maven
     foliate # e-book reader
 
@@ -368,6 +374,7 @@
     pulseaudio
 
     sl # train say choo-choo
+    unrar # to unrar folders
   ];
 
   system.stateVersion = "25.05";
