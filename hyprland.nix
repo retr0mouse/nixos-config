@@ -78,14 +78,36 @@
       # intellij focus fix
       windowrulev2 = noinitialfocus, class:^(.*jetbrains.*)$, title:^(win.*)$
 
-      # Mouse behavior for floating windows
+      # Move and resize windows with mouse
       bindm = SUPER, mouse:272, movewindow
       bindm = SUPER, mouse:273, resizewindow
+
+      # Move windows with keyboard
+      bind = SUPER SHIFT, H, movewindow, l
+      bind = SUPER SHIFT, J, movewindow, d
+      bind = SUPER SHIFT, K, movewindow, u
+      bind = SUPER SHIFT, L, movewindow, r
+
+      # Resize windows using keyboard
+      bind = SUPER, R, submap, resize
+
+      submap = resize
+          bind = , H, resizeactive, -60 0
+          bind = , J, resizeactive, 0 60
+          bind = , K, resizeactive, 0 -60
+          bind = , L, resizeactive, 60 0
+          bind = , left, resizeactive, -60 0
+          bind = , down, resizeactive, 0 60
+          bind = , up, resizeactive, 0 -60
+          bind = , right, resizeactive, 60 0
+          bind = , Return, submap, reset
+          bind = , Escape, submap, reset
+      submap = reset
 
       # Keybinds
       bind = SUPER, Return, exec, $terminal
       bind = SUPER, Space, exec, $menu
-      bind = SUPER SHIFT, L, exec, hyprlock
+      bind = ,Pause, exec, hyprlock
       bind = SUPER SHIFT, Return, exec, $browser
       bind = SUPER SHIFT, Q, killactive,
       bind = SUPER, E, exec, dolphin
@@ -133,24 +155,6 @@
 
       # Fix some dragging issues with XWayland
       windowrulev2 = nofocus,class:^$,title:^$,xwayland:1,floating:1,fullscreen:0,pinned:0
-
-      windowrulev2 = immediate, class:.*
-
-      # Resize mode using submap
-      bind = SUPER, R, submap, resize
-
-      submap = resize
-          bind = , H, resizeactive, -60 0
-          bind = , J, resizeactive, 0 60
-          bind = , K, resizeactive, 0 -60
-          bind = , L, resizeactive, 60 0
-          bind = , left, resizeactive, -60 0
-          bind = , down, resizeactive, 0 60
-          bind = , up, resizeactive, 0 -60
-          bind = , right, resizeactive, 60 0
-          bind = , Return, submap, reset
-          bind = , Escape, submap, reset
-      submap = reset
       
       # Laptop multimedia keys for volume and LCD brightness
       bindel = ,XF86AudioRaiseVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+
