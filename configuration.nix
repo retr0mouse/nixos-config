@@ -34,6 +34,7 @@
     };
   };
 
+
   systemd.user.services.monitorillo = {
     enable = true;
     description = "Monitorillo service";
@@ -50,6 +51,8 @@
   };
 
   services.upower.enable = true;
+
+  services.power-profiles-daemon.enable = true; # to manage power profiles
 
   # Garbage collection
   nix.gc = {
@@ -203,7 +206,7 @@
   users.users.retr0mouse = {
     isNormalUser = true;
     shell = pkgs.zsh;   
-    extraGroups = [ "wheel" "docker" "network" "networkmanager" "video" "render"];
+    extraGroups = [ "wheel" "docker" "network" "networkmanager" "video" "render" "postgres"];
   };
 
   programs.firefox.enable = true;
@@ -375,6 +378,8 @@
 
     sl # train say choo-choo
     unrar # to unrar folders
+
+    hyprpaper # walls
   ];
 
   system.stateVersion = "25.05";

@@ -11,6 +11,7 @@
   home.stateVersion = "24.11"; # Please read the comment before changing.
 
   home.packages = [
+  	pkgs.hyprpaper
   ];
   wayland.windowManager.hyprland.systemd.enable = false;
   gtk = {
@@ -31,6 +32,18 @@
   };
 
   home.file = {
+  };
+
+  services.hyprpaper = {
+    enable = true;
+    settings = {
+      preload =
+        [ "~/dots/walls/snowy_mountain.png" ];
+
+      wallpaper = [
+        ",~/dots/walls/snowy_mountain.png"     
+      ];
+    };
   };
   
   # zsh config
