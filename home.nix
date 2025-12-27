@@ -111,23 +111,32 @@
       ];
     };
   };
-  
-  # zsh config
+
+  # zsh 
   programs.zsh = {
     enable = true;
+    enableCompletion = true;
+    syntaxHighlighting.enable = true;
+
     shellAliases = {
-      ll = "ls -l";
-      ".." = "cd ..";
+      conf = "cd ~/dots";
+      unixos = "sudo nixos-rebuild switch --flake ~/dots";
+      uhome = "home-manager switch --flake .#retr0mouse -b backup";
     };
-    oh-my-zsh.enable = true;
-    oh-my-zsh.theme = "robbyrussell";
+    oh-my-zsh = {
+      enable = true;
+      plugins = [ "git" ];
+      theme = "robbyrussell";
+    };
   };
+
 
   programs.kitty = lib.mkForce {
     enable = true;
     settings = {
 	confirm_os_window_close = 0;
 	enable_audio_bell = false;
+        background_opacity = 0.5;
     };
   };
 

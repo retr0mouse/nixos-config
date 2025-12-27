@@ -209,6 +209,8 @@
     extraGroups = [ "wheel" "docker" "network" "networkmanager" "video" "render" "postgres"];
   };
 
+  programs.zsh.enable = true;
+
   programs.firefox.enable = true;
 
   programs.steam = {
@@ -220,26 +222,6 @@
   programs.gamescope = {
     enable = true;
     capSysNice = true;
-  };
-
-
-  # zsh 
-  programs.zsh = {
-    enable = true;
-    enableCompletion = true;
-    autosuggestions.enable = true;
-    syntaxHighlighting.enable = true;
-
-    shellAliases = {
-      conf = "cd ~/dots";
-      unixos = "sudo nixos-rebuild switch --flake ~/dots";
-      uhome = "home-manager switch --flake .#retr0mouse -b backup";
-    };
-    ohMyZsh = {
-      enable = true;
-      plugins = [ "git" ];
-      theme = "robbyrussell";
-    };
   };
 
   # OpenGL
@@ -380,6 +362,8 @@
     unrar # to unrar folders
 
     hyprpaper # walls
+    yazi # file explorer TUI
+    fzf # fuzzy-finder
   ];
 
   system.stateVersion = "25.05";
