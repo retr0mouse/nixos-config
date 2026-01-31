@@ -159,9 +159,7 @@
     ANKI_WAYLAND = "1";
   };
 
-
-  environment.variables = {
-  };
+  programs.neovim.defaultEditor = true;
 
   # Default apps
   xdg.mime.defaultApplications = {
@@ -223,6 +221,7 @@
     enable = true;
     capSysNice = true;
   };
+
 
   # OpenGL
   hardware.graphics = {
@@ -364,6 +363,7 @@
     hyprpaper # walls
     yazi # file explorer TUI
     fzf # fuzzy-finder
+    gcc # c compiler
   ];
 
   system.stateVersion = "25.05";

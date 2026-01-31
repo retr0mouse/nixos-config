@@ -23,6 +23,10 @@
     };
   };
 
+  programs.ssh = {
+    enable = true;
+  };
+
 
   home.pointerCursor = {
     gtk.enable = true;
@@ -33,6 +37,15 @@
   };
 
   home.file = {
+  };
+
+  programs.wofi = {
+    enable = true;
+    settings = {
+      insensitive = true;
+      allow_images = true;
+      style = "/home/retr0mouse/dots/style.css";
+    };
   };
 
   programs.hyprlock = {
