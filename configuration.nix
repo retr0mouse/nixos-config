@@ -34,25 +34,15 @@
     };
   };
 
-
-  systemd.user.services.monitorillo = {
-    enable = true;
-    description = "Monitorillo service";
-    wantedBy = [ "multi-user.target" ];
-    serviceConfig = {
-      StandardOutput="append:/home/retr0mouse/monitorillo.out.log";
-      StandardError="append:/home/retr0mouse/monitorillo.err.log";
-      SyslogIdentifier="monitorillo";
-      WorkingDirectory = "/home/retr0mouse";
-      ExecStart = "/run/current-system/sw/bin/dotnet /home/retr0mouse/Code/monitorillo/bin/Debug/net9.0/monitorillo.dll";
-      Restart = "on-failure";
-      RestartSec = "5";
-    };
-  };
+  services.dbus.enable = true; # notifications 
 
   services.upower.enable = true;
 
+  services.asusd.enable = true; # enable asus cli service
+
   services.power-profiles-daemon.enable = true; # to manage power profiles
+
+  services.logind.lidSwitchExternalPower = "ignore";
 
   # Garbage collection
   nix.gc = {
@@ -309,7 +299,6 @@
     obsidian
     wlogout
     swaylock-effects
-    hyprpaper
     gdm
     nodejs_24
     fira-code
@@ -360,10 +349,12 @@
     sl # train say choo-choo
     unrar # to unrar folders
 
-    hyprpaper # walls
     yazi # file explorer TUI
     fzf # fuzzy-finder
     gcc # c compiler
+    swww # wallpaper daemon
+    libnotify # send notifications to notification daemon
+    swaynotificationcenter # notification daemon   
   ];
 
   system.stateVersion = "25.05";

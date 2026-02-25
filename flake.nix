@@ -14,34 +14,35 @@
   outputs = inputs@{ self, nixpkgs, home-manager, ... }:
     let
       system = "x86_64-linux";
-      pkgs = import nixpkgs {
-        inherit system;
-      };
     in {
-      homeConfigurations = {
-        retr0mouse = home-manager.lib.homeManagerConfiguration {
-          inherit pkgs;
-          extraSpecialArgs = {
-            inherit inputs;
-            inherit system;
-          };
-          modules = [
-            ./home.nix
-          ];
-        };
-      };
-
       nixosConfigurations = {
         reisdro = nixpkgs.lib.nixosSystem {
           inherit system;
+
           specialArgs = {
             inherit inputs;
           };
+
           modules = [
             ./configuration.nix
+
+            # Integrate Home Manager
+            home-manager.nixosModules.home-manager
+
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+
+              home-manager.backupFileExtension = "backup";
+
+              home-manager.extraSpecialArgs = {
+                inherit inputs;
+              };
+
+              home-manager.users.retr0mouse = import ./home.nix;
+            }
           ];
         };
       };
     };
 }
-

@@ -1,3 +1,4 @@
+
 { config, pkgs, lib, ... }:
 
 {
@@ -11,8 +12,7 @@
   home.stateVersion = "24.11"; # Please read the comment before changing.
 
   home.packages = [
-  	pkgs.hyprpaper
-	pkgs.hyprlock
+	  pkgs.hyprlock
   ];
   wayland.windowManager.hyprland.systemd.enable = false;
   gtk = {
@@ -44,7 +44,6 @@
     settings = {
       insensitive = true;
       allow_images = true;
-      style = "/home/retr0mouse/dots/style.css";
     };
   };
 
@@ -113,18 +112,6 @@
     };
   };
 
-  services.hyprpaper = {
-    enable = true;
-    settings = {
-      preload =
-        [ "~/dots/walls/snowy_mountain.png" ];
-
-      wallpaper = [
-        ",~/dots/walls/snowy_mountain.png"     
-      ];
-    };
-  };
-
   # zsh 
   programs.zsh = {
     enable = true;
@@ -132,9 +119,8 @@
     syntaxHighlighting.enable = true;
 
     shellAliases = {
-      conf = "cd ~/dots";
-      unixos = "sudo nixos-rebuild switch --flake ~/dots";
-      uhome = "home-manager switch --flake .#retr0mouse -b backup";
+      config = "cd ~/dots";
+      rebuild = "sudo nixos-rebuild switch --flake ~/dots#reisdro";
     };
     oh-my-zsh = {
       enable = true;
