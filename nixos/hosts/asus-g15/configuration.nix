@@ -355,6 +355,7 @@
     swww # wallpaper daemon
     libnotify # send notifications to notification daemon
     swaynotificationcenter # notification daemon   
+    tree # inspect folder structure
   ];
 
   system.stateVersion = "25.05";
