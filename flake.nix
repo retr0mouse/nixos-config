@@ -24,7 +24,7 @@
           };
 
           modules = [
-            ./configuration.nix
+            ./nixos/hosts/asus-g15/configuration.nix
 
             # Integrate Home Manager
             home-manager.nixosModules.home-manager
@@ -39,7 +39,7 @@
                 inherit inputs;
               };
 
-              home-manager.users.retr0mouse = import ./home.nix;
+              home-manager.users.retr0mouse = import ./home-manager/home.nix;
             }
           ];
         };
