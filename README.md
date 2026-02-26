@@ -7,4 +7,8 @@
 - [ ] Rice wofi
 - [x] Hyprlock
 - [ ] Quickshell
-- [ ] OSD
+- [x] OSD
+
+## Inspiration
+[Ampersand's NixOS config](https://github.com/Andrey0189/nixos-config-reborn/tree/master)
+[DerAnsari's rice](https://github.com/DerAnsari/hyprland-dots)
