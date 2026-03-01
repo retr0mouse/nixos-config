@@ -3,11 +3,8 @@
 
 {
   imports = [
-    ./hyprland.nix
+    ../modules/hyprland.nix
   ];
-
-  home.username = "retr0mouse";
-  home.homeDirectory = "/home/retr0mouse";
 
   home.stateVersion = "24.11"; # Please read the comment before changing.
 
@@ -120,7 +117,8 @@
 
     shellAliases = {
       config = "cd ~/dots";
-      rebuild = "sudo nixos-rebuild switch --flake ~/dots#reisdro";
+      rebuild = "sudo nixos-rebuild switch --flake ~/dots#ga503";
+      logthefuckout = "loginctl terminate-user $USER";
     };
     oh-my-zsh = {
       enable = true;

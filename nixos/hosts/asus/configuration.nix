@@ -13,7 +13,7 @@
     enable = true;
     serviceMode = "user";
     withWlroots = true;
-    userName = "retr0mouse";
+    userName = "reisdro";
     config = {
       virtual_modifiers = [ "CapsLock" ];
       keymap = [
@@ -25,7 +25,6 @@
 	    "CapsLock-l" = "Right";
             "CapsLock-m" = "Home";
             "CapsLock-dot" = "End";
-
 	    "CapsLock-u" = "C-Left";
 	    "CapsLock-o" = "C-Right";
 	  };
@@ -75,18 +74,16 @@
   boot.loader.systemd-boot.enable = true;
   nixpkgs.config.allowUnfree = true;
   
-  networking.hostName = "reisdro"; 
+  networking.hostName = "ga503"; 
 
   # Display Mananger
-  services.xserver.displayManager.gdm.enable = true;
-  services.xserver.displayManager.gdm.wayland = true;
+  services.displayManager.ly.enable = true;
 
-
-  # Wrap Wayland into UWSM
-  programs.hyprland.withUWSM = true;
-  programs.hyprland.enable = true;
-  programs.hyprland.xwayland.enable = true;
   programs.xwayland.enable = true;
+
+  programs.hyprland = {
+    enable = true;
+  };
 
   # Firefox hardware acceleration
   programs.firefox.preferences = {
@@ -133,13 +130,6 @@
 
   environment.sessionVariables = {
     NIXOS_OZONE_WL = "1"; # Force Wayland for electron apps
-    WLR_NO_HARDWARE_CURSORS = "1"; # Fixes cursor issues
-    
-    #Wayland-specific
-    XDG_CURRENT_DESKTOP = "Hyprland";
-    GDK_BACKEND = "wayland,x11";
-    CLUTTER_BACKEND = "wayland";
-    QT_QPA_PLATFORM = "wayland";
 
     #Wayland support for specific apps
     MOZ_ENABLE_WAYLAND = "1";
@@ -169,6 +159,7 @@
       material-design-icons
       fantasque-sans-mono
       ubuntu-sans
+      iosevka
   ];
 
   # Configure keymap in X11
@@ -182,6 +173,7 @@
     alsa.enable = true;
     pulse.enable = true;
     alsa.support32Bit = true;
+    wireplumber.enable = true;
   };
 
   # Enable touchpad support (enabled default in most desktopManager).
@@ -190,11 +182,10 @@
     touchpad.naturalScrolling = true;
   };
 
-  # Define a user account. Don't forget to set a password with 'passwd'.
-  users.users.retr0mouse = {
+  users.users.reisdro = {
     isNormalUser = true;
     shell = pkgs.zsh;   
-    extraGroups = [ "wheel" "docker" "network" "networkmanager" "video" "render" "postgres"];
+    extraGroups = [ "wheel" "input" "docker" "network" "networkmanager" "video" "render" "postgres"];
   };
 
   programs.zsh.enable = true;
@@ -259,6 +250,8 @@
     evtest
     htop
     btop
+    amdgpu_top # htop for amd gpu
+    jq # cli for processing JSON data
     neovim  
     kitty
     kdePackages.dolphin
@@ -356,6 +349,7 @@
     libnotify # send notifications to notification daemon
     swaynotificationcenter # notification daemon   
     tree # inspect folder structure
+    bluetui # bluetooth TUI
   ];
 
   system.stateVersion = "25.05";

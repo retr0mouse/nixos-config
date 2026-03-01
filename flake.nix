@@ -1,6 +1,4 @@
 {
-  description = "retr0mouse system flake";
-
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
     home-manager = {
@@ -16,7 +14,7 @@
       system = "x86_64-linux";
     in {
       nixosConfigurations = {
-        reisdro = nixpkgs.lib.nixosSystem {
+        asus = nixpkgs.lib.nixosSystem {
           inherit system;
 
           specialArgs = {
@@ -24,9 +22,8 @@
           };
 
           modules = [
-            ./nixos/hosts/asus-g15/configuration.nix
+            ./nixos/hosts/asus/configuration.nix
 
-            # Integrate Home Manager
             home-manager.nixosModules.home-manager
 
             {
@@ -39,7 +36,7 @@
                 inherit inputs;
               };
 
-              home-manager.users.retr0mouse = import ./home-manager/home.nix;
+              home-manager.users.reisdro = import ./home-manager/reisdro/home.nix;
             }
           ];
         };

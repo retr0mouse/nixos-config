@@ -1,5 +1,3 @@
-{ config, pkgs, ... }:
-
 {
   wayland.windowManager.hyprland = {
     enable = true;
@@ -14,7 +12,10 @@
       source = ~/.config/hypr/monitors.conf
 
       # Autostart apps
-      exec-once = waybar & swaync &
+      exec-once = systemctl --user start waybar.service
+      exec-once = swaync &
+      exec-once = wl-paste --type text --watch cliphist store
+      exec-once = wl-paste --type image --watch cliphist store
 
       xwayland {
         force_zero_scaling = true
@@ -44,13 +45,13 @@
 
       # General settings
       general {
-        gaps_in = 1
-        gaps_out = 2
+        gaps_in = 2
+        gaps_out = 0
         border_size = 2
         layout = dwindle
 	no_border_on_floating = 1
 	no_focus_fallback = 1
-	col.active_border = 0xffc0caf5
+	col.active_border = rgb(208,139,87)
       }
       
       decoration {
