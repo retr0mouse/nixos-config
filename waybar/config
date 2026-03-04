@@ -92,6 +92,7 @@
             "memory",
 	    "custom/split",
 	    "custom/dgpu",
+	    "custom/split",
 	    "custom/igpu",
             "custom/split",
             "custom/powerprofile",
@@ -111,14 +112,14 @@
         "on-click": "kitty -e btop",
     },
     "custom/igpu": {
-    	"exec": "/home/retr0mouse/.config/waybar/scripts/igpu_usage.sh",
+    	"exec": "/home/reisdro/.config/waybar/scripts/igpu_usage.sh",
     	"interval": 2,
     	"format": "iGPU{}",
     	"on-click": "kitty -e nvidia-smi"
     },
 
     "custom/dgpu": {
-    	"exec": "/home/retr0mouse/.config/waybar/scripts/dgpu_usage.sh",
+    	"exec": "/home/reisdro/.config/waybar/scripts/dgpu_usage.sh",
     	"interval": 2,
     	"format": "dGPU:{}",
     	"on-click": "kitty -e nvidia-smi"
@@ -136,7 +137,7 @@
     },
     "pulseaudio": {
         "scroll-step": 5,
-        "format": "{icon}{volume}%",
+        "format": "{icon} {volume}%",
         "format-muted": "󰝟",
         "format-icons": {
             "headphone": "",
@@ -151,7 +152,7 @@
         "on-click-right": "pavucontrol"
     },
     "backlight": {
-        "format": "{icon}{percent}%",
+        "format": "{icon} {percent}%",
         "format-icons": ["🌙", "", ""],
     },
 

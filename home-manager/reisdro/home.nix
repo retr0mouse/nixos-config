@@ -4,6 +4,7 @@
 {
   imports = [
     ../modules/hyprland.nix
+    ../modules/waybar.nix
   ];
 
   home.stateVersion = "24.11"; # Please read the comment before changing.
@@ -19,6 +20,12 @@
       package = pkgs.papirus-icon-theme;
     };
   };
+
+  # disable kdewallet
+  home.file.".config/kwalletrc".text = ''
+    [Wallet]
+    Enabled=false
+  '';
 
   programs.ssh = {
     enable = true;
@@ -117,7 +124,7 @@
 
     shellAliases = {
       config = "cd ~/dots";
-      rebuild = "sudo nixos-rebuild switch --flake ~/dots#ga503";
+      rebuild = "sudo nixos-rebuild switch --flake ~/dots#asus";
       logthefuckout = "loginctl terminate-user $USER";
     };
     oh-my-zsh = {

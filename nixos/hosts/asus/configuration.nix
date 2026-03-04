@@ -85,14 +85,6 @@
     enable = true;
   };
 
-  # Firefox hardware acceleration
-  programs.firefox.preferences = {
-    "media.ffmpeg.vaapi.enabled" = true;
-    "media.rdd-ffmpeg.enabled" = true;
-    "media.av1.enabled" = true;
-    "gfx.x11-egl.force-enabled" = true;
-    "widget.dmabuf.force-enabled" = true;
-  };
   # Enable Flakes
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
@@ -143,11 +135,11 @@
 
   # Default apps
   xdg.mime.defaultApplications = {
-    "text/html" = "firefox.desktop";
-    "x-scheme-handler/http" = "firefox.desktop";
-    "x-scheme-handler/https" = "firefox.desktop";
-    "x-scheme-handler/about" = "firefox.desktop";
-    "x-scheme-handler/unknown" = "firefox.desktop";
+    "text/html" = "brave.desktop";
+    "x-scheme-handler/http" = "brave.desktop";
+    "x-scheme-handler/https" = "brave.desktop";
+    "x-scheme-handler/about" = "brave.desktop";
+    "x-scheme-handler/unknown" = "brave.desktop";
   };
 
 
@@ -189,8 +181,6 @@
   };
 
   programs.zsh.enable = true;
-
-  programs.firefox.enable = true;
 
   programs.steam = {
     enable = true;
@@ -277,8 +267,8 @@
     git
     gh
     docker-compose
-    thefuck
     lshw
+    brave # brave browser
 
     slurp # screen area selector
     grim # screenshot taker

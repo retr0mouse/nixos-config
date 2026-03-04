@@ -6,7 +6,7 @@
       $terminal = kitty
       $fileManager = dolphin
       $menu = wofi --show drun
-      $browser = firefox
+      $browser = brave
       
       # Config for the displays
       source = ~/.config/hypr/monitors.conf
