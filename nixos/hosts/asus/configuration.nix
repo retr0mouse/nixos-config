@@ -244,7 +244,6 @@
     jq # cli for processing JSON data
     neovim  
     kitty
-    kdePackages.dolphin
     pavucontrol
     kdePackages.qtwayland
     kdePackages.qtsvg
