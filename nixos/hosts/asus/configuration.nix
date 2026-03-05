@@ -93,7 +93,7 @@
   hardware.bluetooth.enable = true; # enables support for Bluetooth
   hardware.bluetooth.powerOnBoot = true; # powers up the default Bluetooth controller on boot
 
-  # Set your time zone.
+  # Set time zone.
   time.timeZone = "Europe/Tallinn";
 
   # Select internationalisation properties.
@@ -111,14 +111,6 @@
 
   # fix to run dynamically linked executables
   programs.nix-ld.enable = true;
-
-  # Dolphine theming
-  programs.dconf.enable = true;
-  qt = {
-    enable = true;
-    platformTheme = "gnome";
-    style = "adwaita";
-  };
 
   environment.sessionVariables = {
     NIXOS_OZONE_WL = "1"; # Force Wayland for electron apps

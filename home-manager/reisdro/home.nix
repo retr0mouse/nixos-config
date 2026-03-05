@@ -21,12 +21,6 @@
     };
   };
 
-  # disable kdewallet
-  home.file.".config/kwalletrc".text = ''
-    [Wallet]
-    Enabled=false
-  '';
-
   programs.ssh = {
     enable = true;
   };

@@ -108,9 +108,9 @@
       bind = SUPER, Return, exec, $terminal
       bind = SUPER, Space, exec, $menu
       bind = ,Pause, exec, hyprlock
-      bind = SUPER SHIFT, Return, exec, kitty -e yazi
+      bind = SUPER SHIFT, Return, exec, $browser
       bind = SUPER SHIFT, Q, killactive,
-      bind = SUPER, E, exec, $fileManager
+      bind = SUPER, E, exec, kitty -e yazi
       bind = SUPER, V, togglefloating,
       bind = SUPER, F, fullscreen,
       bind = SUPER, P, pseudo
