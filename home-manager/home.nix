@@ -1,11 +1,17 @@
 
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, user, ... }:
 
 {
   imports = [
-    ../modules/hyprland.nix
-    ../modules/waybar.nix
+    ./modules/hyprland.nix
+    ./modules/waybar.nix
+    ./programs.nix
   ];
+
+  home = {
+    username = user;
+    homeDirectory = "/home/${user}";
+  };
 
   home.stateVersion = "24.11"; # Please read the comment before changing.
 
@@ -128,6 +134,7 @@
     };
   };
 
+  programs.neovim.defaultEditor = true;
 
   programs.kitty = lib.mkForce {
     enable = true;
@@ -137,6 +144,31 @@
         background_opacity = 0.5;
     };
   };
+
+  # Default apps
+  xdg.mimeApps = {
+    enable = true;
+
+    defaultApplications = {
+      "text/html" = "brave.desktop";
+      "x-scheme-handler/http" = "brave.desktop";
+      "x-scheme-handler/https" = "brave.desktop";
+      "x-scheme-handler/about" = "brave.desktop";
+      "x-scheme-handler/unknown" = "brave.desktop";
+    };
+  };
+ 
+  home.sessionVariables = {
+    NIXOS_OZONE_WL = "1"; # Force Wayland for electron apps
+
+    #Wayland support for specific apps
+    MOZ_ENABLE_WAYLAND = "1";
+    ELECTRON_OZONE_PLATFORM_HINT = "wayland";
+
+    #For Anki
+    ANKI_WAYLAND = "1";
+  };
+
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;

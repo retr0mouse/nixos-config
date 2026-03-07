@@ -12,13 +12,14 @@
   outputs = inputs@{ self, nixpkgs, home-manager, ... }:
     let
       system = "x86_64-linux";
+      user = "reisdro";
     in {
       nixosConfigurations = {
         asus = nixpkgs.lib.nixosSystem {
           inherit system;
 
           specialArgs = {
-            inherit inputs;
+            inherit inputs user;
           };
 
           modules = [
@@ -33,10 +34,10 @@
               home-manager.backupFileExtension = "backup";
 
               home-manager.extraSpecialArgs = {
-                inherit inputs;
+                inherit inputs user;
               };
 
-              home-manager.users.reisdro = import ./home-manager/reisdro/home.nix;
+              home-manager.users.${user} = import ./home-manager/home.nix;
             }
           ];
         };
