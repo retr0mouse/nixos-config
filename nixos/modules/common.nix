@@ -1,4 +1,4 @@
-{ config, inputs, lib, pkgs, ... }:
+{ config, inputs, lib, pkgs, user, ... }:
 
 {
   imports =
@@ -34,13 +34,6 @@
 
   services.dbus.enable = true; # notifications 
 
-  services.upower.enable = true;
-
-  services.asusd.enable = true; # enable asus cli service
-
-  services.power-profiles-daemon.enable = true; # to manage power profiles
-
-  services.logind.lidSwitchExternalPower = "ignore";
 
   # Garbage collection
   nix.gc = {
@@ -73,8 +66,6 @@
   boot.loader.systemd-boot.enable = true;
   nixpkgs.config.allowUnfree = true;
   
-  networking.hostName = "ga503"; 
-
   # Display Mananger
   services.displayManager.ly.enable = true;
 
@@ -135,13 +126,7 @@
     wireplumber.enable = true;
   };
 
-  # Enable touchpad support (enabled default in most desktopManager).
-  services.libinput = {
-    enable = true;
-    touchpad.naturalScrolling = true;
-  };
-
-  users.users.reisdro = {
+  users.users.${user} = {
     isNormalUser = true;
     shell = pkgs.zsh;   
     extraGroups = [ "wheel" "input" "docker" "network" "networkmanager" "video" "render" "postgres"];
@@ -160,18 +145,11 @@
     capSysNice = true;
   };
 
-
   # OpenGL
   hardware.graphics = {
     enable = true;
     enable32Bit = true;
   };
-  
-  services.xserver.enable = true;
-  services.xserver.videoDrivers = [
-    "amdgpu"
-    "nvidia"
-  ];
 
   xdg.portal = {
     enable = true;
@@ -189,24 +167,6 @@
     };
   };
 
-  # ASUS
-  hardware.nvidia = {
-    modesetting.enable = true;
-    powerManagement.enable = true;
-    powerManagement.finegrained = true;
-    open = true;
-    nvidiaSettings = true;
-    package = config.boot.kernelPackages.nvidiaPackages.stable;
-    prime = {
-      amdgpuBusId = lib.mkForce "PCI:6:0:0";
-      nvidiaBusId = "PCI:1:0:0";
-      offload = {
-        enable = true;
-	enableOffloadCmd = true;
-      };
-    };
-  };
-  
   # List packages installed in system profile. To search, run:
   environment.systemPackages = with pkgs; [
   	amdgpu_top

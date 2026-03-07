@@ -37,7 +37,7 @@
                 inherit inputs user;
               };
 
-              home-manager.users.${user} = import ./home-manager/home.nix;
+              home-manager.users.${user} = import ./home/home.nix;
             }
           ];
         };
