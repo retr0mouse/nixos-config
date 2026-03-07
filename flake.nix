@@ -41,6 +41,32 @@
             }
           ];
         };
+        msi = nixpkgs.lib.nixosSystem {
+          inherit system;
+
+          specialArgs = {
+            inherit inputs user;
+          };
+
+          modules = [
+            ./nixos/hosts/msi/configuration.nix
+
+            home-manager.nixosModules.home-manager
+
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+
+              home-manager.backupFileExtension = "backup";
+
+              home-manager.extraSpecialArgs = {
+                inherit inputs user;
+              };
+
+              home-manager.users.${user} = import ./home/home.nix;
+            }
+          ];
+        };
       };
     };
 }
