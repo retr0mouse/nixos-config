@@ -172,7 +172,7 @@
   	amdgpu_top
 	clinfo
 	evtest
-	glxinfo
+	mesa-demos
 	libva
 	ffmpeg
 	nvidia-vaapi-driver

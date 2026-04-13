@@ -168,10 +168,9 @@
         };
 
         clock = {
-          format = "{:%I:%M}";
+          format = "{:%H:%M}";
           tooltip-format =
             "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>";
-          onclick = "kalender";
         };
 
         battery = {

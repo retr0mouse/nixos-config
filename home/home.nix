@@ -5,6 +5,7 @@
   imports = [
     ./modules/hyprland.nix
     ./modules/waybar.nix
+    ./modules/kitty.nix
     ./programs.nix
   ];
 
@@ -123,9 +124,10 @@
     syntaxHighlighting.enable = true;
 
     shellAliases = {
-      config = "cd ~/dots";
-      rebuild = "sudo nixos-rebuild switch --flake ~/dots#asus";
+      config = "cd ~/dots && tree";
+      rebuild = "sudo nixos-rebuild switch --flake ~/dots#msi";
       logthefuckout = "loginctl terminate-user $USER";
+      slip = "hyprlock & systemctl suspend";
     };
     oh-my-zsh = {
       enable = true;
@@ -135,15 +137,6 @@
   };
 
   programs.neovim.defaultEditor = true;
-
-  programs.kitty = lib.mkForce {
-    enable = true;
-    settings = {
-	confirm_os_window_close = 0;
-	enable_audio_bell = false;
-        background_opacity = 0.5;
-    };
-  };
 
   # Default apps
   xdg.mimeApps = {

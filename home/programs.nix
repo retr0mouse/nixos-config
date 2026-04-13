@@ -34,7 +34,7 @@
 	hunspell
 	hunspellDicts.ru_RU
 	hunspellDicts.en-us
-	stremio
+	# stremio
 	spotify
 	vlc
 	matugen
@@ -43,12 +43,13 @@
 	dotnetCorePackages.sdk_9_0_1xx
 	vscode
 	hyprlock
+	hyprpaper
+	waypaper
 	qdigidoc
 	gamescope
 	qbittorrent
 	anki-bin
-	jetbrains.idea-ultimate
-	jetbrains.idea-community
+	jetbrains.idea
 	maven
 	foliate
 	impala
@@ -64,5 +65,6 @@
 	tree
 	bluetui
 	_1password-gui
+	obs-studio
   ];
 }
