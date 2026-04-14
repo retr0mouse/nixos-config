@@ -6,6 +6,7 @@
     ./modules/hyprland.nix
     ./modules/waybar.nix
     ./modules/kitty.nix
+    ./modules/neovim.nix
     ./programs.nix
   ];
 
@@ -135,8 +136,6 @@
       theme = "robbyrussell";
     };
   };
-
-  programs.neovim.defaultEditor = true;
 
   # Default apps
   xdg.mimeApps = {
