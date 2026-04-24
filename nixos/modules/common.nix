@@ -1,189 +1,187 @@
 { config, inputs, lib, pkgs, user, ... }:
 
 {
-  imports =
-    [
-      inputs.xremap-flake.nixosModules.default
-    ];
+  imports = [
+    inputs.xremap-flake.nixosModules.default
+  ];
 
-
-  # xremap service
+  # -------------------------
+  # Input / key remapping
+  # -------------------------
   services.xremap = {
     enable = true;
     serviceMode = "user";
     withWlroots = true;
-    userName = "reisdro";
+    userName = user;
+
     config = {
       virtual_modifiers = [ "CapsLock" ];
       keymap = [
         {
-	  remap = {
-	    "CapsLock-i" = "Up";
-  	    "CapsLock-j" = "Left";
-	    "CapsLock-k" = "Down";
-	    "CapsLock-l" = "Right";
+          remap = {
+            "CapsLock-i" = "Up";
+            "CapsLock-j" = "Left";
+            "CapsLock-k" = "Down";
+            "CapsLock-l" = "Right";
+
             "CapsLock-m" = "Home";
             "CapsLock-dot" = "End";
-	    "CapsLock-u" = "C-Left";
-	    "CapsLock-o" = "C-Right";
-	  };
+
+            "CapsLock-u" = "C-Left";
+            "CapsLock-o" = "C-Right";
+          };
         }
       ];
     };
   };
 
-  services.dbus.enable = true; # notifications 
+  # -------------------------
+  # Core services
+  # -------------------------
+  services.dbus.enable = true;
+  services.upower.enable = true;
+  services.pcscd.enable = true;
+  services.power-profiles-daemon.enable = true;
 
+  # Spotify LAN sync / misc
+  networking.firewall.allowedTCPPorts = [ 57621 ];
 
-  # Garbage collection
+  # -------------------------
+  # Power / cleanup
+  # -------------------------
   nix.gc = {
     automatic = true;
     dates = "weekly";
     options = "--delete-older-than 3d";
   };
 
-  # Wifi 
+  # -------------------------
+  # Networking (minimal assumptions)
+  # -------------------------
   networking.networkmanager.enable = false;
-  networking.wireless.iwd.enable = true;
-  networking.wireless.iwd.settings = {
-	Settings = {
-		AutoConnect = true;
-	};
+  networking.wireless.iwd = {
+    enable = true;
+    settings.Settings.AutoConnect = true;
   };
 
-  # Spotify sync local tracks
-  networking.firewall.allowedTCPPorts = [ 57621 ];
-
-  services.pcscd.enable = true;
-
-  # Tell p11-kit to load/proxy opensc-pkcs11.so, providing all available slots
-  # (PIN1 for authentication/decryption, PIN2 for signing).
-  environment.etc."pkcs11/modules/opensc-pkcs11".text = ''
-    module: ${pkgs.opensc}/lib/opensc-pkcs11.so
-  '';
-
-  # Use the systemd-boot EFI boot loader.
+  # -------------------------
+  # Bootloader
+  # -------------------------
   boot.loader.systemd-boot.enable = true;
+
+  # -------------------------
+  # Flakes
+  # -------------------------
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
   nixpkgs.config.allowUnfree = true;
-  
-  # Display Mananger
+
+  # -------------------------
+  # Display manager / desktop
+  # -------------------------
   services.displayManager.ly.enable = true;
 
-  programs.xwayland.enable = true;
+  programs = {
+    xwayland.enable = true;
+    hyprland.enable = true;
+    zsh.enable = true;
 
-  programs.hyprland = {
-    enable = true;
+    steam = {
+      enable = true;
+      remotePlay.openFirewall = true;
+      dedicatedServer.openFirewall = true;
+    };
+
+    gamescope.enable = true;
   };
 
-  # Enable Flakes
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
-
+  # -------------------------
   # Bluetooth
-  hardware.bluetooth.enable = true; # enables support for Bluetooth
-  hardware.bluetooth.powerOnBoot = true; # powers up the default Bluetooth controller on boot
+  # -------------------------
+  hardware.bluetooth.enable = true;
+  hardware.bluetooth.powerOnBoot = true;
 
-  # Set time zone.
+  # -------------------------
+  # Time / locale
+  # -------------------------
   time.timeZone = "Europe/Tallinn";
 
-  # Select internationalisation properties.
   i18n.defaultLocale = "en_CA.UTF-8";
-  i18n.extraLocaleSettings = {
-    LC_TIME = "en_GB.UTF-8";
-  };
+  i18n.extraLocaleSettings.LC_TIME = "en_GB.UTF-8";
 
+  # -------------------------
   # Docker
+  # -------------------------
   virtualisation.docker.enable = true;
 
-  # Virtual file system and disks
+  # -------------------------
+  # Filesystems / portals
+  # -------------------------
   services.gvfs.enable = true;
   services.udisks2.enable = true;
 
-  # fix to run dynamically linked executables
+  xdg.portal = {
+    enable = true;
+    extraPortals = with pkgs; [
+      xdg-desktop-portal-gtk
+      xdg-desktop-portal-hyprland
+    ];
+  };
+
+  # -------------------------
+  # nix-ld
+  # -------------------------
   programs.nix-ld.enable = true;
 
-  # Font
+  # -------------------------
+  # Fonts
+  # -------------------------
   fonts.packages = with pkgs; [
-      jetbrains-mono
-      font-awesome
-      fira-code
-      material-design-icons
-      fantasque-sans-mono
-      ubuntu-sans
-      iosevka
+    jetbrains-mono
+    font-awesome
+    fira-code
+    material-design-icons
+    fantasque-sans-mono
+    ubuntu-sans
+    iosevka
   ];
 
-  # Configure keymap in X11
-  services.xserver.xkb.layout = "ee+us, ru";
-  services.xserver.xkb.options = "grp:ctrl_space_toggle";
+  # -------------------------
+  # Keyboard layout (X11 fallback)
+  # -------------------------
+  services.xserver.xkb = {
+    layout = "ee,ru";
+    options = "grp:ctrl_space_toggle";
+  };
 
-  # Enable sound.
+  # -------------------------
+  # Audio
+  # -------------------------
   security.rtkit.enable = true;
+
   services.pipewire = {
     enable = true;
     alsa.enable = true;
-    pulse.enable = true;
     alsa.support32Bit = true;
+    pulse.enable = true;
     wireplumber.enable = true;
   };
 
+  # -------------------------
+  # User
+  # -------------------------
   users.users.${user} = {
     isNormalUser = true;
-    shell = pkgs.zsh;   
-    extraGroups = [ "wheel" "input" "docker" "network" "networkmanager" "video" "render" "postgres"];
-  };
+    shell = pkgs.zsh;
 
-  programs.zsh.enable = true;
-
-  programs.steam = {
-    enable = true;
-    remotePlay.openFirewall = true; 
-    dedicatedServer.openFirewall = true; 
-  };
-
-  programs.gamescope = {
-    enable = true;
-    capSysNice = true;
-  };
-
-  # OpenGL
-  hardware.graphics = {
-    enable = true;
-    enable32Bit = true;
-  };
-
-  xdg.portal = {
-    enable = true;
-
-    extraPortals = [
-      pkgs.xdg-desktop-portal-hyprland
-      pkgs.xdg-desktop-portal-gtk
+    extraGroups = [
+      "wheel"
+      "input"
+      "docker"
+      "network"
+      "networkmanager"
+      "video"
+      "render"
+      "postgres"
     ];
-
-    config = {
-      common.default = [
-        "hyprland"
-        "gtk"
-      ];
-    };
   };
-
-  environment.systemPackages = with pkgs; [
-  	amdgpu_top
-	clinfo
-	evtest
-	mesa-demos
-	libva
-	ffmpeg
-	nvidia-vaapi-driver
-	vulkan-tools
-	docker-compose
-	lshw
-	fastfetch
-	htop
-	btop
-  ];
-
-  system.stateVersion = "25.05";
 }
-
-

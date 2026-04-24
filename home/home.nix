@@ -7,6 +7,7 @@
     ./modules/waybar.nix
     ./modules/kitty.nix
     ./modules/neovim.nix
+    ./modules/brave.nix
     ./programs.nix
   ];
 

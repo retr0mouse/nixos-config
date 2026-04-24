@@ -15,7 +15,6 @@
 	telegram-desktop
 	git
 	gh
-	brave
 	slurp
 	grim
 	swappy
