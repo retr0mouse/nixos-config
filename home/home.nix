@@ -9,6 +9,7 @@
     ./modules/neovim.nix
     ./modules/brave.nix
     ./programs.nix
+    ./scripts.nix
   ];
 
   home = {

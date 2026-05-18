@@ -1,6 +1,7 @@
 { config, lib, pkgs, inputs, user, ... }:
 
 {
+
   imports = [
     ../../modules/common.nix
     ./hardware-configuration.nix

@@ -1,12 +1,10 @@
+{ config, lib, pkgs, ... }:
 {
   programs.waybar = {
     enable = true;
 
     settings = [
       {
-        height = 40;
-        spacing = 5;
-
         modules-left = [
           "group/workspaces"
           "group/brightvol"
@@ -40,11 +38,11 @@
         };
 
         "custom/powerprofile" = {
-          exec = "~/.config/waybar/scripts/powerprofile.sh display";
-          on-click = "~/.config/waybar/scripts/powerprofile.sh toggle";
+          exec = "powerprofile display";
+          on-click = "powerprofile toggle";
           interval = 5;
           tooltip = true;
-          exec-tooltip = "~/.config/waybar/scripts/powerprofile.sh tooltip";
+          exec-tooltip = "powerprofile tooltip";
         };
 
         "group/workspaces" = {
@@ -77,22 +75,17 @@
           dynamic-order = [ "artist" ];
         };
 
-        "group/performance" = {
-          orientation = "horizontal";
-          modules = [
-            "custom/openbracket"
-            "cpu"
-            "custom/split"
-            "memory"
-            "custom/split"
-            "custom/dgpu"
-            "custom/split"
-            "custom/igpu"
-            "custom/split"
-            "custom/powerprofile"
-            "custom/closebracket"
-          ];
-        };
+	"group/performance" = {
+	  orientation = "horizontal";
+	  modules =
+	    [
+	      "custom/openbracket"
+	      "cpu"
+	      "custom/split"
+	      "memory"
+	      "custom/closebracket"
+	    ];
+	};
 
         cpu = {
           format = "CPU:{usage}%";
@@ -109,14 +102,14 @@
         };
 
         "custom/igpu" = {
-          exec = "/home/reisdro/.config/waybar/scripts/igpu_usage.sh";
+          exec = "igpu_usage";
           interval = 2;
           format = "iGPU{}";
           on-click = "kitty -e nvidia-smi";
         };
 
         "custom/dgpu" = {
-          exec = "/home/reisdro/.config/waybar/scripts/dgpu_usage.sh";
+          exec = "dgpu_usage";
           interval = 2;
           format = "dGPU:{}";
           on-click = "kitty -e nvidia-smi";
@@ -160,8 +153,11 @@
           modules = [
             "custom/openbracket"
             "network"
+	    "custom/split"
             "custom/bluetooth"
+	    "custom/split"
             "battery"
+	    "custom/split"
             "custom/swaync"
             "custom/closebracket"
           ];
@@ -181,7 +177,7 @@
           format = "{icon} {capacity}%";
           format-full = "{icon} {capacity}%";
           format-charging = " {capacity}%";
-          format-plugged = "  {capacity}%";
+          format-plugged = " {capacity}%";
           format-icons = [ "" "" "" "" "" ];
           on-click = "wlogout";
         };
@@ -205,7 +201,7 @@
 
         "custom/bluetooth" = {
           format = "{}";
-          exec = "~/.config/waybar/scripts/bluetooth_status.sh";
+          exec = "bluetooth_status";
           interval = 5;
           on-click = "kitty -e bluetui";
         };
@@ -232,14 +228,9 @@
   font-size: 15px;
 }
 
-#custom-openbracket,
-#custom-closebracket {
-  margin: 0 5px;
-}
-
 /* idk what all this does */
 window#waybar {
-  background-color: transparent;
+  background-color: @background;
   border-bottom: 0;
   color: @text;
   transition: background-color 0.5s;
@@ -253,32 +244,11 @@ window#waybar.empty #window {
   background-color: transparent;
 }
 
-
-/* configuring the modules */
-.modules-left {
-  margin-bottom: 5px;
-  padding: 0 0 0 7px;
-  background-color: @background;
-  border: 2px solid @focused;
-  border-radius: 5px;
+#custom-openbracket,
+#custom-closebracket,
+#custom-split {
+  margin: 0 5px;
 }
-
-.modules-center {
-  margin-bottom: 5px;
-  padding: 0 10px 0 10px;
-  background-color: @background;
-  border: 2px solid @focused;
-  border-radius: 5px;
-}
-
-.modules-right {
-  margin-bottom: 5px;
-  padding: 0 10px 0 10px;
-  background-color: @background;
-  border: 2px solid @focused;
-  border-radius: 5px;
-}
-
 
 /* whats this?? */
 button {
@@ -287,18 +257,6 @@ button {
 
 
 /* left island */
-
-/* menu pannel */
-#custom-arch,
-#custom-powerprofile,
-#custom-themeswitcher,
-#custom-igpu,
-#custom-dgpu {
-  padding-right: 10px;
-  padding-left: 5px;
-  font-size: 15px;
-  border-radius: 8px;
-}
 
 #custom-arch:hover {
   color: @color1;
@@ -315,7 +273,6 @@ button {
 /* workspace pannel */
 #workspaces button {
   min-width: 0;
-  padding: 0 8px 0 8px;
   background-color: transparent;
   color: @text;
   border-radius: 0;
@@ -346,35 +303,15 @@ button {
 /* media player */
 #mpris {
   margin: 0 0 0 5px;
-  padding: 0 9px;
-  background-color: @background;
   color: @text;
 }
 
 #mpris.playing {
   background-color: @color3;
   border-radius: 2px;
-  color: @background;
-}
-
-
-/* center module  */
-#window {
-  padding: 0 5px;
 }
 
 /* Right Island */
-
-/* module general styles */
-#clock,
-#battery,
-#cpu,
-#memory,
-#custom-bluetooth,
-#custom-swaync,
-#network {
-  padding: 0 10px;
-}
 
 #clock:hover,
 #battery:hover,
@@ -389,20 +326,6 @@ button {
   color: @color1;
 }
 
-#idle_inhibitor {
-  padding: 0 10px 0 0;
-}
-
-#custom-powerprofile {
-  padding: 0 8px 0 4px;
-}
-
-/* Remaining Modules */
-#backlight,
-#pulseaudio {
-  padding: 0 5px;
-}
-
 #wireplumber.muted {
   background-color: @color2;
 }
@@ -411,6 +334,10 @@ button {
   font-size: 16px;
   /* same scale as other icons */
   color: @text;
+}
+
+#battery {
+  padding: 0 5px;
 }
 
 #battery.charging,

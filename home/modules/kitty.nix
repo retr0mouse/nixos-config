@@ -13,6 +13,7 @@
 	tab_bar_style = "powerline";
 	tab_powerline_style = "slanted";
 	tab_title_template = "[{index}] {title}";
+	background_opacity = 0.9;
     };
     theme = "Alabaster Dark";
     keybindings = {
@@ -20,7 +21,7 @@
       "ctrl+t" = "new_tab";
       "ctrl+w" = "close_tab";
 
-      # Switch to tab by index (0-based!)
+      # Switch to tab by index (1-based!)
       "ctrl+1" = "goto_tab 1";
       "ctrl+2" = "goto_tab 2";
       "ctrl+3" = "goto_tab 3";
