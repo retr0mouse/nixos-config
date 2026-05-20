@@ -58,11 +58,16 @@
   # -------------------------
   # Networking (minimal assumptions)
   # -------------------------
-  networking.networkmanager.enable = false;
+  # networking.networkmanager.enable = false;
+  networking.networkmanager.enable = true;
+  networking.networkmanager.wifi.backend = "iwd";
+
   networking.wireless.iwd = {
     enable = true;
     settings.Settings.AutoConnect = true;
   };
+  networking.dhcpcd.enable = false;
+  systemd.services.NetworkManager-wait-online.enable = false; # disable waiting for networkmanager on boot
 
   # -------------------------
   # Bootloader
