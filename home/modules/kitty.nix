@@ -6,17 +6,15 @@
       font_size = 12;
       confirm_os_window_close = 0;
       enable_audio_bell = false;
-      window_padding_width = 0;
-      hide_window_decorations = "yes";
+      window_padding_width = 10;
       cursor_shape = "block";
       cursor_blink_interval = 0;
       tab_bar_edge = "top";
       tab_bar_style = "powerline";
       tab_powerline_style = "slanted";
       tab_title_template = "[{index}] {title}";
-      background_opacity = 0.6;
     };
-    theme = "Alabaster Dark";
+    theme = "Tokyo Night";
     keybindings = {
       # Create / close tabs
       "ctrl+t" = "new_tab";

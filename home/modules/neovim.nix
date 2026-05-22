@@ -9,7 +9,6 @@
     viAlias = true;
     vimAlias = true;
     vimdiffAlias = true;
-    asdf
 
     plugins = with pkgs.vimPlugins; [
       conform-nvim
@@ -19,11 +18,12 @@
       mini-nvim
       yazi-nvim
       kanagawa-nvim
+      tokyonight-nvim
     ];
 
     extraConfig = ''
       set termguicolors
-      colorscheme kanagawa
+      colorscheme tokyonight-night
     '';
 
     extraLuaConfig = ''

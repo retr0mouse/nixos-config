@@ -9,6 +9,7 @@
     python310
     jq
     kitty
+    kitty-themes
     pavucontrol
     wofi
     playerctl
