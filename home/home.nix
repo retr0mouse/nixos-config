@@ -1,7 +1,10 @@
-
-{ config, pkgs, lib, user, ... }:
-
 {
+  config,
+  pkgs,
+  lib,
+  user,
+  ...
+}: {
   imports = [
     ./modules/hyprland.nix
     ./modules/waybar.nix
@@ -20,7 +23,7 @@
   home.stateVersion = "24.11"; # Please read the comment before changing.
 
   home.packages = [
-	  pkgs.hyprlock
+    pkgs.hyprlock
   ];
   wayland.windowManager.hyprland.systemd.enable = false;
   gtk = {
@@ -34,7 +37,6 @@
   programs.ssh = {
     enable = true;
   };
-
 
   home.pointerCursor = {
     gtk.enable = true;
@@ -98,29 +100,29 @@
         }
       ];
       label = [
-      {
+        {
           monitor = "";
-          text = "$LAYOUT";   # current layout
+          text = "$LAYOUT"; # current layout
           font_size = 12;
           font_color = "rgb(202, 211, 245)";
           position = "0, -200"; # adjust vertical position
           halign = "center";
-          valign = "center"; 
-      }
-      {
+          valign = "center";
+        }
+        {
           monitor = "";
-          text = "$TIME";     # 24h format
+          text = "$TIME"; # 24h format
           font_size = 44;
           font_color = "rgb(202, 211, 245)";
-          position = "0, 100";  # adjust position below
+          position = "0, 100"; # adjust position below
           halign = "center";
           valign = "center";
-      }
+        }
       ];
     };
   };
 
-  # zsh 
+  # zsh
   programs.zsh = {
     enable = true;
     enableCompletion = true;
@@ -134,7 +136,7 @@
     };
     oh-my-zsh = {
       enable = true;
-      plugins = [ "git" ];
+      plugins = ["git"];
       theme = "robbyrussell";
     };
   };
@@ -151,7 +153,7 @@
       "x-scheme-handler/unknown" = "brave.desktop";
     };
   };
- 
+
   home.sessionVariables = {
     NIXOS_OZONE_WL = "1"; # Force Wayland for electron apps
 
@@ -162,7 +164,6 @@
     #For Anki
     ANKI_WAYLAND = "1";
   };
-
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;

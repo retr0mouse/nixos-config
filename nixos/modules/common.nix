@@ -1,6 +1,11 @@
-{ config, inputs, lib, pkgs, user, ... }:
-
 {
+  config,
+  inputs,
+  lib,
+  pkgs,
+  user,
+  ...
+}: {
   imports = [
     inputs.xremap-flake.nixosModules.default
   ];
@@ -15,7 +20,7 @@
     userName = user;
 
     config = {
-      virtual_modifiers = [ "CapsLock" ];
+      virtual_modifiers = ["CapsLock"];
       keymap = [
         {
           remap = {
@@ -44,7 +49,7 @@
   services.power-profiles-daemon.enable = true;
 
   # Spotify LAN sync / misc
-  networking.firewall.allowedTCPPorts = [ 57621 ];
+  networking.firewall.allowedTCPPorts = [57621];
 
   # -------------------------
   # Power / cleanup
@@ -77,7 +82,7 @@
   # -------------------------
   # Flakes
   # -------------------------
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = ["nix-command" "flakes"];
   nixpkgs.config.allowUnfree = true;
 
   # -------------------------

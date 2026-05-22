@@ -1,6 +1,11 @@
-{ config, lib, pkgs, inputs, user, ... }:
-
 {
+  config,
+  lib,
+  pkgs,
+  inputs,
+  user,
+  ...
+}: {
   imports = [
     ../../modules/common.nix
     ./hardware-configuration.nix
@@ -20,7 +25,7 @@
   };
 
   services.xserver.enable = true;
-  services.xserver.videoDrivers = [ "amdgpu" "nvidia" ];
+  services.xserver.videoDrivers = ["amdgpu" "nvidia"];
 
   hardware.nvidia = {
     modesetting.enable = true;

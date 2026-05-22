@@ -1,12 +1,18 @@
-{ config, pkgs, ...}:
 {
+  config,
+  pkgs,
+  ...
+}: {
   programs.neovim = {
     enable = true;
     defaultEditor = true;
     viAlias = true;
     vimAlias = true;
     vimdiffAlias = true;
+    asdf
+
     plugins = with pkgs.vimPlugins; [
+      conform-nvim
       nvim-lspconfig
       nvim-treesitter.withAllGrammars
       plenary-nvim
@@ -14,32 +20,75 @@
       yazi-nvim
       kanagawa-nvim
     ];
+
     extraConfig = ''
       set termguicolors
       colorscheme kanagawa
-      '';
+    '';
+
     extraLuaConfig = ''
-    vim.g.mapleader = " "
+      vim.g.mapleader = " "
+      vim.opt.number = true
+      vim.opt.relativenumber = true
+      vim.opt.shiftwidth = 4
+      vim.opt.tabstop = 4
+      vim.opt.expandtab = true
+      vim.opt.shiftwidth = 4
+      vim.opt.tabstop = 4
+      vim.opt.expandtab = true
+      vim.opt.clipboard = "unnamedplus"
 
-    -- (Obtain yazi.nvim and its dependencies using your preferred method first)
-    --
-    -- Next, map a key to open yazi.nvim
-    vim.keymap.set("n", "<leader>-", function()
-      require("yazi").yazi()
-    end)
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = "nix",
+        callback = function()
+          vim.opt_local.shiftwidth = 2
+          vim.opt_local.tabstop = 2
+          vim.opt_local.expandtab = true
+        end,
+      })
+      vim.opt.list = true
+      vim.opt.cursorline = true
+      vim.opt.scrolloff = 8
 
-    -- 👇 if you use `open_for_directories=true`, this is recommended.
-    --
-    -- mark netrw as loaded so it's not loaded at all.
-    -- More details: https://github.com/mikavilpas/yazi.nvim/issues/802
-    vim.g.loaded_netrwPlugin = 1
-    vim.api.nvim_create_autocmd("UIEnter", {
-      callback = function()
-        require("yazi").setup({
-          open_for_directories = true,
+      -- yazi
+      vim.keymap.set("n", "<leader>-", function()
+        require("yazi").yazi()
+      end)
+
+      vim.g.loaded_netrwPlugin = 1
+
+      vim.api.nvim_create_autocmd("UIEnter", {
+        callback = function()
+          require("yazi").setup({
+            open_for_directories = true,
+          })
+        end,
+      })
+
+      -- conform.nvim
+      require("conform").setup({
+        formatters_by_ft = {
+          nix = { "alejandra" },
+          lua = { "stylua" },
+          python = { "black" },
+          javascript = { "prettier" },
+          typescript = { "prettier" },
+          json = { "prettier" },
+        },
+
+        format_on_save = {
+          timeout_ms = 500,
+          lsp_fallback = true,
+        },
+      })
+
+      -- manual format
+      vim.keymap.set("n", "<leader>f", function()
+        require("conform").format({
+          async = true,
+          lsp_fallback = true,
         })
-      end,
-    })
+      end)
     '';
   };
 }

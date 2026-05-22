@@ -1,7 +1,11 @@
-{ config, lib, pkgs, inputs, user, ... }:
-
 {
-
+  config,
+  lib,
+  pkgs,
+  inputs,
+  user,
+  ...
+}: {
   imports = [
     ../../modules/common.nix
     ./hardware-configuration.nix
@@ -14,7 +18,7 @@
   networking.hostName = "ms16j9";
 
   services.xserver.enable = true;
-  services.xserver.videoDrivers = [ "intel" "nvidia" ];
+  services.xserver.videoDrivers = ["intel" "nvidia"];
 
   hardware.nvidia = {
     modesetting.enable = true;

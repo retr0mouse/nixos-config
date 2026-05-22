@@ -1,9 +1,6 @@
-{ pkgs, ... }:
-
-let
+{pkgs, ...}: let
   mkScript = name: pkgs.writeShellScriptBin name (builtins.readFile ../scripts/${name}.sh);
-in
-{
+in {
   home.packages = [
     (mkScript "powerprofile")
     (mkScript "igpu_usage")

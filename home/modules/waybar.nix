@@ -1,5 +1,9 @@
-{ config, lib, pkgs, ... }:
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}: {
   programs.waybar = {
     enable = true;
 
@@ -72,20 +76,19 @@
             paused = "⏸";
             stopped = "";
           };
-          dynamic-order = [ "artist" ];
+          dynamic-order = ["artist"];
         };
 
-	"group/performance" = {
-	  orientation = "horizontal";
-	  modules =
-	    [
-	      "custom/openbracket"
-	      "cpu"
-	      "custom/split"
-	      "memory"
-	      "custom/closebracket"
-	    ];
-	};
+        "group/performance" = {
+          orientation = "horizontal";
+          modules = [
+            "custom/openbracket"
+            "cpu"
+            "custom/split"
+            "memory"
+            "custom/closebracket"
+          ];
+        };
 
         cpu = {
           format = "CPU:{usage}%";
@@ -137,7 +140,7 @@
             phone = "";
             portable = "";
             car = "";
-            default = [ "" "" "" ];
+            default = ["" "" ""];
           };
           on-click = "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
           on-click-right = "pavucontrol";
@@ -145,7 +148,7 @@
 
         backlight = {
           format = "{icon} {percent}%";
-          format-icons = [ "🌙" "" "" ];
+          format-icons = ["🌙" "" ""];
         };
 
         "group/system" = {
@@ -153,11 +156,11 @@
           modules = [
             "custom/openbracket"
             "network"
-	    "custom/split"
+            "custom/split"
             "custom/bluetooth"
-	    "custom/split"
+            "custom/split"
             "battery"
-	    "custom/split"
+            "custom/split"
             "custom/swaync"
             "custom/closebracket"
           ];
@@ -165,8 +168,7 @@
 
         clock = {
           format = "{:%H:%M}";
-          tooltip-format =
-            "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>";
+          tooltip-format = "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>";
         };
 
         battery = {
@@ -178,7 +180,7 @@
           format-full = "{icon} {capacity}%";
           format-charging = " {capacity}%";
           format-plugged = " {capacity}%";
-          format-icons = [ "" "" "" "" "" ];
+          format-icons = ["" "" "" "" ""];
           on-click = "wlogout";
         };
 
@@ -196,7 +198,7 @@
           format-disconnected = "󰖪";
           tooltip-format = "{ipaddr}\n{essid} ({signalStrength}%)";
           on-click = "kitty -e impala";
-          format-icons = [ "󰤯" "󰤟" "󰤢" "󰤥" "󰤨" ];
+          format-icons = ["󰤯" "󰤟" "󰤢" "󰤥" "󰤨"];
         };
 
         "custom/bluetooth" = {
@@ -209,155 +211,155 @@
     ];
 
     style = ''
-    /* colors defined at top for easy configuring */
-@define-color background #2C2A24;
-@define-color second-background #3A372F;
-@define-color text #DDD5C4;
-@define-color borders #A0907A;
-@define-color focused #D08B57;
-@define-color focused2 #BFAA80;
-@define-color color1 #7699A3;
-@define-color color2 #8D7AAE;
-@define-color color3 #78997A;
-@define-color urgent #B05A5A;
+          /* colors defined at top for easy configuring */
+      @define-color background #2C2A24;
+      @define-color second-background #3A372F;
+      @define-color text #DDD5C4;
+      @define-color borders #A0907A;
+      @define-color focused #D08B57;
+      @define-color focused2 #BFAA80;
+      @define-color color1 #7699A3;
+      @define-color color2 #8D7AAE;
+      @define-color color3 #78997A;
+      @define-color urgent #B05A5A;
 
 
-/* font declared */
-* {
-  font-family: "Iosevka";
-  font-size: 15px;
-}
+      /* font declared */
+      * {
+        font-family: "Iosevka";
+        font-size: 15px;
+      }
 
-/* idk what all this does */
-window#waybar {
-  background-color: @background;
-  border-bottom: 0;
-  color: @text;
-  transition: background-color 0.5s;
-}
+      /* idk what all this does */
+      window#waybar {
+        background-color: @background;
+        border-bottom: 0;
+        color: @text;
+        transition: background-color 0.5s;
+      }
 
-window#waybar.hidden {
-  opacity: 0.2;
-}
+      window#waybar.hidden {
+        opacity: 0.2;
+      }
 
-window#waybar.empty #window {
-  background-color: transparent;
-}
+      window#waybar.empty #window {
+        background-color: transparent;
+      }
 
-#custom-openbracket,
-#custom-closebracket,
-#custom-split {
-  margin: 0 5px;
-}
+      #custom-openbracket,
+      #custom-closebracket,
+      #custom-split {
+        margin: 0 5px;
+      }
 
-/* whats this?? */
-button {
-  border: none;
-}
+      /* whats this?? */
+      button {
+        border: none;
+      }
 
 
-/* left island */
+      /* left island */
 
-#custom-arch:hover {
-  color: @color1;
-}
+      #custom-arch:hover {
+        color: @color1;
+      }
 
-#custom-powerprofile:hover {
-  color: @color1
-}
+      #custom-powerprofile:hover {
+        color: @color1
+      }
 
-#custom-themeswitcher:hover {
-  color: @color1;
-}
+      #custom-themeswitcher:hover {
+        color: @color1;
+      }
 
-/* workspace pannel */
-#workspaces button {
-  min-width: 0;
-  background-color: transparent;
-  color: @text;
-  border-radius: 0;
-}
+      /* workspace pannel */
+      #workspaces button {
+        min-width: 0;
+        background-color: transparent;
+        color: @text;
+        border-radius: 0;
+      }
 
-#workspaces button:hover {
-  background-color: @second-background;
-}
+      #workspaces button:hover {
+        background-color: @second-background;
+      }
 
-#workspaces button.active {
-  color: @focused2;
-  background-color: @second-background;
-}
+      #workspaces button.active {
+        color: @focused2;
+        background-color: @second-background;
+      }
 
-#workspaces button.urgent {
-  background-color: @urgent;
-}
+      #workspaces button.urgent {
+        background-color: @urgent;
+      }
 
-/* no idea what this does */
-.modules-left>widget:first-child>#workspaces {
-  margin-left: 0;
-}
+      /* no idea what this does */
+      .modules-left>widget:first-child>#workspaces {
+        margin-left: 0;
+      }
 
-.modules-right>widget:last-child>#workspaces {
-  margin-right: 0;
-}
+      .modules-right>widget:last-child>#workspaces {
+        margin-right: 0;
+      }
 
-/* media player */
-#mpris {
-  margin: 0 0 0 5px;
-  color: @text;
-}
+      /* media player */
+      #mpris {
+        margin: 0 0 0 5px;
+        color: @text;
+      }
 
-#mpris.playing {
-  background-color: @color3;
-  border-radius: 2px;
-}
+      #mpris.playing {
+        background-color: @color3;
+        border-radius: 2px;
+      }
 
-/* Right Island */
+      /* Right Island */
 
-#clock:hover,
-#battery:hover,
-#custom-cpu:hover,
-#custom-clipboard:hover,
-#custom-bluetooth:hover,
-#network:hover,
-#idle_inhibitor:hover,
-#custom-swaync:hover,
-#backlight:hover,
-#wireplumber:hover {
-  color: @color1;
-}
+      #clock:hover,
+      #battery:hover,
+      #custom-cpu:hover,
+      #custom-clipboard:hover,
+      #custom-bluetooth:hover,
+      #network:hover,
+      #idle_inhibitor:hover,
+      #custom-swaync:hover,
+      #backlight:hover,
+      #wireplumber:hover {
+        color: @color1;
+      }
 
-#wireplumber.muted {
-  background-color: @color2;
-}
+      #wireplumber.muted {
+        background-color: @color2;
+      }
 
-#custom-swaync {
-  font-size: 16px;
-  /* same scale as other icons */
-  color: @text;
-}
+      #custom-swaync {
+        font-size: 16px;
+        /* same scale as other icons */
+        color: @text;
+      }
 
-#battery {
-  padding: 0 5px;
-}
+      #battery {
+        padding: 0 5px;
+      }
 
-#battery.charging,
-#battery.plugged {
-  background-color: @focused2 ;
-  color: @background;
-}
+      #battery.charging,
+      #battery.plugged {
+        background-color: @focused2 ;
+        color: @background;
+      }
 
-#battery.critical:not(.charging) {
-  background-color: @urgent;
-  color: @text;
-  animation: blink 0.5s steps(12) infinite alternate;
-}
+      #battery.critical:not(.charging) {
+        background-color: @urgent;
+        color: @text;
+        animation: blink 0.5s steps(12) infinite alternate;
+      }
 
-@keyframes blink {
-  to {
-    background-color: @second-background;
-    color: @text;
-  }
-}
+      @keyframes blink {
+        to {
+          background-color: @second-background;
+          color: @text;
+        }
+      }
 
     '';
   };

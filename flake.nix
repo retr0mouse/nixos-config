@@ -9,64 +9,68 @@
     xremap-flake.url = "github:xremap/nix-flake";
   };
 
-  outputs = inputs@{ self, nixpkgs, home-manager, ... }:
-    let
-      system = "x86_64-linux";
-      user = "reisdro";
-    in {
-      nixosConfigurations = {
-        asus = nixpkgs.lib.nixosSystem {
-          inherit system;
+  outputs = inputs @ {
+    self,
+    nixpkgs,
+    home-manager,
+    ...
+  }: let
+    system = "x86_64-linux";
+    user = "reisdro";
+  in {
+    nixosConfigurations = {
+      asus = nixpkgs.lib.nixosSystem {
+        inherit system;
 
-          specialArgs = {
-            inherit inputs user;
-          };
-
-          modules = [
-            ./nixos/hosts/asus/configuration.nix
-
-            home-manager.nixosModules.home-manager
-
-            {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-
-              home-manager.backupFileExtension = "backup";
-
-              home-manager.extraSpecialArgs = {
-                inherit inputs user;
-              };
-
-              home-manager.users.${user} = import ./home/home.nix;
-            }
-          ];
+        specialArgs = {
+          inherit inputs user;
         };
-        msi = nixpkgs.lib.nixosSystem {
-          inherit system;
 
-          specialArgs = {
-            inherit inputs user;
-          };
+        modules = [
+          ./nixos/hosts/asus/configuration.nix
 
-          modules = [
-            ./nixos/hosts/msi/configuration.nix
+          home-manager.nixosModules.home-manager
 
-            home-manager.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
 
-            {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
+            home-manager.backupFileExtension = "backup";
 
-              home-manager.backupFileExtension = "backup";
+            home-manager.extraSpecialArgs = {
+              inherit inputs user;
+            };
 
-              home-manager.extraSpecialArgs = {
-                inherit inputs user;
-              };
+            home-manager.users.${user} = import ./home/home.nix;
+          }
+        ];
+      };
+      msi = nixpkgs.lib.nixosSystem {
+        inherit system;
 
-              home-manager.users.${user} = import ./home/home.nix;
-            }
-          ];
+        specialArgs = {
+          inherit inputs user;
         };
+
+        modules = [
+          ./nixos/hosts/msi/configuration.nix
+
+          home-manager.nixosModules.home-manager
+
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+
+            home-manager.backupFileExtension = "backup";
+
+            home-manager.extraSpecialArgs = {
+              inherit inputs user;
+            };
+
+            home-manager.users.${user} = import ./home/home.nix;
+          }
+        ];
       };
     };
+  };
 }
