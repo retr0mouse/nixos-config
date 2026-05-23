@@ -12,7 +12,6 @@
         modules-left = [
           "group/workspaces"
           "group/brightvol"
-          "mpris"
         ];
 
         modules-center = [
@@ -65,18 +64,6 @@
           disable-scroll-wraparound = true;
           active-only = false;
           format = "{icon}";
-        };
-
-        mpris = {
-          format = "[ {status_icon} | {dynamic} ]";
-          interval = 1;
-          dynamic-len = 40;
-          status-icons = {
-            playing = "▶";
-            paused = "⏸";
-            stopped = "";
-          };
-          dynamic-order = ["artist"];
         };
 
         "group/performance" = {
@@ -211,7 +198,7 @@
     ];
 
     style = ''
-          /* colors defined at top for easy configuring */
+      /* colors defined at top for easy configuring */
       @define-color background #2C2A24;
       @define-color second-background #3A372F;
       @define-color text #DDD5C4;
@@ -302,17 +289,6 @@
         margin-right: 0;
       }
 
-      /* media player */
-      #mpris {
-        margin: 0 0 0 5px;
-        color: @text;
-      }
-
-      #mpris.playing {
-        background-color: @color3;
-        border-radius: 2px;
-      }
-
       /* Right Island */
 
       #clock:hover,
@@ -360,7 +336,6 @@
           color: @text;
         }
       }
-
     '';
   };
 }

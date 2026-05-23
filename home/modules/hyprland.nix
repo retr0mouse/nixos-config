@@ -27,8 +27,8 @@
            }
 
            misc {
-             disable_hyprland_logo = true
-      disable_splash_rendering = true
+              disable_hyprland_logo = true
+              disable_splash_rendering = true
            }
 
            # Input config
@@ -46,7 +46,7 @@
            # General settings
            general {
              gaps_in = 2
-             gaps_out = 0
+             gaps_out = 4
              border_size = 2
              layout = dwindle
       no_border_on_floating = 1
