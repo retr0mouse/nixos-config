@@ -48,6 +48,11 @@
   services.pcscd.enable = true;
   services.power-profiles-daemon.enable = true;
 
+  # -------------------------
+  # Polkit
+  # -------------------------
+  security.polkit.enable = true;
+
   # Spotify LAN sync / misc
   networking.firewall.allowedTCPPorts = [57621];
 
@@ -75,9 +80,29 @@
   systemd.services.NetworkManager-wait-online.enable = false; # disable waiting for networkmanager on boot
 
   # -------------------------
-  # Bootloader
+  # Boot / Splash
   # -------------------------
-  boot.loader.systemd-boot.enable = true;
+  boot = {
+    loader.systemd-boot.enable = true;
+
+    plymouth = {
+      enable = true;
+      theme = "breeze";
+    };
+
+    consoleLogLevel = 0;
+    initrd.verbose = false;
+
+    kernelParams = [
+      "quiet"
+      "splash"
+      "boot.shell_on_fail"
+      "loglevel=3"
+      "rd.systemd.show_status=false"
+      "rd.udev.log_level=3"
+      "udev.log_priority=3"
+    ];
+  };
 
   # -------------------------
   # Flakes

@@ -4,7 +4,7 @@
 
     extraConfig = ''
            $terminal = kitty
-           $menu = wofi --show drun
+           $menu = rofi -show drun
            $browser = brave
 
            # Config for the displays

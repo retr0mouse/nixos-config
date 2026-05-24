@@ -18,7 +18,9 @@
   networking.hostName = "ms16j9";
 
   services.xserver.enable = true;
-  services.xserver.videoDrivers = ["intel" "nvidia"];
+
+  hardware.graphics.enable = true;
+  hardware.graphics.enable32Bit = true;
 
   hardware.nvidia = {
     modesetting.enable = true;

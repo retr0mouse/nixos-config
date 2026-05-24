@@ -15,6 +15,8 @@
     ./scripts.nix
   ];
 
+  services.hyprpolkitagent.enable = true;
+
   home = {
     username = user;
     homeDirectory = "/home/${user}";
@@ -49,12 +51,8 @@
   home.file = {
   };
 
-  programs.wofi = {
+  programs.rofi = {
     enable = true;
-    settings = {
-      insensitive = true;
-      allow_images = true;
-    };
   };
 
   programs.hyprlock = {
