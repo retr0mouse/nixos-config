@@ -11,6 +11,7 @@
     jq # JSON processor (CLI)
     nodejs_24 # JavaScript runtime (Node.js)
     gcc # C/C++ compiler toolchain
+    dotnetCorePackages.sdk_9_0_1xx # dotnet 9.0.1 SDK
 
     # terminal / UI apps
     kitty # GPU terminal emulator
@@ -21,6 +22,7 @@
     swaylock-effects # screen locker (blur/FX support)
     swaynotificationcenter # notification daemon UI
     pavucontrol # audio volume control GUI
+    impala # network TUI
 
     # desktop / communication apps
     discord # chat/voice platform
@@ -29,6 +31,7 @@
     obsidian # markdown note-taking app
     anki-bin # spaced repetition flashcards
     obs-studio # streaming/recording software
+    qbittorrent # torrent client
 
     # browsing / internet tools
     chromium # open-source browser
@@ -52,6 +55,7 @@
     fzf # fuzzy finder in terminal
     sl # fun terminal animation (train)
     hollywood # “hacker screen” fake terminal effect
+    unrar # archive utility
 
     # Wayland graphics / screen tools
     slurp # region selector (screenshots)
