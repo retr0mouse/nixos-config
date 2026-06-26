@@ -11,6 +11,7 @@
     ./modules/kitty.nix
     ./modules/neovim.nix
     ./modules/brave.nix
+    ./modules/git.nix
     ./programs.nix
     ./scripts.nix
   ];
@@ -128,7 +129,7 @@
 
     shellAliases = {
       config = "cd ~/dots && tree";
-      rebuild = "sudo nixos-rebuild switch --flake ~/dots#msi";
+      rebuild = "sudo nixos-rebuild switch --flake ~/dots#asus";
       logthefuckout = "loginctl terminate-user $USER";
       slip = "hyprlock & systemctl suspend";
     };

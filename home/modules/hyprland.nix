@@ -3,169 +3,170 @@
     enable = true;
 
     extraConfig = ''
-           $terminal = kitty
-           $menu = rofi -show drun
-           $browser = brave
+      $terminal = kitty
+      $menu = rofi -show drun
+      $browser = brave
 
-           # Config for the displays
-           source = ~/.config/hypr/monitors.conf
+      # Config for the displays
+      source = ~/.config/hypr/monitors.conf
 
-           # Autostart apps
-           exec-once = systemctl --user start waybar.service
-           exec-once = swaync &
-           exec-once = wl-paste --type text --watch cliphist store
-           exec-once = wl-paste --type image --watch cliphist store
-           exec-once = waypaper --restore
+      # Autostart apps
+      exec-once = systemctl --user start waybar.service
+      exec-once = swaync &
+      exec-once = wl-paste --type text --watch cliphist store
+      exec-once = wl-paste --type image --watch cliphist store
+      exec-once = waypaper --restore
 
-           xwayland {
-             force_zero_scaling = true
-           }
+      xwayland {
+        force_zero_scaling = true
+      }
 
-           # Enable animations
-           animations {
-             enabled = 1
-           }
+      # Enable animations
+      animations {
+        enabled = 1
+      }
 
-           misc {
-              disable_hyprland_logo = true
-              disable_splash_rendering = true
-           }
+      misc {
+        disable_hyprland_logo = true
+        disable_splash_rendering = true
+      }
 
-           # Input config
-           input {
-             kb_layout = ee(us), ru
-      kb_options = grp:ctrl_space_toggle
-             follow_mouse = 2
+      # Input config
+      input {
+        kb_layout = ee(us), ru
+        kb_options = grp:ctrl_space_toggle
+        follow_mouse = 2
 
-             touchpad {
-               natural_scroll = yes
-        disable_while_typing = true
-             }
-           }
+        touchpad {
+          natural_scroll = yes
+          disable_while_typing = true
+        }
+      }
 
-           # General settings
-           general {
-             gaps_in = 2
-             gaps_out = 4
-             border_size = 2
-             layout = dwindle
-      no_border_on_floating = 1
-      no_focus_fallback = 1
-      col.active_border = rgb(208,139,87)
-           }
+      # General settings
+      general {
+        gaps_in = 0
+        gaps_out = 0
+        border_size = 0
+        layout = dwindle
+        no_border_on_floating = 1
+        no_focus_fallback = 1
+        col.active_border = rgba(00000000)
+        col.inactive_border = rgba(00000000)
+      }
 
-           decoration {
-      shadow:enabled = false
-      rounding = 4
-           }
+      decoration {
+        shadow:enabled = false
+        rounding = 0
+      }
 
-           # Dwindle layout
-           dwindle {
-             pseudotile = true
-             preserve_split = true
-           }
+      # Dwindle layout
+      dwindle {
+        pseudotile = true
+        preserve_split = true
+      }
 
-           cursor {
-      no_warps = true
-           }
+      cursor {
+        no_warps = true
+      }
 
-           # Window rules
-           windowrule = pseudo, title:Telegram
-           windowrule = size 500 700, title:Telegram
-           windowrulev2 = workspace 10 silent, title:Telegram
-           windowrulev2 = workspace 10 silent, title:Discord
-           windowrulev2 = workspace 9 silent, title:Steam
+      # Window rules
+      windowrule = pseudo, title:Telegram
+      windowrule = size 500 700, title:Telegram
+      windowrulev2 = workspace 10 silent, title:Telegram
+      windowrulev2 = workspace 10 silent, title:Discord
+      windowrulev2 = workspace 9 silent, title:Steam
 
-           # intellij focus fix
-           windowrulev2 = noinitialfocus, class:^(.*jetbrains.*)$, title:^(win.*)$
+      # intellij focus fix
+      windowrulev2 = noinitialfocus, class:^(.*jetbrains.*)$, title:^(win.*)$
 
-           # Move and resize windows with mouse
-           bindm = SUPER, mouse:272, movewindow
-           bindm = SUPER, mouse:273, resizewindow
+      # Move and resize windows with mouse
+      bindm = SUPER, mouse:272, movewindow
+      bindm = SUPER, mouse:273, resizewindow
 
-           # Move windows with keyboard
-           bind = SUPER SHIFT, H, movewindow, l
-           bind = SUPER SHIFT, J, movewindow, d
-           bind = SUPER SHIFT, K, movewindow, u
-           bind = SUPER SHIFT, L, movewindow, r
+      # Move windows with keyboard
+      bind = SUPER SHIFT, H, movewindow, l
+      bind = SUPER SHIFT, J, movewindow, d
+      bind = SUPER SHIFT, K, movewindow, u
+      bind = SUPER SHIFT, L, movewindow, r
 
-           # Resize windows using keyboard
-           bind = SUPER, R, submap, resize
+      # Resize windows using keyboard
+      bind = SUPER, R, submap, resize
 
-           submap = resize
-               bind = , H, resizeactive, -60 0
-               bind = , J, resizeactive, 0 60
-               bind = , K, resizeactive, 0 -60
-               bind = , L, resizeactive, 60 0
-               bind = , left, resizeactive, -60 0
-               bind = , down, resizeactive, 0 60
-               bind = , up, resizeactive, 0 -60
-               bind = , right, resizeactive, 60 0
-               bind = , Return, submap, reset
-               bind = , Escape, submap, reset
-           submap = reset
+      submap = resize
+        bind = , H, resizeactive, -60 0
+        bind = , J, resizeactive, 0 60
+        bind = , K, resizeactive, 0 -60
+        bind = , L, resizeactive, 60 0
+        bind = , left, resizeactive, -60 0
+        bind = , down, resizeactive, 0 60
+        bind = , up, resizeactive, 0 -60
+        bind = , right, resizeactive, 60 0
+        bind = , Return, submap, reset
+        bind = , Escape, submap, reset
+      submap = reset
 
-           # Keybinds
-           bind = SUPER, Return, exec, $terminal
-           bind = SUPER, Space, exec, $menu
-           bind = ,Pause, exec, hyprlock
-           bind = SUPER SHIFT, Return, exec, $browser
-           bind = SUPER SHIFT, Q, killactive,
-           bind = SUPER, E, exec, kitty -e yazi
-           bind = SUPER, V, togglefloating,
-           bind = SUPER, F, fullscreen,
-           bind = SUPER, P, pseudo
+      # Keybinds
+      bind = SUPER, Return, exec, $terminal
+      bind = SUPER, Space, exec, $menu
+      bind = ,Pause, exec, hyprlock
+      bind = SUPER SHIFT, Return, exec, $browser
+      bind = SUPER SHIFT, Q, killactive,
+      bind = SUPER, E, exec, kitty -e yazi
+      bind = SUPER, V, togglefloating,
+      bind = SUPER, F, fullscreen,
+      bind = SUPER, P, pseudo
 
-           # Move focus
-           bind = SUPER, H, movefocus, l
-           bind = SUPER, L, movefocus, r
-           bind = SUPER, K, movefocus, u
-           bind = SUPER, J, movefocus, d
+      # Move focus
+      bind = SUPER, H, movefocus, l
+      bind = SUPER, L, movefocus, r
+      bind = SUPER, K, movefocus, u
+      bind = SUPER, J, movefocus, d
 
-           # Workspaces
-           bind = SUPER, 1, workspace, 1
-           bind = SUPER, 2, workspace, 2
-           bind = SUPER, 3, workspace, 3
-           bind = SUPER, 4, workspace, 4
-           bind = SUPER, 5, workspace, 5
-           bind = SUPER, 6, workspace, 6
-           bind = SUPER, 7, workspace, 7
-           bind = SUPER, 8, workspace, 8
-           bind = SUPER, 9, workspace, 9
-           bind = SUPER, 0, workspace, 10
-           bind = SUPER, N, togglespecialworkspace
+      # Workspaces
+      bind = SUPER, 1, workspace, 1
+      bind = SUPER, 2, workspace, 2
+      bind = SUPER, 3, workspace, 3
+      bind = SUPER, 4, workspace, 4
+      bind = SUPER, 5, workspace, 5
+      bind = SUPER, 6, workspace, 6
+      bind = SUPER, 7, workspace, 7
+      bind = SUPER, 8, workspace, 8
+      bind = SUPER, 9, workspace, 9
+      bind = SUPER, 0, workspace, 10
+      bind = SUPER, N, togglespecialworkspace
 
-           # Move window to workspace
-           bind = SUPER SHIFT, 1, movetoworkspace, 1
-           bind = SUPER SHIFT, 2, movetoworkspace, 2
-           bind = SUPER SHIFT, 3, movetoworkspace, 3
-           bind = SUPER SHIFT, 4, movetoworkspace, 4
-           bind = SUPER SHIFT, 5, movetoworkspace, 5
-           bind = SUPER SHIFT, 6, movetoworkspace, 6
-           bind = SUPER SHIFT, 7, movetoworkspace, 7
-           bind = SUPER SHIFT, 8, movetoworkspace, 8
-           bind = SUPER SHIFT, 9, movetoworkspace, 9
-           bind = SUPER SHIFT, 0, movetoworkspace, 10
-           bind = SUPER SHIFT, N, movetoworkspace, special
+      # Move window to workspace
+      bind = SUPER SHIFT, 1, movetoworkspace, 1
+      bind = SUPER SHIFT, 2, movetoworkspace, 2
+      bind = SUPER SHIFT, 3, movetoworkspace, 3
+      bind = SUPER SHIFT, 4, movetoworkspace, 4
+      bind = SUPER SHIFT, 5, movetoworkspace, 5
+      bind = SUPER SHIFT, 6, movetoworkspace, 6
+      bind = SUPER SHIFT, 7, movetoworkspace, 7
+      bind = SUPER SHIFT, 8, movetoworkspace, 8
+      bind = SUPER SHIFT, 9, movetoworkspace, 9
+      bind = SUPER SHIFT, 0, movetoworkspace, 10
+      bind = SUPER SHIFT, N, movetoworkspace, special
 
-           # Screenshot
-           bind = SUPER SHIFT, S, exec, grim -g "$(slurp)" - | swappy -f -
+      # Screenshot
+      bind = SUPER SHIFT, S, exec, grim -g "$(slurp)" - | swappy -f -
 
-           # Ignore maximize requests from apps. You'll probably like this.
-           windowrulev2 = suppressevent maximize, class:.*
+      # Ignore maximize requests from apps. You'll probably like this.
+      windowrulev2 = suppressevent maximize, class:.*
 
-           # Fix some dragging issues with XWayland
-           windowrulev2 = nofocus,class:^$,title:^$,xwayland:1,floating:1,fullscreen:0,pinned:0
+      # Fix some dragging issues with XWayland
+      windowrulev2 = nofocus,class:^$,title:^$,xwayland:1,floating:1,fullscreen:0,pinned:0
 
-           # Laptop multimedia keys for volume and LCD brightness
-           bindel = ,XF86AudioRaiseVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+
-           bindel = ,XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-
-           bindel = ,XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
-           bindel = ,XF86AudioMicMute, exec, wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle
-           bindel = ,XF86MonBrightnessUp, exec, brightnessctl s 10%+
-           bindel = ,XF86MonBrightnessDown, exec, brightnessctl s 10%-
-           bindel = ,XF86KbdBrightnessDown, exec, brightnessctl -d asus::kbd_backlight set 1-
-           bindel = ,XF86KbdBrightnessUp, exec, brightnessctl -d asus::kbd_backlight set 1+
+      # Laptop multimedia keys for volume and LCD brightness
+      bindel = ,XF86AudioRaiseVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+
+      bindel = ,XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-
+      bindel = ,XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
+      bindel = ,XF86AudioMicMute, exec, wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle
+      bindel = ,XF86MonBrightnessUp, exec, brightnessctl s 10%+
+      bindel = ,XF86MonBrightnessDown, exec, brightnessctl s 10%-
+      bindel = ,XF86KbdBrightnessDown, exec, brightnessctl -d asus::kbd_backlight set 1-
+      bindel = ,XF86KbdBrightnessUp, exec, brightnessctl -d asus::kbd_backlight set 1+
     '';
   };
 }

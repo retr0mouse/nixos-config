@@ -44,7 +44,6 @@
     maven # Java build system
 
     # system utilities
-    git # version control system
     gh # GitHub CLI
     libnotify # desktop notifications CLI (notify-send)
     playerctl # media control CLI (play/pause etc.)
