@@ -1,13 +1,6 @@
-# My NixOS configuration files
-### To do
-- [ ] Split configuration.nix into separate flakes
-- [ ] Split home-manager programs into separate flakes as well
-- [x] Fix the env variables
-- [ ] LazyVim
-- [ ] Rice wofi
-- [x] Hyprlock
-- [ ] Quickshell
-- [x] OSD
+# NixOS configuration files
+work in progress
+<img width="600" height="577" alt="image" src="https://github.com/user-attachments/assets/1e3229c5-5528-4fbc-af5d-cc9a24f970cc" />
 
 ## Inspiration
 [Ampersand's NixOS config](https://github.com/Andrey0189/nixos-config-reborn/tree/master)
