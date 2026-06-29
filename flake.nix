@@ -17,60 +17,37 @@
   }: let
     system = "x86_64-linux";
     user = "reisdro";
-  in {
+    mkHost = hostname:
+      nixpkgs.lib.nixosSystem {
+        inherit system;
+
+        specialArgs = {
+          inherit inputs user;
+        };
+
+        modules = [
+          ./nixos/hosts/${hostname}/configuration.nix
+
+          home-manager.nixosModules.home-manager
+
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.backupFileExtension = "backup";
+
+            home-manager.extraSpecialArgs = {
+              inherit inputs user;
+            };
+
+            home-manager.users.${user} = import ./home/home.nix;
+          }
+        ];
+      };
+    in {
     nixosConfigurations = {
-      asus = nixpkgs.lib.nixosSystem {
-        inherit system;
-
-        specialArgs = {
-          inherit inputs user;
-        };
-
-        modules = [
-          ./nixos/hosts/asus/configuration.nix
-
-          home-manager.nixosModules.home-manager
-
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-
-            home-manager.backupFileExtension = "backup";
-
-            home-manager.extraSpecialArgs = {
-              inherit inputs user;
-            };
-
-            home-manager.users.${user} = import ./home/home.nix;
-          }
-        ];
-      };
-      msi = nixpkgs.lib.nixosSystem {
-        inherit system;
-
-        specialArgs = {
-          inherit inputs user;
-        };
-
-        modules = [
-          ./nixos/hosts/msi/configuration.nix
-
-          home-manager.nixosModules.home-manager
-
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-
-            home-manager.backupFileExtension = "backup";
-
-            home-manager.extraSpecialArgs = {
-              inherit inputs user;
-            };
-
-            home-manager.users.${user} = import ./home/home.nix;
-          }
-        ];
-      };
+      asus = mkHost "asus";
+      msi = mkHost "msi";
+      msi-server = mkHost "msi-server";
     };
   };
 }
