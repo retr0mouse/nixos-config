@@ -55,6 +55,11 @@
     settings = {
       dns.interface = "0.0.0.0";
       dns.upstreams = [ "127.0.0.1#5335" ];
+
+      adlists = [
+        "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts"
+	"https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/adblock/pro.txt"
+      ];
     };
   };
 
