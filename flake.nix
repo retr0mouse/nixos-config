@@ -17,7 +17,7 @@
   }: let
     system = "x86_64-linux";
     user = "reisdro";
-    mkHost = hostname:
+    mkDesktopHost = hostname:
       nixpkgs.lib.nixosSystem {
         inherit system;
 
@@ -43,11 +43,22 @@
           }
         ];
       };
-    in {
+    mkServerHost = hostname:
+      nixpkgs.lib.nixosSystem {
+        inherit system;
+
+        specialArgs = {
+          inherit inputs user;
+        };
+
+        modules = [
+          ./nixos/hosts/${hostname}/configuration.nix
+        ];
+      };
+  in {
     nixosConfigurations = {
-      asus = mkHost "asus";
-      msi = mkHost "msi";
-      msi-server = mkHost "msi-server";
+      asus = mkDesktopHost "asus";
+      msi-server = mkServerHost "msi-server";
     };
   };
 }

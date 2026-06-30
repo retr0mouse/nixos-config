@@ -7,7 +7,7 @@
   ...
 }: {
   imports = [
-    ../../modules/common.nix
+    ../../modules/desktop.nix
     ./hardware-configuration.nix
     inputs.nixos-hardware.nixosModules.asus-zephyrus-ga503
   ];
@@ -38,7 +38,7 @@
     package = config.boot.kernelPackages.nvidiaPackages.stable;
 
     prime = {
-#      amdgpuBusId = "PCI:6:0:0";
+      #      amdgpuBusId = "PCI:6:0:0";
       nvidiaBusId = "PCI:1:0:0";
 
       offload = {
