@@ -129,7 +129,7 @@
 
     shellAliases = {
       config = "cd ~/dots && tree";
-      rebuild = "sudo nixos-rebuild switch --flake ~/dots#asus";
+      rebuild = "sudo nixos-rebuild switch --flake ~/dots#msi-server";
       logthefuckout = "loginctl terminate-user $USER";
       slip = "hyprlock & systemctl suspend";
     };

@@ -11,11 +11,11 @@
 
   networking.hostName = "nico";
   networking.networkmanager.enable = true;
-  networking.firewall = [
+  networking.firewall = {
     enable = true;
     allowedTCPPorts = [ 22 53 80 ];
     allowedUDPPorts = [ 53 ];
-  ];
+  };
 
   services.logind = {
     lidSwitch = "ignore";
@@ -54,13 +54,15 @@
     enable = true;
     settings = {
       dns.interface = "0.0.0.0";
-      dns.upstreams = "127.0.0.1#5335";
+      dns.upstreams = [ "127.0.0.1#5335" ];
     };
   };
 
   services.journald.extraConfig = ''
     SystemMaxUse=500M
   '';
-
+  environment.systemPackages = with pkgs; [
+    kitty.terminfo
+  ];
   system.stateVersion = "25.11";
 }

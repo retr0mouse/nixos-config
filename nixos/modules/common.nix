@@ -48,8 +48,13 @@
   programs.zsh.enable = true;
 
   # Docker
-  virtualization.docker.enable = true;
+  virtualisation.docker.enable = true;
 
   # nix-ld
   programs.nix-ld.enable = true;
+  
+  environment.systemPackages = with pkgs; [
+    git
+    neovim
+  ];
 }
