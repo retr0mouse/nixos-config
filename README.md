@@ -129,4 +129,3 @@ Adjust the monitor line for your display(s). See the [Hyprland monitor docs](htt
 
 - [Ampersand's NixOS config](https://github.com/Andrey0189/nixos-config-reborn/tree/master)
 - [DerAnsari's rice](https://github.com/DerAnsari/hyprland-dots)
->>>>>>> temp
