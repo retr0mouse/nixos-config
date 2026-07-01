@@ -9,20 +9,53 @@
     ./hardware-configuration.nix
   ];
 
+  boot.kernel.sysctl = {
+    "net.ipv4.ip_forward" = 1;
+  };
+
   networking.hostName = "nico";
   networking.networkmanager.enable = true;
   networking.firewall = {
     enable = true;
-    allowedTCPPorts = [ 53 80 2283 ]; # port 22 opened automatically by services.openssh
-    allowedUDPPorts = [ 53 ];
+    allowedUDPPorts = [51820];
+    interfaces.wg0 = {
+      allowedTCPPorts = [80 443 8081 2283 53 22];
+      allowedUDPPorts = [53];
+    };
+  };
+
+  networking.wireguard.interfaces.wg0 = {
+    ips = ["10.10.0.1/24"];
+    listenPort = 51820;
+
+    privateKeyFile = "/etc/wireguard/wg0.key";
+
+    peers = [
+      {
+        publicKey = "JbT9PlYI6wShpxbKeLj3uwffSBn4y5fy2oHiLSVoJHQ=";
+        allowedIPs = [ "10.10.0.2/32" ];
+      }
+      {
+        publicKey = "0rUatXaIEI94D0Q59kHIa9FnwgTAkcMumWSl5PzH6lk=";
+        allowedIPs = [ "10.10.0.3/32" ];
+      }
+    ];
+  };
+  networking.nat = {
+    enable = true;
+    externalInterface = "enp3s0";
+    internalInterfaces = [ "wg0" ];
   };
 
   services.nginx = {
     enable = true;
 
-    virtualHosts."nico.immich" = {
+    virtualHosts."immich.home" = {
       listen = [
-        { addr = "0.0.0.0"; port = 80; }
+        {
+          addr = "10.10.0.1";
+          port = 80;
+        }
       ];
 
       locations."/" = {
@@ -37,19 +70,12 @@
       };
     };
 
-    virtualHosts."immich.local" = {
+    virtualHosts."pihole.home" = {
       listen = [
-        { addr = "0.0.0.0"; port = 8080; }
-      ];
-
-      locations."/" = {
-        proxyPass = "http://127.0.0.1:2283";
-      };
-    };
-
-    virtualHosts."nico.pihole" = {
-      listen = [
-        { addr = "0.0.0.0"; port = 80; }
+        {
+          addr = "10.10.0.1";
+          port = 80;
+        }
       ];
 
       locations."/" = {
@@ -68,11 +94,10 @@
     recommendedGzipSettings = true;
   };
 
-
   fileSystems."/data" = {
     device = "/dev/disk/by-uuid/efee3c35-c283-4091-9a72-5df4cfcb2412";
     fsType = "ext4";
-    options = [ "noatime" "nofail" "x-systemd.device-timeout=5s" ];
+    options = ["noatime" "nofail" "x-systemd.device-timeout=5s"];
   };
 
   systemd.tmpfiles.rules = [
@@ -101,8 +126,13 @@
     port = 2283;
 
     mediaLocation = "/data/immich/library";
+    settings = {
+      server = {
+        externalDomain = "http://immich.home";
+      };
+    };
   };
-  
+
   users.users.immich = {
     isSystemUser = true;
     group = "immich";
@@ -129,7 +159,7 @@
     enable = true;
     settings = {
       server = {
-        interface = [ "127.0.0.1" ];
+        interface = ["127.0.0.1"];
         port = 5335;
         hide-identity = true;
         hide-version = true;
@@ -141,22 +171,22 @@
 
   services.pihole-web = {
     enable = true;
-    ports = [ "8081" ];
+    ports = ["10.10.0.1:8081"];
   };
 
   services.pihole-ftl = {
     enable = true;
     settings = {
-      dns.interface = "0.0.0.0";
-      dns.upstreams = [ "127.0.0.1#5335" ];
+      dns.interface = "10.10.0.1";
+      dns.upstreams = ["127.0.0.1#5335"];
       dns.hosts = [
-        "192.168.0.251 nico.immich"
-        "192.168.0.251 nico.pihole"
+        "10.10.0.1 immich.home"
+        "10.10.0.1 pihole.home"
       ];
 
       adlists = [
         "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts"
-	"https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/adblock/pro.txt"
+        "https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/adblock/pro.txt"
       ];
     };
   };

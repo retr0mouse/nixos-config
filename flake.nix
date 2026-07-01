@@ -53,7 +53,6 @@
 
         modules = [
           ./system/hosts/${hostname}/configuration.nix
-
           home-manager.nixosModules.home-manager
 
           {
