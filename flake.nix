@@ -26,7 +26,7 @@
         };
 
         modules = [
-          ./nixos/hosts/${hostname}/configuration.nix
+          ./system/hosts/${hostname}/configuration.nix
 
           home-manager.nixosModules.home-manager
 
@@ -39,7 +39,7 @@
               inherit inputs user;
             };
 
-            home-manager.users.${user} = import ./home/home.nix;
+            home-manager.users.${user} = import ./user/home.nix;
           }
         ];
       };
@@ -52,13 +52,27 @@
         };
 
         modules = [
-          ./nixos/hosts/${hostname}/configuration.nix
+          ./system/hosts/${hostname}/configuration.nix
+
+          home-manager.nixosModules.home-manager
+
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.backupFileExtension = "backup";
+
+            home-manager.extraSpecialArgs = {
+              inherit inputs user;
+            };
+
+            home-manager.users.${user} = import ./user/home-server.nix;
+          }
         ];
       };
   in {
     nixosConfigurations = {
-      asus = mkDesktopHost "asus";
-      msi-server = mkServerHost "msi-server";
+      clancy = mkDesktopHost "clancy";
+      nico = mkServerHost "nico";
     };
   };
 }

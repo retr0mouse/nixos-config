@@ -95,7 +95,7 @@
           exec = "igpu_usage";
           interval = 2;
           format = "iGPU{}";
-          on-click = "kitty -e nvidia-smi";
+          on-click = "kitty -e amdgpu_top";
         };
 
         "custom/dgpu" = {
@@ -217,7 +217,6 @@
         font-size: 15px;
       }
 
-      /* idk what all this does */
       window#waybar {
         background-color: @background;
         border-bottom: 0;
@@ -239,27 +238,16 @@
         margin: 0 5px;
       }
 
-      /* whats this?? */
       button {
         border: none;
       }
 
 
-      /* left island */
-
-      #custom-arch:hover {
-        color: @color1;
-      }
-
       #custom-powerprofile:hover {
-        color: @color1
-      }
-
-      #custom-themeswitcher:hover {
         color: @color1;
       }
 
-      /* workspace pannel */
+      /* workspace panel */
       #workspaces button {
         min-width: 0;
         background-color: transparent;
@@ -280,7 +268,6 @@
         background-color: @urgent;
       }
 
-      /* no idea what this does */
       .modules-left>widget:first-child>#workspaces {
         margin-left: 0;
       }
@@ -293,18 +280,15 @@
 
       #clock:hover,
       #battery:hover,
-      #custom-cpu:hover,
-      #custom-clipboard:hover,
       #custom-bluetooth:hover,
       #network:hover,
-      #idle_inhibitor:hover,
       #custom-swaync:hover,
       #backlight:hover,
-      #wireplumber:hover {
+      #pulseaudio:hover {
         color: @color1;
       }
 
-      #wireplumber.muted {
+      #pulseaudio.muted {
         background-color: @color2;
       }
 

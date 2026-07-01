@@ -65,7 +65,6 @@
       enable = true;
       settings.Settings.AutoConnect = true;
     };
-    dhcpcd.enable = true;
   };
 
   systemd.services.NetworkManager-wait-online.enable = false;
@@ -104,7 +103,7 @@
       dedicatedServer.openFirewall = true;
     };
 
-    gamescope.enable = true
+    gamescope.enable = true;
   };
 
   # Bluetooth
@@ -131,9 +130,9 @@
     iosevka
   ];
 
-  # Keyboard layout (X11 fallback)
+  # Keyboard layout (X11 fallback — keep in sync with Hyprland kb_layout)
   services.xserver.xkb = {
-    layout = "ee,ru";
+    layout = "ee(us),ru";
     options = "grp:ctrl_space_toggle";
   };
 
@@ -151,7 +150,5 @@
     "input"
     "video"
     "render"
-    "network"
-    "postgres"
   ];
 }

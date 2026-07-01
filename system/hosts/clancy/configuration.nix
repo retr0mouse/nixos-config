@@ -12,12 +12,10 @@
     inputs.nixos-hardware.nixosModules.asus-zephyrus-ga503
   ];
 
-  networking.hostName = "ga503";
+  networking.hostName = "clancy";
 
   services.asusd.enable = true;
   services.logind.lidSwitchExternalPower = "ignore";
-
-  services.power-profiles-daemon.enable = true;
 
   services.libinput = {
     enable = true;
@@ -51,4 +49,6 @@
   hardware.graphics.extraPackages = with pkgs; [
     mesa
   ];
+
+  system.stateVersion = "25.11";
 }

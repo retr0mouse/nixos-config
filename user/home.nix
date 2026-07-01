@@ -23,11 +23,9 @@
     homeDirectory = "/home/${user}";
   };
 
-  home.stateVersion = "24.11"; # Please read the comment before changing.
+  home.stateVersion = "24.11"; # First-deploy version — do not change.
 
-  home.packages = [
-    pkgs.hyprlock
-  ];
+  home.packages = [];
   wayland.windowManager.hyprland.systemd.enable = false;
   gtk = {
     enable = true;
@@ -129,9 +127,9 @@
 
     shellAliases = {
       config = "cd ~/dots && tree";
-      rebuild = "sudo nixos-rebuild switch --flake ~/dots#msi-server";
+      rebuild = "sudo nixos-rebuild switch --flake ~/dots#$(hostname)";
       logthefuckout = "loginctl terminate-user $USER";
-      slip = "hyprlock & systemctl suspend";
+      slip = "hyprlock & sleep 0.5 && systemctl suspend";
     };
     oh-my-zsh = {
       enable = true;
