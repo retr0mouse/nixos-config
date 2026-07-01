@@ -13,7 +13,7 @@
   networking.networkmanager.enable = true;
   networking.firewall = {
     enable = true;
-    allowedTCPPorts = [ 22 53 80 ];
+    allowedTCPPorts = [ 53 80 ]; # port 22 opened automatically by services.openssh
     allowedUDPPorts = [ 53 ];
   };
 

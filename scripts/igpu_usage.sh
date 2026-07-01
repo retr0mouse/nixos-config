@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
 
-# Find AMD GPU card
-CARD=$(ls /sys/class/drm | grep -E '^card[0-9]+$' | head -n1)
+CARD=$(ls /sys/class/drm/ | grep -E '^card[0-9]+$' | while read c; do
+    [ -f "/sys/class/drm/$c/device/gpu_busy_percent" ] && echo "$c" && break
+done)
 
-if [ -f "/sys/class/drm/card1/device/gpu_busy_percent" ]; then
-    cat /sys/class/drm/card1/device/gpu_busy_percent | awk '{print $1 "%"}'
+if [ -n "$CARD" ] && [ -f "/sys/class/drm/$CARD/device/gpu_busy_percent" ]; then
+    awk '{print $1 "%"}' "/sys/class/drm/$CARD/device/gpu_busy_percent"
 else
     echo "N/A"
 fi

@@ -53,8 +53,5 @@
   # nix-ld
   programs.nix-ld.enable = true;
   
-  environment.systemPackages = with pkgs; [
-    git
-    neovim
-  ];
+  environment.systemPackages = [];
 }

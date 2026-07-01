@@ -32,16 +32,12 @@ get_current_profile() {
 set_profile() {
   local mode="$1"
   if [ "$powerctl" = "powerprofilesctl" ]; then
-    if command -v powerprofilesctl &>/dev/null; then
-      powerprofilesctl set "$mode"
-    fi
+    powerprofilesctl set "$mode"
   elif [ "$powerctl" = "asusctl" ]; then
-    if [ "$1" = "power-saver" ]; then
+    if [ "$mode" = "power-saver" ]; then
       mode="quiet"
     fi
-    if command -v asusctl &>/dev/null; then
-      asusctl profile set "$mode"
-    fi
+    asusctl profile set "$mode"
   fi
 }
 
@@ -75,7 +71,7 @@ display_profile() {
     echo "BALANCED"
     ;;
   "performance")
-    echo "PERFORMANCE" 
+    echo "PERFORMANCE"
     ;;
   esac
 }

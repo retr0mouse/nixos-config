@@ -14,13 +14,10 @@
     dotnetCorePackages.sdk_9_0_1xx # dotnet 9.0.1 SDK
 
     # terminal / UI apps
-    kitty # GPU terminal emulator
     kitty-themes # Kitty color scheme collection
-    wofi # Wayland app launcher (dmenu-like)
-    waybar # Wayland status bar
     wlogout # logout menu for Wayland
-    swaylock-effects # screen locker (blur/FX support)
     swaynotificationcenter # notification daemon UI
+    btop # resource monitor (CPU/RAM/etc.)
     pavucontrol # audio volume control GUI
     impala # network TUI
 
@@ -62,7 +59,6 @@
     swappy # screenshot annotation tool
     wf-recorder # screen recording tool (Wayland)
     hyprpaper # wallpaper daemon for Hyprland
-    hyprlock # lock screen for Hyprland
     gamescope # gaming compositor (Steam/Proton use)
 
     # file management / navigation

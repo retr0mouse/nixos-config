@@ -1,20 +1,22 @@
 #!/usr/bin/env bash
 
 if ! command -v bluetoothctl >/dev/null; then
-    echo ""
+    echo ""
     exit 0
 fi
 
 adapter_powered=$(timeout 2 bluetoothctl show 2>/dev/null | awk -F': ' '/Powered:/ {print $2}')
 
 if [ "$adapter_powered" != "yes" ]; then
-    echo ""
+    echo ""
     exit 0
 fi
 
-if timeout 2 bluetoothctl devices Connected | grep -q .; then
-    device=$(timeout 2 bluetoothctl devices Connected | awk '{$1=$2=""; print substr($0,3)}')
-    echo " $device"
+connected=$(timeout 2 bluetoothctl devices Connected 2>/dev/null)
+
+if echo "$connected" | grep -q .; then
+    device=$(echo "$connected" | awk '{$1=$2=""; print substr($0,3)}')
+    echo " $device"
 else
-    echo ""
+    echo ""
 fi
