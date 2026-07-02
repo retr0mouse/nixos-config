@@ -14,7 +14,11 @@
       tab_powerline_style = "slanted";
       tab_title_template = "[{index}] {title}";
     };
-    theme = "Tokyo Night";
+    extraConfig = ''
+      background #1a1b26
+      foreground #c0caf5
+      color0 #15161e
+    '';
     keybindings = {
       # Create / close tabs
       "ctrl+t" = "new_tab";

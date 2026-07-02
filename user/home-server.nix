@@ -24,7 +24,17 @@
     gh
   ];
 
-  programs.ssh.enable = true;
+  programs.ssh = {
+    enable = true;
+
+    enableDefaultConfig = false;
+
+    matchBlocks."*" = {
+      addKeysToAgent = "yes";
+      compression = true;
+      serverAliveInterval = 60;
+    };
+  };
 
   programs.zsh = {
     enable = true;
