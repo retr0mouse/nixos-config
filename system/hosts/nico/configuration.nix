@@ -9,18 +9,26 @@
     ./hardware-configuration.nix
   ];
 
+  boot.kernel.sysctl."net.ipv4.ip_forward" = 1;
   networking.hostName = "nico";
   networking.networkmanager.enable = true;
   networking.firewall = {
     enable = true;
     allowedTCPPorts = [ 53 80 2283 ]; # port 22 opened automatically by services.openssh
-    allowedUDPPorts = [ 53 ];
+    allowedUDPPorts = [ 53 51820 ];
+     # IMPORTANT for routing VPN → LAN
+    extraCommands = ''
+      iptables -A FORWARD -i wg0 -o eth0 -j ACCEPT
+      iptables -A FORWARD -i enp3s -o wg0 -m state --state RELATED,ESTABLISHED -j ACCEPT
+    '';
   };
+
+  networking.wireguard.interfaces.wg0 = { ips = [ "10.10.0.1/24" ]; listenPort = 51820; privateKeyFile = "/etc/wireguard/privatekey"; peers = [ { publicKey = "Q0fqgzyFCBaBUl9R/AByAdj0UmsngUEX9t0c6vc7QBw="; allowedIPs = [ "10.10.0.2/32" ]; } ]; };
 
   services.nginx = {
     enable = true;
 
-    virtualHosts."nico.immich" = {
+    virtualHosts."immich.dema" = {
       listen = [
         { addr = "0.0.0.0"; port = 80; }
       ];
@@ -29,25 +37,21 @@
         proxyPass = "http://127.0.0.1:2283";
 
         extraConfig = ''
+          client_max_body_size 0;
           proxy_set_header Host $host;
           proxy_set_header X-Real-IP $remote_addr;
           proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
           proxy_set_header X-Forwarded-Proto $scheme;
+
+          proxy_http_version 1.1;
+          proxy_set_header Upgrade $http_upgrade;
+          proxy_set_header Connection "upgrade";
         '';
       };
     };
 
-    virtualHosts."immich.local" = {
-      listen = [
-        { addr = "0.0.0.0"; port = 8080; }
-      ];
 
-      locations."/" = {
-        proxyPass = "http://127.0.0.1:2283";
-      };
-    };
-
-    virtualHosts."nico.pihole" = {
+    virtualHosts."pihole.dema" = {
       listen = [
         { addr = "0.0.0.0"; port = 80; }
       ];
@@ -150,8 +154,8 @@
       dns.interface = "0.0.0.0";
       dns.upstreams = [ "127.0.0.1#5335" ];
       dns.hosts = [
-        "192.168.0.251 nico.immich"
-        "192.168.0.251 nico.pihole"
+        "192.168.0.251 immich.dema"
+        "192.168.0.251 pihole.dema"
       ];
 
       adlists = [
