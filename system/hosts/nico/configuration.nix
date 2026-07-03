@@ -24,7 +24,33 @@
     '';
   };
 
-  networking.wireguard.interfaces.wg0 = { ips = [ "10.10.0.1/24" ]; listenPort = 51820; privateKeyFile = "/etc/wireguard/privatekey"; peers = [ { publicKey = "Q0fqgzyFCBaBUl9R/AByAdj0UmsngUEX9t0c6vc7QBw="; allowedIPs = [ "10.10.0.2/32" ]; } ]; };
+  networking.wireguard.interfaces.wg0 = { 
+    ips = [ 
+      "10.10.0.1/24" 
+    ]; 
+    listenPort = 51820; 
+    privateKeyFile = "/etc/wireguard/privatekey"; 
+    peers = [ 
+      { 
+        publicKey = "Q0fqgzyFCBaBUl9R/AByAdj0UmsngUEX9t0c6vc7QBw="; 
+        allowedIPs = [ "10.10.0.2/32" ]; 
+      }
+      {
+        publicKey = "BCUiOnONmcZEb3Bit6tqfQYXpdPhxYxPP/Ljd8gmxhg=";
+        allowedIPs = [ "10.10.0.4/32" ];
+      }
+    ]; 
+  };
+
+  services.duckdns = {
+    enable = true;
+
+    domains = [
+      "voldsoy"
+    ];
+
+    tokenFile = "/etc/secrets/duckdns-token";
+  };
 
   services.nginx = {
     enable = true;
