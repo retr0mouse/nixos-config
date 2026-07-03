@@ -14,12 +14,19 @@
   networking.networkmanager.enable = true;
   networking.firewall = {
     enable = true;
-    allowedTCPPorts = [ 53 80 2283 ]; # port 22 opened automatically by services.openssh
-    allowedUDPPorts = [ 53 51820 ];
-     # IMPORTANT for routing VPN → LAN
+    allowedTCPPorts = [];
+    allowedUDPPorts = [ 51820 ];
     extraCommands = ''
-      iptables -A FORWARD -i wg0 -o eth0 -j ACCEPT
-      iptables -A FORWARD -i enp3s -o wg0 -m state --state RELATED,ESTABLISHED -j ACCEPT
+      iptables -P INPUT DROP
+      iptables -P FORWARD DROP
+      iptables -P OUTPUT ACCEPT
+
+      iptables -A INPUT -i lo -j ACCEPT
+      iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+
+      iptables -A INPUT -s 192.168.0.0/24 -j ACCEPT
+      iptables -A INPUT -s 10.10.0.0/24 -j ACCEPT
+      iptables -A INPUT -p udp --dport 51820 -j ACCEPT
     '';
   };
 
@@ -56,7 +63,8 @@
 
     virtualHosts."immich.dema" = {
       listen = [
-        { addr = "0.0.0.0"; port = 80; }
+        { addr = "10.10.0.1"; port = 80; }
+        { addr = "192.168.0.251"; port = 80; }
       ];
 
       locations."/" = {
@@ -79,7 +87,8 @@
 
     virtualHosts."pihole.dema" = {
       listen = [
-        { addr = "0.0.0.0"; port = 80; }
+        { addr = "10.10.0.1"; port = 80; }
+        { addr = "192.168.0.251"; port = 80; }
       ];
 
       locations."/" = {
@@ -177,7 +186,7 @@
   services.pihole-ftl = {
     enable = true;
     settings = {
-      dns.interface = "0.0.0.0";
+      dns.interface = "127.0.0.1";
       dns.upstreams = [ "127.0.0.1#5335" ];
       dns.hosts = [
         "192.168.0.251 immich.dema"
