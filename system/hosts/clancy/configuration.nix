@@ -15,7 +15,7 @@
   networking.hostName = "clancy";
 
   services.asusd.enable = true;
-  services.logind.lidSwitchExternalPower = "ignore";
+  services.logind.settings.Login.HandleLidSwitchExternalPower = "ignore";
 
   services.libinput = {
     enable = true;

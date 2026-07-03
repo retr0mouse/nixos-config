@@ -12,6 +12,7 @@
   boot.kernel.sysctl."net.ipv4.ip_forward" = 1;
   networking.hostName = "nico";
   networking.networkmanager.enable = true;
+
   networking.firewall = {
     enable = true;
     allowedTCPPorts = [];
@@ -107,7 +108,6 @@
     recommendedGzipSettings = true;
   };
 
-
   fileSystems."/data" = {
     device = "/dev/disk/by-uuid/efee3c35-c283-4091-9a72-5df4cfcb2412";
     fsType = "ext4";
@@ -140,8 +140,10 @@
     port = 2283;
 
     mediaLocation = "/data/immich/library";
+
+    settings.server.externalDomain = "http://immich.home";
   };
-  
+
   users.users.immich = {
     isSystemUser = true;
     group = "immich";
@@ -166,21 +168,19 @@
 
   services.unbound = {
     enable = true;
-    settings = {
-      server = {
-        interface = [ "127.0.0.1" ];
-        port = 5335;
-        hide-identity = true;
-        hide-version = true;
-        qname-minimisation = true;
-        prefetch = true;
-      };
+    settings.server = {
+      interface = [ "127.0.0.1" ];
+      port = 5335;
+      hide-identity = true;
+      hide-version = true;
+      qname-minimisation = true;
+      prefetch = true;
     };
   };
 
   services.pihole-web = {
     enable = true;
-    ports = [ "8081" ];
+    ports = [ "10.10.0.1:8081" ];
   };
 
   services.pihole-ftl = {
@@ -195,7 +195,7 @@
 
       adlists = [
         "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts"
-	"https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/adblock/pro.txt"
+        "https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/adblock/pro.txt"
       ];
     };
   };
@@ -203,8 +203,10 @@
   services.journald.extraConfig = ''
     SystemMaxUse=500M
   '';
+
   environment.systemPackages = with pkgs; [
     kitty.terminfo
   ];
+
   system.stateVersion = "25.11";
 }

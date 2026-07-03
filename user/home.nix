@@ -37,6 +37,14 @@
 
   programs.ssh = {
     enable = true;
+
+    enableDefaultConfig = false;
+
+    matchBlocks."*" = {
+      addKeysToAgent = "yes";
+      compression = true;
+      serverAliveInterval = 60;
+    };
   };
 
   home.pointerCursor = {
