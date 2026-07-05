@@ -82,10 +82,6 @@
     enable = true;
 
     virtualHosts."immich.dema" = {
-      listen = [
-        { addr = "0.0.0.0"; port = 80; }
-      ];
-
       locations."/" = {
         proxyPass = "http://127.0.0.1:2283";
 
@@ -105,10 +101,6 @@
 
 
     virtualHosts."pihole.dema" = {
-      listen = [
-        { addr = "0.0.0.0"; port = 80; }
-      ];
-
       locations."/" = {
         proxyPass = "http://127.0.0.1:8081";
 
@@ -123,10 +115,6 @@
     
     virtualHosts."jellyfin.dema" = {
       serverName = "jellyfin.dema";
-      listen = [
-        { addr = "0.0.0.0"; port = 80; }
-      ];
-
       locations."/" = {
         proxyPass = "http://127.0.0.1:8096";
 
@@ -134,13 +122,12 @@
           proxy_set_header Host $host;
           proxy_set_header X-Real-IP $remote_addr;
           proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-          
-          # THIS IS CRITICAL FOR JELLYFIN
           proxy_set_header X-Forwarded-Proto $scheme;
           proxy_set_header X-Forwarded-Host $host;
 
-          # Websockets (important for Jellyfin UI)
           proxy_http_version 1.1;
+
+          # WebSockets (Jellyfin UI needs this)
           proxy_set_header Upgrade $http_upgrade;
           proxy_set_header Connection "upgrade";
         '';
@@ -148,20 +135,12 @@
     };
 
     virtualHosts."qbittorrent.dema" = {
-      listen = [
-        { addr = "0.0.0.0"; port = 80; }
-      ];
-
       locations."/" = {
         proxyPass = "http://127.0.0.1:8080";
       };
     };
 
     virtualHosts."prowlarr.dema" = {
-      listen = [
-        { addr = "0.0.0.0"; port = 80; }
-      ];
-
       locations."/" = {
         proxyPass = "http://127.0.0.1:9696";
       };
@@ -169,25 +148,12 @@
 
     virtualHosts."default" = {
       default = true;
-      listen = [
-        { addr = "0.0.0.0"; port = 80; }
-      ];
+      
       locations."/" = {
         return = "444";
       };
     };
 
-    recommendedProxySettings = true;
-    recommendedGzipSettings = true;
-  };
-
-  services.nginx = {
-    commonHttpConfig = ''
-      map $http_upgrade $connection_upgrade {
-        default upgrade;
-          "" close;
-      }
-    '';
   };
 
   fileSystems."/data" = {
@@ -298,6 +264,7 @@
 
   environment.systemPackages = with pkgs; [
     kitty.terminfo
+    nginx
   ];
 
   system.stateVersion = "25.11";
