@@ -1,4 +1,8 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  inputs,
+  ...
+}: {
   home.packages = with pkgs; [
     # formatters / linters
     alejandra # Nix formatter
@@ -19,7 +23,7 @@
     swaynotificationcenter # notification daemon UI
     btop # resource monitor (CPU/RAM/etc.)
     pavucontrol # audio volume control GUI
-    impala # network TUI
+    inputs.wlctl.packages.${pkgs.system}.default # network TUI
 
     # desktop / communication apps
     discord # chat/voice platform

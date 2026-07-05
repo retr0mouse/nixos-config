@@ -179,12 +179,11 @@
         };
 
         network = {
-          interface = "wlan0";
           format-wifi = "{icon}";
           format-ethernet = "󰈀 LAN";
           format-disconnected = "󰖪";
           tooltip-format = "{ipaddr}\n{essid} ({signalStrength}%)";
-          on-click = "kitty -e impala";
+          on-click = "kitty -e wlctl";
           format-icons = ["󰤯" "󰤟" "󰤢" "󰤥" "󰤨"];
         };
 

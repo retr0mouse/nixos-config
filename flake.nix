@@ -7,12 +7,14 @@
     };
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     xremap-flake.url = "github:xremap/nix-flake";
+    wlctl.url = "github:aashish-thapa/wlctl";
   };
 
   outputs = inputs @ {
     self,
     nixpkgs,
     home-manager,
+    wlctl,
     ...
   }: let
     system = "x86_64-linux";

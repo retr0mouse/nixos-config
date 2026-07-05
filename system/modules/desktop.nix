@@ -54,17 +54,13 @@
   };
 
   # Spotify LAN sync
-  networking.firewall.allowedTCPPorts = [ 57621 ];
+  networking.firewall.allowedTCPPorts = [57621];
 
   # Networking (iwd + NetworkManager)
   networking = {
     networkmanager.enable = true;
-    networkmanager.wifi.backend = "iwd";
-
-    wireless.iwd = {
-      enable = true;
-      settings.Settings.AutoConnect = true;
-    };
+    networkmanager.wifi.backend = "wpa_supplicant";
+    wireless.enable = false;
   };
 
   systemd.services.NetworkManager-wait-online.enable = false;
