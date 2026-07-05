@@ -1,0 +1,58 @@
+[0;1;34m# /etc/systemd/system/nginx.service -> ]8;;file://nico/nix/store/7wi8pahygm5l7xvgas86qxn8rqfm5c87-unit-nginx.service/nginx.service\/nix/store/7wi8pahygm5l7xvgas86qxn8rqfm5c87-unit-nginx.service/nginx.service]8;;\[0m
+[0;1;36m[Unit][0m
+[0;1;32mAfter=[0mnetwork.target
+[0;1;32mDescription=[0mNginx Web Server
+[0;1;32mStartLimitIntervalSec=[0m60
+
+[0;1;36m[Service][0m
+[0;1;32mEnvironment=[0m"LOCALE_ARCHIVE=/nix/store/ly56bmqpdprdkl5pmx13p6avjzwl33vv-glibc-locales-2.40-218/lib/locale/locale-archive"
+[0;1;32mEnvironment=[0m"PATH=/nix/store/wkkwxc04gdw6b263l1h29pjarjnjdyb6-coreutils-9.8/bin:/nix/store/bb1ipjfz8g6cir41rr0zc2x2ah43kzar-findutils-4.10.0/bin:/nix/store/d4c56s8wa6rz2dnw6ridg7r1dvax1gky-gnugrep-3.12/bin:/nix/store/0zqnw11n1hk8mflzzvrz7sv1rm1cbnp8-gnused-4.9/bin:/nix/store/bigkpra9jw48fip69q4wndsf4kb3d2w9-systemd-258.3/bin:/nix/store/wkkwxc04gdw6b263l1h29pjarjnjdyb6-coreutils-9.8/sbin:/nix/store/bb1ipjfz8g6cir41rr0zc2x2ah43kzar-findutils-4.10.0/sbin:/nix/store/d4c56s8wa6rz2dnw6ridg7r1dvax1gky-gnugrep-3.12/sbin:/nix/store/0zqnw11n1hk8mflzzvrz7sv1rm1cbnp8-gnused-4.9/sbin:/nix/store/bigkpra9jw48fip69q4wndsf4kb3d2w9-systemd-258.3/sbin"
+[0;1;32mEnvironment=[0m"TZDIR=/nix/store/8i1vdm6jfvvchysfbymf1gxd54danazj-tzdata-2025c/share/zoneinfo"
+[0;1;32mX-StopIfChanged=[0mfalse
+[0;1;32mAmbientCapabilities=[0mCAP_NET_BIND_SERVICE
+[0;1;32mAmbientCapabilities=[0mCAP_SYS_RESOURCE
+[0;1;32mCacheDirectory=[0mnginx
+[0;1;32mCacheDirectoryMode=[0m0750
+[0;1;32mCapabilityBoundingSet=[0mCAP_NET_BIND_SERVICE
+[0;1;32mCapabilityBoundingSet=[0mCAP_SYS_RESOURCE
+[0;1;32mExecReload=[0m/nix/store/35ggcr6cvmph51l6nch9v6h708bard0d-nginx-1.28.2/bin/nginx -c '/nix/store/xgdxi765g8qchgrkyzzq4jr7srah0vph-nginx.conf' -t
+[0;1;32mExecReload=[0m/nix/store/wkkwxc04gdw6b263l1h29pjarjnjdyb6-coreutils-9.8/bin/kill -HUP $MAINPID
+[0;1;32mExecStart=[0m/nix/store/35ggcr6cvmph51l6nch9v6h708bard0d-nginx-1.28.2/bin/nginx -c '/nix/store/xgdxi765g8qchgrkyzzq4jr7srah0vph-nginx.conf'
+[0;1;32mExecStartPre=[0m/nix/store/wsac4q7x1kb92wm1mwylagpgryq65r71-unit-script-nginx-pre-start/bin/nginx-pre-start
+[0;1;32mGroup=[0mnginx
+[0;1;32mLockPersonality=[0mtrue
+[0;1;32mLogsDirectory=[0mnginx
+[0;1;32mLogsDirectoryMode=[0m0750
+[0;1;32mMemoryDenyWriteExecute=[0mtrue
+[0;1;32mNoNewPrivileges=[0mtrue
+[0;1;32mPrivateDevices=[0mtrue
+[0;1;32mPrivateMounts=[0mtrue
+[0;1;32mPrivateTmp=[0mtrue
+[0;1;32mProcSubset=[0mpid
+[0;1;32mProtectClock=[0mtrue
+[0;1;32mProtectControlGroups=[0mtrue
+[0;1;32mProtectHome=[0mtrue
+[0;1;32mProtectHostname=[0mtrue
+[0;1;32mProtectKernelLogs=[0mtrue
+[0;1;32mProtectKernelModules=[0mtrue
+[0;1;32mProtectKernelTunables=[0mtrue
+[0;1;32mProtectProc=[0minvisible
+[0;1;32mProtectSystem=[0mstrict
+[0;1;32mRemoveIPC=[0mtrue
+[0;1;32mRestart=[0malways
+[0;1;32mRestartSec=[0m10s
+[0;1;32mRestrictAddressFamilies=[0mAF_UNIX
+[0;1;32mRestrictAddressFamilies=[0mAF_INET
+[0;1;32mRestrictAddressFamilies=[0mAF_INET6
+[0;1;32mRestrictNamespaces=[0mtrue
+[0;1;32mRestrictRealtime=[0mtrue
+[0;1;32mRestrictSUIDSGID=[0mtrue
+[0;1;32mRuntimeDirectory=[0mnginx
+[0;1;32mRuntimeDirectoryMode=[0m0750
+[0;1;32mSystemCallArchitectures=[0mnative
+[0;1;32mSystemCallFilter=[0m~@cpu-emulation @debug @keyring @mount @obsolete @privileged @setuid
+[0;1;32mUMask=[0m0027
+[0;1;32mUser=[0mnginx
+
+[0;1;36m[Install][0m
+[0;1;32mWantedBy=[0mmulti-user.target

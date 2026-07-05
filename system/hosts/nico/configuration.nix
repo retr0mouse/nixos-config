@@ -49,6 +49,25 @@
     ]; 
   };
 
+  services.jellyfin = {
+    enable = true;
+  };
+  services.radarr = {
+    enable = true;
+    dataDir = "/var/lib/radarr";
+  };
+  services.sonarr = {
+    enable = true;
+    dataDir = "/var/lib/sonarr";
+  };
+  services.prowlarr = {
+    enable = true;
+  };
+
+  services.qbittorrent = {
+    enable = true;
+  };
+
   services.duckdns = {
     enable = true;
 
@@ -64,8 +83,7 @@
 
     virtualHosts."immich.dema" = {
       listen = [
-        { addr = "10.10.0.1"; port = 80; }
-        { addr = "192.168.0.251"; port = 80; }
+        { addr = "0.0.0.0"; port = 80; }
       ];
 
       locations."/" = {
@@ -88,8 +106,7 @@
 
     virtualHosts."pihole.dema" = {
       listen = [
-        { addr = "10.10.0.1"; port = 80; }
-        { addr = "192.168.0.251"; port = 80; }
+        { addr = "0.0.0.0"; port = 80; }
       ];
 
       locations."/" = {
@@ -103,9 +120,74 @@
         '';
       };
     };
+    
+    virtualHosts."jellyfin.dema" = {
+      serverName = "jellyfin.dema";
+      listen = [
+        { addr = "0.0.0.0"; port = 80; }
+      ];
+
+      locations."/" = {
+        proxyPass = "http://127.0.0.1:8096";
+
+        extraConfig = ''
+          proxy_set_header Host $host;
+          proxy_set_header X-Real-IP $remote_addr;
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          
+          # THIS IS CRITICAL FOR JELLYFIN
+          proxy_set_header X-Forwarded-Proto $scheme;
+          proxy_set_header X-Forwarded-Host $host;
+
+          # Websockets (important for Jellyfin UI)
+          proxy_http_version 1.1;
+          proxy_set_header Upgrade $http_upgrade;
+          proxy_set_header Connection "upgrade";
+        '';
+      };
+    };
+
+    virtualHosts."qbittorrent.dema" = {
+      listen = [
+        { addr = "0.0.0.0"; port = 80; }
+      ];
+
+      locations."/" = {
+        proxyPass = "http://127.0.0.1:8080";
+      };
+    };
+
+    virtualHosts."prowlarr.dema" = {
+      listen = [
+        { addr = "0.0.0.0"; port = 80; }
+      ];
+
+      locations."/" = {
+        proxyPass = "http://127.0.0.1:9696";
+      };
+    };
+
+    virtualHosts."default" = {
+      default = true;
+      listen = [
+        { addr = "0.0.0.0"; port = 80; }
+      ];
+      locations."/" = {
+        return = "444";
+      };
+    };
 
     recommendedProxySettings = true;
     recommendedGzipSettings = true;
+  };
+
+  services.nginx = {
+    commonHttpConfig = ''
+      map $http_upgrade $connection_upgrade {
+        default upgrade;
+          "" close;
+      }
+    '';
   };
 
   fileSystems."/data" = {
@@ -120,6 +202,8 @@
     "d /data/immich/upload 0750 immich immich -"
     "d /data/immich/thumbs 0750 immich immich -"
     "d /data/immich/postgres 0700 postgres postgres -"
+    "d /data/media 0775 root media -"
+    "d /data/downloads 0775 root media -"
   ];
 
   services.postgresql = {
@@ -149,8 +233,13 @@
     group = "immich";
     home = "/var/lib/immich";
   };
+  users.users.jellyfin.extraGroups = [ "media" ];
+  users.users.radarr.extraGroups = [ "media" ];
+  users.users.sonarr.extraGroups = [ "media" ];
+  users.users.qbittorrent.extraGroups = [ "media" ];
 
   users.groups.immich = {};
+  users.groups.media = {};
 
   services.logind = {
     lidSwitch = "ignore";
@@ -180,7 +269,7 @@
 
   services.pihole-web = {
     enable = true;
-    ports = [ "10.10.0.1:8081" ];
+    ports = [ "127.0.0.1:8081" ];
   };
 
   services.pihole-ftl = {
@@ -191,6 +280,9 @@
       dns.hosts = [
         "192.168.0.251 immich.dema"
         "192.168.0.251 pihole.dema"
+        "192.168.0.251 jellyfin.dema"
+        "192.168.0.251 qbittorrent.dema"
+        "192.168.0.251 prowlarr.dema"
       ];
 
       adlists = [
