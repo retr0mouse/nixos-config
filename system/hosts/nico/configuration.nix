@@ -8,6 +8,22 @@
     ../../modules/common.nix
     ./hardware-configuration.nix
   ];
+  
+  hardware.graphics = {
+    enable = true;
+    enable32Bit = true;
+  };
+
+  services.xserver.videoDrivers = [ "nvidia" ];
+
+  hardware.nvidia = {
+    modesetting.enable = true;
+    open = false;
+    package = config.boot.kernelPackages.nvidiaPackages.stable;
+  };
+
+  # IMPORTANT: disable nouveau
+  boot.blacklistedKernelModules = [ "nouveau" ];
 
   boot.kernel.sysctl."net.ipv4.ip_forward" = 1;
   networking.hostName = "nico";
@@ -137,15 +153,50 @@
     virtualHosts."qbittorrent.dema" = {
       locations."/" = {
         proxyPass = "http://127.0.0.1:8080";
+        extraConfig = ''
+          proxy_set_header Host $host;
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          proxy_set_header X-Real-IP $remote_addr;
+
+          proxy_http_version 1.1;
+          proxy_set_header Upgrade $http_upgrade;
+          proxy_set_header Connection "upgrade";
+        '';
       };
     };
 
     virtualHosts."prowlarr.dema" = {
       locations."/" = {
         proxyPass = "http://127.0.0.1:9696";
+        extraConfig = ''
+          proxy_set_header Host $host;
+          proxy_set_header X-Real-IP $remote_addr;
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        '';
       };
     };
 
+    virtualHosts."movies.dema" = {
+      locations."/" = {
+        proxyPass = "http://127.0.0.1:7878";
+        extraConfig = ''
+          proxy_set_header Host $host;
+          proxy_set_header X-Real-IP $remote_addr;
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        '';
+      };
+    };
+
+    virtualHosts."shows.dema" = {
+      locations."/" = {
+        proxyPass = "http://127.0.0.1:8989";
+        extraConfig = ''
+          proxy_set_header Host $host;
+          proxy_set_header X-Real-IP $remote_addr;
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        '';
+      };
+    };
     virtualHosts."default" = {
       default = true;
       
@@ -169,9 +220,19 @@
     "d /data/immich/thumbs 0750 immich immich -"
     "d /data/immich/postgres 0700 postgres postgres -"
     "d /data/media 0775 root media -"
+    "d /data/media/movies 0775 root media -"
+    "d /data/media/shows 0775 root media -"
     "d /data/downloads 0775 root media -"
+    "d /var/lib/qBittorrent 0750 qbittorrent qbittorrent -"
+    "d /data/qbittorrent 0750 qbittorrent qbittorrent -"
+    "d /data/qbittorrent 0775 qbittorrent media -"
+    "d /data/qbittorrent/downloads 0775 qbittorrent media -"
   ];
-
+  systemd.services.qbittorrent.serviceConfig = {
+    BindPaths = [ "/var/lib/qBittorrent" ];
+  };
+  systemd.services.radarr.after = [ "data.mount" ];
+  systemd.services.sonarr.after = [ "data.mount" ];
   services.postgresql = {
     enable = true;
     dataDir = "/data/postgres/immich";
@@ -199,7 +260,7 @@
     group = "immich";
     home = "/var/lib/immich";
   };
-  users.users.jellyfin.extraGroups = [ "media" ];
+  users.users.jellyfin.extraGroups = [ "media" "render" ];
   users.users.radarr.extraGroups = [ "media" ];
   users.users.sonarr.extraGroups = [ "media" ];
   users.users.qbittorrent.extraGroups = [ "media" ];
@@ -249,6 +310,8 @@
         "192.168.0.251 jellyfin.dema"
         "192.168.0.251 qbittorrent.dema"
         "192.168.0.251 prowlarr.dema"
+        "192.168.0.251 movies.dema"
+        "192.168.0.251 shows.dema"
       ];
 
       adlists = [
@@ -264,7 +327,6 @@
 
   environment.systemPackages = with pkgs; [
     kitty.terminfo
-    nginx
   ];
 
   system.stateVersion = "25.11";
