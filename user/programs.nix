@@ -16,6 +16,7 @@
     nodejs_24 # JavaScript runtime (Node.js)
     gcc # C/C++ compiler toolchain
     dotnetCorePackages.sdk_9_0_1xx # dotnet 9.0.1 SDK
+    jdk25 # openJDK 25
 
     # terminal / UI apps
     kitty-themes # Kitty color scheme collection
@@ -78,6 +79,7 @@
     # media / creative tools
     vlc # media player
     audacity # audio editor
+    jellyfin-desktop # media playback service
 
     # gaming / emulation
     prismlauncher # Minecraft launcher
