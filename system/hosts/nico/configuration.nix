@@ -342,15 +342,9 @@
         difficulty = "normal";
         max-players = 5;
         motd = "voldsoy";
-        online-mode = false;
+        online-mode = true;
         view-distance = 10;
         simulation-distance = 8;
-        white-list = true;
-      };
-
-      whitelist = {
-        Nuacho = "f25c569a-a629-3a07-a3b6-aadbf29cc275";
-        Bazvel = "89f9942d-53a8-3b1b-975b-3e0c1e94f09c";
       };
 
       operators = {
