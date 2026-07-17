@@ -41,14 +41,12 @@
     extraGroups = [
       "wheel"
       "networkmanager"
-      "docker"
     ];
   };
 
   programs.zsh.enable = true;
 
   # Docker
-  virtualisation.docker.enable = true;
 
   # nix-ld
   programs.nix-ld.enable = true;

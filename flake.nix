@@ -8,6 +8,7 @@
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     xremap-flake.url = "github:xremap/nix-flake";
     wlctl.url = "github:aashish-thapa/wlctl";
+    nix-minecraft.url = "github:Infinidoge/nix-minecraft";
   };
 
   outputs = inputs @ {
@@ -15,6 +16,7 @@
     nixpkgs,
     home-manager,
     wlctl,
+    nix-minecraft,
     ...
   }: let
     system = "x86_64-linux";
@@ -56,6 +58,13 @@
         modules = [
           ./system/hosts/${hostname}/configuration.nix
           home-manager.nixosModules.home-manager
+          nix-minecraft.nixosModules.minecraft-servers
+
+          {
+            nixpkgs.overlays = [
+              inputs.nix-minecraft.overlay
+            ];
+          }
 
           {
             home-manager.useGlobalPkgs = true;

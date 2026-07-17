@@ -31,8 +31,8 @@
 
   networking.firewall = {
     enable = true;
-    allowedTCPPorts = [];
-    allowedUDPPorts = [ 51820 ];
+    allowedTCPPorts = [ 25565 ];
+    allowedUDPPorts = [ 51820 24454 ];
     extraCommands = ''
       iptables -P INPUT DROP
       iptables -P FORWARD DROP
@@ -44,6 +44,8 @@
       iptables -A INPUT -s 192.168.0.0/24 -j ACCEPT
       iptables -A INPUT -s 10.10.0.0/24 -j ACCEPT
       iptables -A INPUT -p udp --dport 51820 -j ACCEPT
+
+      iptables -A INPUT -p tcp --dport 25565 -j ACCEPT
     '';
   };
 
@@ -324,6 +326,55 @@
   services.journald.extraConfig = ''
     SystemMaxUse=500M
   '';
+  services.minecraft-servers = {
+    dataDir = "/data/minecraft";
+    enable = true;
+    eula = true;
+    openFirewall = true;
+
+    servers.fabric = {
+      enable = true;
+      jvmOpts = "-Xmx4G -Xms2G";
+      package = pkgs.fabricServers.fabric.override { jre_headless = pkgs.jdk25; };
+
+      serverProperties = {
+        server-port = 25565;
+        difficulty = "normal";
+        max-players = 5;
+        motd = "voldsoy";
+        online-mode = false;
+        view-distance = 10;
+        simulation-distance = 8;
+        white-list = true;
+      };
+
+      whitelist = {
+        Nuacho = "f25c569a-a629-3a07-a3b6-aadbf29cc275";
+        Bazvel = "89f9942d-53a8-3b1b-975b-3e0c1e94f09c";
+      };
+
+      operators = {
+        Nuacho = {
+          uuid = "f25c569a-a629-3a07-a3b6-aadbf29cc275";
+          level = 4;
+        };
+      };
+      symlinks = {
+        mods = pkgs.linkFarmFromDrvs "mods" (
+          builtins.attrValues {
+            Fabric-API = pkgs.fetchurl {
+              url = "https://cdn.modrinth.com/data/P7dR8mSH/versions/lVXlbH4w/fabric-api-0.155.2%2B26.2.jar";
+              sha512 = "cc56984378a27c5bcd56374d6ffbb27a45c6bf3355add2ac6be9817ccac5854362249bf9d0147eb271a70fda2716129204e240d53c9aa876a2a7861f4c7f880f";
+            };
+            Simple-Voice-Chat = pkgs.fetchurl {
+              url = "https://cdn.modrinth.com/data/9eGKb6K1/versions/bvaEHE2T/voicechat-fabric-2.6.20%2B26.2.jar";
+              sha512 = "6d9e16ef5e86b60c637797631f55c5ab3adbb8a8ee1e67f1d6b4f3c70fead800cf5d927a2f5f0eb6de5bc806088ae0d39a8ad3293c98d13936684a03c5d81336";
+            };
+          }
+        );
+      };
+    };
+  };
 
   environment.systemPackages = with pkgs; [
     kitty.terminfo

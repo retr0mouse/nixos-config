@@ -22,6 +22,7 @@
     tree
     yazi
     gh
+    jdk25
   ];
 
   programs.ssh = {
