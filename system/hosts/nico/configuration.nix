@@ -353,7 +353,7 @@
         difficulty = "normal";
         max-players = 5;
         motd = "voldsoy";
-        online-mode = true;
+        online-mode = false;
         view-distance = 10;
         simulation-distance = 8;
       };
