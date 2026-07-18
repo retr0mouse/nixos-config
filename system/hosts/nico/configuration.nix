@@ -35,17 +35,24 @@
     allowedUDPPorts = [ 51820 24454 ];
     extraCommands = ''
       iptables -P INPUT DROP
-      iptables -P FORWARD DROP
-      iptables -P OUTPUT ACCEPT
+      iptables -p forward drop
+      iptables -p output accept
 
-      iptables -A INPUT -i lo -j ACCEPT
-      iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+      iptables -a input -i lo -j accept
+      iptables -a input -m conntrack --ctstate established,related -j accept
 
-      iptables -A INPUT -s 192.168.0.0/24 -j ACCEPT
-      iptables -A INPUT -s 10.10.0.0/24 -j ACCEPT
-      iptables -A INPUT -p udp --dport 51820 -j ACCEPT
+      iptables -a input -s 192.168.0.0/24 -j accept
+      iptables -a input -s 10.10.0.0/24 -j accept
+      iptables -a input -p udp --dport 51820 -j accept
 
-      iptables -A INPUT -p tcp --dport 25565 -j ACCEPT
+      iptables -a input -p tcp --dport 25565 -j accept
+
+      # wireguard -> lan forwarding
+      iptables -a forward -i wg0 -d 192.168.0.0/24 -j accept
+      iptables -a forward -i wg0 -d 10.10.0.0/24 -j accept
+
+      # Return traffic
+      iptables -A FORWARD -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
     '';
   };
 
@@ -63,6 +70,10 @@
       {
         publicKey = "BCUiOnONmcZEb3Bit6tqfQYXpdPhxYxPP/Ljd8gmxhg=";
         allowedIPs = [ "10.10.0.4/32" ];
+      }
+      {
+        publicKey = "LxVWtEAwZUG/Il10eQqE93pnBW/uWWFloGi2E/bG0w4=";
+        allowedIPs = [ "10.10.0.6/32" ];
       }
     ]; 
   };

@@ -52,4 +52,5 @@
   programs.nix-ld.enable = true;
   
   environment.systemPackages = [];
+
 }
