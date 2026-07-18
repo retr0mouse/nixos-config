@@ -13,6 +13,22 @@
   ];
 
   networking.hostName = "clancy";
+  networking.wg-quick.interfaces = {
+    wg0 = {
+      address = ["10.10.0.6/32"];
+      dns = ["10.10.0.1"];
+      privateKeyFile = "/etc/wireguard/privatekey";
+
+      peers = [
+        {
+          publicKey = "H/aACRc0usVuOYhIQrD4hYQKU7xePHWEwkX91Wm/yFI=";
+          allowedIPs = ["10.10.0.0/24" "192.168.0.0/24"];
+          endpoint = "voldsoy.duckdns.org:51820";
+          persistentKeepalive = 25;
+        }
+      ];
+    };
+  };
 
   services.asusd.enable = true;
   services.logind.settings.Login.HandleLidSwitchExternalPower = "ignore";

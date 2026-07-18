@@ -97,5 +97,6 @@
     # miscellaneous / experiments
     matugen # Material You theme generator
     waypaper # wallpaper picker frontend
+    wireguard-tools # tools for wireguard
   ];
 }
