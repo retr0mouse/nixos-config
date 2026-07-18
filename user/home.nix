@@ -147,7 +147,7 @@
     oh-my-zsh = {
       enable = true;
       plugins = ["git"];
-      theme = "robbyrussell";
+      theme = "agnoster";
     };
   };
 
