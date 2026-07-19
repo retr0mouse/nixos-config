@@ -59,7 +59,6 @@
   networking = {
     networkmanager.enable = true;
     networkmanager.wifi.backend = "wpa_supplicant";
-    wireless.enable = false;
   };
 
   systemd.services.NetworkManager-wait-online.enable = false;

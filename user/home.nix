@@ -4,7 +4,7 @@
   ...
 }: {
   imports = [
-    ./modules/hyprland.nix
+    ./modules/hyprland
     ./modules/waybar
     ./modules/kitty.nix
     ./modules/zsh.nix
@@ -24,7 +24,6 @@
 
   home.stateVersion = "24.11"; # First-deploy version — do not change.
 
-  home.packages = [];
   wayland.windowManager.hyprland.systemd.enable = false;
   gtk = {
     enable = true;

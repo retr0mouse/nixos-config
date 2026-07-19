@@ -6,6 +6,5 @@ in {
     (mkScript "igpu_usage")
     (mkScript "dgpu_usage")
     (mkScript "bluetooth_status")
-    (mkScript "clipboard_menu")
   ];
 }

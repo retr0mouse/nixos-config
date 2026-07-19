@@ -8,10 +8,10 @@
     alejandra # Nix formatter
     stylua # Lua formatter (Neovim configs, etc.)
     black # Python formatter
-    nodePackages.prettier # JS/TS/JSON formatter
+    prettier # JS/TS/JSON formatter
 
     # core runtimes / CLI utilities
-    python310 # Python interpreter
+    python3 # Python interpreter
     jq # JSON processor (CLI)
     nodejs_24 # JavaScript runtime (Node.js)
     gcc # C/C++ compiler toolchain

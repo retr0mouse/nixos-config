@@ -70,6 +70,10 @@
             "cpu"
             "custom/split"
             "memory"
+            "custom/split"
+            "custom/igpu"
+            "custom/split"
+            "custom/dgpu"
             "custom/closebracket"
           ];
         };
@@ -92,14 +96,12 @@
           exec = "igpu_usage";
           interval = 2;
           format = "iGPU{}";
-          on-click = "kitty -e amdgpu_top";
         };
 
         "custom/dgpu" = {
           exec = "dgpu_usage";
           interval = 2;
           format = "dGPU:{}";
-          on-click = "kitty -e nvidia-smi";
         };
 
         "group/brightvol" = {
@@ -139,6 +141,8 @@
           orientation = "horizontal";
           modules = [
             "custom/openbracket"
+            "custom/powerprofile"
+            "custom/split"
             "network"
             "custom/split"
             "custom/bluetooth"

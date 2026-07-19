@@ -12,11 +12,10 @@ if [ "$adapter_powered" != "yes" ]; then
     exit 0
 fi
 
-connected=$(timeout 2 bluetoothctl devices Connected 2>/dev/null)
+count=$(timeout 2 bluetoothctl devices Connected 2>/dev/null | wc -l)
 
-if echo "$connected" | grep -q .; then
-    device=$(echo "$connected" | awk '{$1=$2=""; print substr($0,3)}')
-    echo " $device"
+if [ "$count" -gt 0 ]; then
+    echo "󰂯 $count"
 else
     echo ""
 fi
