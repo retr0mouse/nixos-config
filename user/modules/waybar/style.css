@@ -1,0 +1,121 @@
+/* colors defined at top for easy configuring */
+@define-color background #101211;
+@define-color second-background #1a1d1b;
+@define-color text #c5c8c5;
+@define-color borders #303630;
+@define-color focused #98a87c;
+@define-color focused2 #a8b98c;
+@define-color color1 #7f9f9f;
+@define-color color2 #a48ead;
+@define-color color3 #98a87c;
+@define-color urgent #d08770;
+
+/* font declared */
+* {
+  font-family: "Iosevka";
+  font-size: 15px;
+}
+
+window#waybar {
+  background-color: @background;
+  border-bottom: 0;
+  color: @text;
+  transition: background-color 0.5s;
+}
+
+window#waybar.hidden {
+  opacity: 0.2;
+}
+
+window#waybar.empty #window {
+  background-color: transparent;
+}
+
+#custom-openbracket,
+#custom-closebracket,
+#custom-split {
+  color: @borders;
+  margin: 0 5px;
+}
+
+button {
+  border: none;
+}
+
+#custom-powerprofile:hover {
+  color: @color1;
+}
+
+/* workspace panel */
+#workspaces button {
+  min-width: 0;
+  background-color: transparent;
+  color: @text;
+  border-radius: 0;
+}
+
+#workspaces button:hover {
+  background-color: @second-background;
+}
+
+#workspaces button.active {
+  color: @focused;
+  background-color: @second-background;
+}
+
+#workspaces button.urgent {
+  background-color: @urgent;
+}
+
+.modules-left > widget:first-child > #workspaces {
+  margin-left: 0;
+}
+
+.modules-right > widget:last-child > #workspaces {
+  margin-right: 0;
+}
+
+/* Right Island */
+
+#clock:hover,
+#battery:hover,
+#custom-bluetooth:hover,
+#network:hover,
+#custom-swaync:hover,
+#backlight:hover,
+#pulseaudio:hover {
+  color: @color1;
+}
+
+#pulseaudio.muted {
+  background-color: @color2;
+}
+
+#custom-swaync {
+  font-size: 16px;
+  /* same scale as other icons */
+  color: @text;
+}
+
+#battery {
+  padding: 0 5px;
+}
+
+#battery.charging,
+#battery.plugged {
+  background-color: @focused2;
+  color: @background;
+}
+
+#battery.critical:not(.charging) {
+  background-color: @urgent;
+  color: @text;
+  animation: blink 0.5s steps(12) infinite alternate;
+}
+
+@keyframes blink {
+  to {
+    background-color: @second-background;
+    color: @text;
+  }
+}

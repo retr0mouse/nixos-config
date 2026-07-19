@@ -1,14 +1,11 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}: {
+{...}: {
   programs.waybar = {
     enable = true;
 
     settings = [
       {
+        position = "bottom";
+
         modules-left = [
           "group/workspaces"
           "group/brightvol"
@@ -196,129 +193,6 @@
       }
     ];
 
-    style = ''
-      /* colors defined at top for easy configuring */
-      @define-color background #2C2A24;
-      @define-color second-background #3A372F;
-      @define-color text #DDD5C4;
-      @define-color borders #A0907A;
-      @define-color focused #D08B57;
-      @define-color focused2 #BFAA80;
-      @define-color color1 #7699A3;
-      @define-color color2 #8D7AAE;
-      @define-color color3 #78997A;
-      @define-color urgent #B05A5A;
-
-
-      /* font declared */
-      * {
-        font-family: "Iosevka";
-        font-size: 15px;
-      }
-
-      window#waybar {
-        background-color: @background;
-        border-bottom: 0;
-        color: @text;
-        transition: background-color 0.5s;
-      }
-
-      window#waybar.hidden {
-        opacity: 0.2;
-      }
-
-      window#waybar.empty #window {
-        background-color: transparent;
-      }
-
-      #custom-openbracket,
-      #custom-closebracket,
-      #custom-split {
-        margin: 0 5px;
-      }
-
-      button {
-        border: none;
-      }
-
-
-      #custom-powerprofile:hover {
-        color: @color1;
-      }
-
-      /* workspace panel */
-      #workspaces button {
-        min-width: 0;
-        background-color: transparent;
-        color: @text;
-        border-radius: 0;
-      }
-
-      #workspaces button:hover {
-        background-color: @second-background;
-      }
-
-      #workspaces button.active {
-        color: @focused2;
-        background-color: @second-background;
-      }
-
-      #workspaces button.urgent {
-        background-color: @urgent;
-      }
-
-      .modules-left>widget:first-child>#workspaces {
-        margin-left: 0;
-      }
-
-      .modules-right>widget:last-child>#workspaces {
-        margin-right: 0;
-      }
-
-      /* Right Island */
-
-      #clock:hover,
-      #battery:hover,
-      #custom-bluetooth:hover,
-      #network:hover,
-      #custom-swaync:hover,
-      #backlight:hover,
-      #pulseaudio:hover {
-        color: @color1;
-      }
-
-      #pulseaudio.muted {
-        background-color: @color2;
-      }
-
-      #custom-swaync {
-        font-size: 16px;
-        /* same scale as other icons */
-        color: @text;
-      }
-
-      #battery {
-        padding: 0 5px;
-      }
-
-      #battery.charging,
-      #battery.plugged {
-        background-color: @focused2 ;
-        color: @background;
-      }
-
-      #battery.critical:not(.charging) {
-        background-color: @urgent;
-        color: @text;
-        animation: blink 0.5s steps(12) infinite alternate;
-      }
-
-      @keyframes blink {
-        to {
-          background-color: @second-background;
-          color: @text;
-        }
-      }
-    '';
+    style = builtins.readFile ./style.css;
   };
 }

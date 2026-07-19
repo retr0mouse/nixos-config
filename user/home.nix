@@ -1,15 +1,14 @@
 {
-  config,
   pkgs,
-  lib,
   user,
   ...
 }: {
   imports = [
     ./modules/hyprland.nix
-    ./modules/waybar.nix
+    ./modules/waybar
     ./modules/kitty.nix
-    ./modules/neovim.nix
+    ./modules/zsh.nix
+    ./modules/neovim
     ./modules/brave.nix
     ./modules/git.nix
     ./programs.nix
@@ -129,25 +128,6 @@
           valign = "center";
         }
       ];
-    };
-  };
-
-  # zsh
-  programs.zsh = {
-    enable = true;
-    enableCompletion = true;
-    syntaxHighlighting.enable = true;
-
-    shellAliases = {
-      config = "cd ~/dots && tree";
-      rebuild = "sudo nixos-rebuild switch --flake ~/dots#$(hostname)";
-      logthefuckout = "loginctl terminate-user $USER";
-      slip = "hyprlock & sleep 0.5 && systemctl suspend";
-    };
-    oh-my-zsh = {
-      enable = true;
-      plugins = ["git"];
-      theme = "agnoster";
     };
   };
 

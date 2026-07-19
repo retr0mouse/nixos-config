@@ -17,6 +17,9 @@
     gcc # C/C++ compiler toolchain
     dotnetCorePackages.sdk_9_0_1xx # dotnet 9.0.1 SDK
     jdk25 # openJDK 25
+    maven # Maven
+    gradle # Gradle
+    ripgrep # search tool
 
     # terminal / UI apps
     kitty-themes # Kitty color scheme collection
@@ -43,7 +46,6 @@
     # development tools / IDEs
     vscode # Visual Studio Code editor
     jetbrains.idea # IntelliJ IDEA IDE
-    maven # Java build system
 
     # system utilities
     gh # GitHub CLI

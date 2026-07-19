@@ -1,5 +1,4 @@
 {
-  config,
   inputs,
   lib,
   pkgs,
@@ -117,13 +116,10 @@
 
   # Fonts
   fonts.packages = with pkgs; [
-    jetbrains-mono
+    nerd-fonts.fira-code
+    nerd-fonts.iosevka
     font-awesome
-    fira-code
     material-design-icons
-    fantasque-sans-mono
-    ubuntu-sans
-    iosevka
   ];
 
   # Keyboard layout (X11 fallback — keep in sync with Hyprland kb_layout)

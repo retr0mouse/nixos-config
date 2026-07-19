@@ -6,6 +6,7 @@
   imports = [
     ./modules/neovim.nix
     ./modules/git.nix
+    ./modules/zsh.nix
   ];
 
   home = {
@@ -34,23 +35,6 @@
       addKeysToAgent = "yes";
       compression = true;
       serverAliveInterval = 60;
-    };
-  };
-
-  programs.zsh = {
-    enable = true;
-    enableCompletion = true;
-    syntaxHighlighting.enable = true;
-
-    shellAliases = {
-      config = "cd ~/dots && tree";
-      rebuild = "sudo nixos-rebuild switch --flake ~/dots#$(hostname)";
-    };
-
-    oh-my-zsh = {
-      enable = true;
-      plugins = ["git"];
-      theme = "robbyrussell";
     };
   };
 
