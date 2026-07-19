@@ -4,7 +4,7 @@
   ...
 }: {
   imports = [
-    ./modules/neovim.nix
+    ./modules/neovim
     ./modules/git.nix
     ./modules/zsh.nix
   ];
