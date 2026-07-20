@@ -1,14 +1,14 @@
 {
   config,
   pkgs,
-  user,
   ...
-}: {
+}:
+{
   imports = [
     ../../modules/common.nix
     ./hardware-configuration.nix
   ];
-  
+
   hardware.graphics = {
     enable = true;
     enable32Bit = true;
@@ -31,41 +31,39 @@
 
   networking.firewall = {
     enable = true;
-    allowedTCPPorts = [ 25565 ];
-    allowedUDPPorts = [ 51820 24454 ];
+    allowedTCPPorts = [
+      25565
+      443
+    ];
+    allowedUDPPorts = [
+      51820
+      24454
+    ];
+    trustedInterfaces = [
+      "lo"
+      "enp3s0"
+      "wg0"
+    ];
     extraCommands = ''
-      iptables -P INPUT DROP
-      iptables -p forward drop
-      iptables -p output accept
-
-      iptables -a input -i lo -j accept
-      iptables -a input -m conntrack --ctstate established,related -j accept
-
-      iptables -a input -s 192.168.0.0/24 -j accept
-      iptables -a input -s 10.10.0.0/24 -j accept
-      iptables -a input -p udp --dport 51820 -j accept
-
-      iptables -a input -p tcp --dport 25565 -j accept
-
-      # wireguard -> lan forwarding
-      iptables -a forward -i wg0 -d 192.168.0.0/24 -j accept
-      iptables -a forward -i wg0 -d 10.10.0.0/24 -j accept
-
-      # Return traffic
+      iptables -A FORWARD -i wg0 -d 192.168.0.0/24 -j ACCEPT
       iptables -A FORWARD -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+    '';
+    extraStopCommands = ''
+      iptables -D FORWARD -i wg0 -d 192.168.0.0/24 -j ACCEPT 2>/dev/null || true
+      iptables -D FORWARD -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT 2>/dev/null || true
     '';
   };
 
-  networking.wireguard.interfaces.wg0 = { 
-    ips = [ 
-      "10.10.0.1/24" 
-    ]; 
-    listenPort = 51820; 
-    privateKeyFile = "/etc/wireguard/privatekey"; 
-    peers = [ 
-      { 
-        publicKey = "Q0fqgzyFCBaBUl9R/AByAdj0UmsngUEX9t0c6vc7QBw="; 
-        allowedIPs = [ "10.10.0.2/32" ]; 
+  networking.wireguard.interfaces.wg0 = {
+    ips = [
+      "10.10.0.1/24"
+    ];
+    listenPort = 51820;
+    privateKeyFile = "/etc/wireguard/privatekey";
+    peers = [
+      {
+        publicKey = "Q0fqgzyFCBaBUl9R/AByAdj0UmsngUEX9t0c6vc7QBw=";
+        allowedIPs = [ "10.10.0.2/32" ];
       }
       {
         publicKey = "BCUiOnONmcZEb3Bit6tqfQYXpdPhxYxPP/Ljd8gmxhg=";
@@ -75,8 +73,22 @@
         publicKey = "LxVWtEAwZUG/Il10eQqE93pnBW/uWWFloGi2E/bG0w4=";
         allowedIPs = [ "10.10.0.6/32" ];
       }
-    ]; 
+    ];
   };
+
+  security.acme = {
+    acceptTerms = true;
+    defaults.email = "daniil.sharin667@gmail.com";
+    certs."voldsoy.duckdns.org" = {
+      domain = "voldsoy.duckdns.org";
+      extraDomainNames = [ "*.voldsoy.duckdns.org" ];
+      dnsProvider = "duckdns";
+      dnsPropagationCheck = true;
+      environmentFile = "/etc/secrets/duckdns-acme-env";
+    };
+  };
+
+  users.users.nginx.extraGroups = [ "acme" ];
 
   services.jellyfin = {
     enable = true;
@@ -110,7 +122,9 @@
   services.nginx = {
     enable = true;
 
-    virtualHosts."immich.dema" = {
+    virtualHosts."immich.voldsoy.duckdns.org" = {
+      useACMEHost = "voldsoy.duckdns.org";
+      forceSSL = true;
       locations."/" = {
         proxyPass = "http://127.0.0.1:2283";
 
@@ -127,9 +141,9 @@
         '';
       };
     };
-
-
-    virtualHosts."pihole.dema" = {
+    virtualHosts."pihole.voldsoy.duckdns.org" = {
+      useACMEHost = "voldsoy.duckdns.org";
+      forceSSL = true;
       locations."/" = {
         proxyPass = "http://127.0.0.1:8081";
 
@@ -141,9 +155,10 @@
         '';
       };
     };
-    
-    virtualHosts."jellyfin.dema" = {
-      serverName = "jellyfin.dema";
+
+    virtualHosts."jellyfin.voldsoy.duckdns.org" = {
+      useACMEHost = "voldsoy.duckdns.org";
+      forceSSL = true;
       locations."/" = {
         proxyPass = "http://127.0.0.1:8096";
 
@@ -163,7 +178,9 @@
       };
     };
 
-    virtualHosts."qbittorrent.dema" = {
+    virtualHosts."qbittorrent.voldsoy.duckdns.org" = {
+      useACMEHost = "voldsoy.duckdns.org";
+      forceSSL = true;
       locations."/" = {
         proxyPass = "http://127.0.0.1:8080";
         extraConfig = ''
@@ -178,7 +195,9 @@
       };
     };
 
-    virtualHosts."prowlarr.dema" = {
+    virtualHosts."prowlarr.voldsoy.duckdns.org" = {
+      useACMEHost = "voldsoy.duckdns.org";
+      forceSSL = true;
       locations."/" = {
         proxyPass = "http://127.0.0.1:9696";
         extraConfig = ''
@@ -189,7 +208,9 @@
       };
     };
 
-    virtualHosts."movies.dema" = {
+    virtualHosts."movies.voldsoy.duckdns.org" = {
+      useACMEHost = "voldsoy.duckdns.org";
+      forceSSL = true;
       locations."/" = {
         proxyPass = "http://127.0.0.1:7878";
         extraConfig = ''
@@ -200,7 +221,9 @@
       };
     };
 
-    virtualHosts."shows.dema" = {
+    virtualHosts."shows.voldsoy.duckdns.org" = {
+      useACMEHost = "voldsoy.duckdns.org";
+      forceSSL = true;
       locations."/" = {
         proxyPass = "http://127.0.0.1:8989";
         extraConfig = ''
@@ -212,7 +235,7 @@
     };
     virtualHosts."default" = {
       default = true;
-      
+
       locations."/" = {
         return = "444";
       };
@@ -223,7 +246,11 @@
   fileSystems."/data" = {
     device = "/dev/disk/by-uuid/efee3c35-c283-4091-9a72-5df4cfcb2412";
     fsType = "ext4";
-    options = [ "noatime" "nofail" "x-systemd.device-timeout=5s" ];
+    options = [
+      "noatime"
+      "nofail"
+      "x-systemd.device-timeout=5s"
+    ];
   };
 
   systemd.tmpfiles.rules = [
@@ -265,7 +292,7 @@
 
     mediaLocation = "/data/immich/library";
 
-    settings.server.externalDomain = "http://immich.home";
+    settings.server.externalDomain = "https://immich.voldsoy.duckdns.org";
   };
 
   users.users.immich = {
@@ -273,13 +300,16 @@
     group = "immich";
     home = "/var/lib/immich";
   };
-  users.users.jellyfin.extraGroups = [ "media" "render" ];
+  users.users.jellyfin.extraGroups = [
+    "media"
+    "render"
+  ];
   users.users.radarr.extraGroups = [ "media" ];
   users.users.sonarr.extraGroups = [ "media" ];
   users.users.qbittorrent.extraGroups = [ "media" ];
 
-  users.groups.immich = {};
-  users.groups.media = {};
+  users.groups.immich = { };
+  users.groups.media = { };
 
   services.logind = {
     lidSwitch = "ignore";
@@ -287,11 +317,11 @@
     lidSwitchExternalPower = "ignore";
   };
 
-  systemd.sleep.extraConfig = ''
-    AllowSuspend=no
-    AllowHibernation=no
-    AllowHybridSleep=no
-  '';
+  systemd.sleep.settings.Sleep = {
+    AllowSuspend = "no";
+    AllowHibernation = "no";
+    AllowHybridSleep = "no";
+  };
 
   services.fail2ban.enable = true;
 
@@ -318,13 +348,13 @@
       dns.interface = "127.0.0.1";
       dns.upstreams = [ "127.0.0.1#5335" ];
       dns.hosts = [
-        "192.168.0.251 immich.dema"
-        "192.168.0.251 pihole.dema"
-        "192.168.0.251 jellyfin.dema"
-        "192.168.0.251 qbittorrent.dema"
-        "192.168.0.251 prowlarr.dema"
-        "192.168.0.251 movies.dema"
-        "192.168.0.251 shows.dema"
+        "192.168.0.251 immich.voldsoy.duckdns.org"
+        "192.168.0.251 pihole.voldsoy.duckdns.org"
+        "192.168.0.251 jellyfin.voldsoy.duckdns.org"
+        "192.168.0.251 qbittorrent.voldsoy.duckdns.org"
+        "192.168.0.251 prowlarr.voldsoy.duckdns.org"
+        "192.168.0.251 movies.voldsoy.duckdns.org"
+        "192.168.0.251 shows.voldsoy.duckdns.org"
       ];
 
       adlists = [
