@@ -2,7 +2,8 @@
   pkgs,
   inputs,
   ...
-}: {
+}:
+{
   home.packages = with pkgs; [
     # formatters / linters
     alejandra # Nix formatter
@@ -19,7 +20,6 @@
     jdk25 # openJDK 25
     maven # Maven
     gradle # Gradle
-    ripgrep # search tool
 
     # terminal / UI apps
     kitty-themes # Kitty color scheme collection

@@ -2,7 +2,8 @@
   pkgs,
   user,
   ...
-}: {
+}:
+{
   imports = [
     ./modules/neovim
     ./modules/git.nix
@@ -24,6 +25,7 @@
     yazi
     gh
     jdk25
+    mcrcon
   ];
 
   programs.ssh = {

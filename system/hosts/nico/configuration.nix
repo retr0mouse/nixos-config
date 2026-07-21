@@ -19,7 +19,7 @@
   hardware.nvidia = {
     modesetting.enable = true;
     open = false;
-    package = config.boot.kernelPackages.nvidiaPackages.stable;
+    package = config.boot.kernelPackages.nvidiaPackages.legacy_580;
   };
 
   # IMPORTANT: disable nouveau
@@ -375,17 +375,19 @@
 
     servers.fabric = {
       enable = true;
-      jvmOpts = "-Xmx4G -Xms2G";
+      jvmOpts = "-Xmx6G -Xms4G";
       package = pkgs.fabricServers.fabric.override { jre_headless = pkgs.jdk25; };
 
       serverProperties = {
         server-port = 25565;
         difficulty = "normal";
         max-players = 5;
-        motd = "voldsoy";
+        motd = "This is NixOS btw";
         online-mode = false;
         view-distance = 10;
         simulation-distance = 8;
+        enable-rcon = true;
+        "rcon.password" = "minecraft2";
       };
 
       operators = {
@@ -404,6 +406,14 @@
             Simple-Voice-Chat = pkgs.fetchurl {
               url = "https://cdn.modrinth.com/data/9eGKb6K1/versions/bvaEHE2T/voicechat-fabric-2.6.20%2B26.2.jar";
               sha512 = "6d9e16ef5e86b60c637797631f55c5ab3adbb8a8ee1e67f1d6b4f3c70fead800cf5d927a2f5f0eb6de5bc806088ae0d39a8ad3293c98d13936684a03c5d81336";
+            };
+            Chunky = pkgs.fetchurl {
+              url = "https://cdn.modrinth.com/data/fALzjamp/versions/4Eotm6ov/Chunky-Fabric-1.5.3.jar";
+              sha512 = "0b3amvi0lq0gkv59mi26s5wj7hghq2nh41vw2k7p7q7wn1yak5yqaxnp0bg8p7nb6vjpl8cwl82py613msawxzr58isc2ld45xzwfxq";
+            };
+            Distant-Horizons = pkgs.fetchurl {
+              url = "https://cdn.modrinth.com/data/uCdwusMi/versions/gBf0SaV1/DistantHorizons-3.2.0-b-26.2-fabric-neoforge.jar";
+              sha512 = "1r9x1aw8lcqi6wdk0qgaakz910hk5zyjjnjqy3hbccjmjf7ls5lsm9i3qvj1bbn4cjf3ax74wqkqpqr96yr3n4750iw40m0frvqbf61";
             };
           }
         );

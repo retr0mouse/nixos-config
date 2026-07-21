@@ -1,10 +1,10 @@
-{pkgs, ...}: {
+{ pkgs, ... }: {
   programs.neovim = {
     enable = true;
     defaultEditor = true;
 
     extraPackages = with pkgs; [
-      nil #nix
+      nil # nix
       lua-language-server # lua
       jdt-language-server # java
       pyright # python
@@ -13,22 +13,25 @@
       yaml-language-server # yaml
       bash-language-server # bash
       dockerfile-language-server-nodejs # dockerfile
+      ripgrep
     ];
 
-    plugins = let
-      alabaster-nvim = pkgs.vimUtils.buildVimPlugin {
-        pname = "alabaster-nvim";
-        version = "unstable";
+    plugins =
+      let
+        alabaster-nvim = pkgs.vimUtils.buildVimPlugin {
+          pname = "alabaster-nvim";
+          version = "unstable";
 
-        src = pkgs.fetchFromGitHub {
-          owner = "p00f";
-          repo = "alabaster.nvim";
-          rev = "master";
-          hash = "sha256-Rp/nl5dlz55aChrYUL7ir3XtWDFFS99CHS3l3FoCI7c=";
+          src = pkgs.fetchFromGitHub {
+            owner = "p00f";
+            repo = "alabaster.nvim";
+            rev = "master";
+            hash = "sha256-Rp/nl5dlz55aChrYUL7ir3XtWDFFS99CHS3l3FoCI7c=";
+          };
         };
-      };
-    in
-      with pkgs.vimPlugins; [
+      in
+      with pkgs.vimPlugins;
+      [
         alabaster-nvim
 
         # syntax
