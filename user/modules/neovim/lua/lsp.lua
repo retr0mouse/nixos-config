@@ -17,6 +17,9 @@ vim.lsp.config("lua_ls", {
 
 			workspace = {
 				checkThirdParty = false,
+				library = {
+					"/run/current-system/sw/share/hypr",
+				},
 			},
 
 			telemetry = {

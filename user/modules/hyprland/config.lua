@@ -174,13 +174,13 @@ end)
 
 -- Keybinds further down will be global again...
 
-hl.bind("SUPER" .. " + " .. "Return", hl.dsp.exec_cmd("kitty"))
+hl.bind("SUPER" .. " + " .. "Return", hl.dsp.exec_cmd(terminal))
 
-hl.bind("SUPER" .. " + " .. "Space", hl.dsp.exec_cmd("rofi -show drun"))
+hl.bind("SUPER" .. " + " .. "Space", hl.dsp.exec_cmd(menu))
 
 hl.bind("Pause", hl.dsp.exec_cmd("hyprlock"))
 
-hl.bind("SUPER + SHIFT" .. " + " .. "Return", hl.dsp.exec_cmd("brave"))
+hl.bind("SUPER + SHIFT" .. " + " .. "Return", hl.dsp.exec_cmd(browser))
 
 hl.bind("SUPER + SHIFT" .. " + " .. "Q", hl.dsp.window.close())
 
