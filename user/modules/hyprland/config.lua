@@ -95,31 +95,15 @@ hl.config({
 -- Window rules
 
 hl.window_rule({
-	name = "pseudo",
-	match = {
-		title = "Telegram",
-	},
-	pseudo = true,
-})
-
-hl.window_rule({
-	name = "size_500_700",
 	match = {
 		title = "Telegram",
 	},
 	size = "500 700",
-})
-
-hl.window_rule({
-	name = "workspace_10_silent",
-	match = {
-		title = "Telegram",
-	},
 	workspace = "10 silent",
+	pseudo = true,
 })
 
 hl.window_rule({
-	name = "workspace_10_silent",
 	match = {
 		title = "Discord",
 	},
@@ -127,7 +111,6 @@ hl.window_rule({
 })
 
 hl.window_rule({
-	name = "workspace_9_silent",
 	match = {
 		title = "Steam",
 	},
