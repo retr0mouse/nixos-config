@@ -233,6 +233,25 @@
         '';
       };
     };
+
+    virtualHosts."status.voldsoy.duckdns.org" = {
+      useACMEHost = "voldsoy.duckdns.org";
+      forceSSL = true;
+
+      locations."/" = {
+        proxyPass = "http://127.0.0.1:3001";
+
+        extraConfig = ''
+          proxy_set_header Host $host;
+          proxy_set_header X-Real-IP $remote_addr;
+
+          proxy_http_version 1.1;
+          proxy_set_header Upgrade $http_upgrade;
+          proxy_set_header Connection "upgrade";
+        '';
+      };
+    };
+
     virtualHosts."default" = {
       default = true;
 
@@ -355,6 +374,7 @@
         "192.168.0.251 prowlarr.voldsoy.duckdns.org"
         "192.168.0.251 movies.voldsoy.duckdns.org"
         "192.168.0.251 shows.voldsoy.duckdns.org"
+        "192.168.0.251 status.voldsoy.duckdns.org"
       ];
 
       adlists = [
@@ -427,6 +447,10 @@
         );
       };
     };
+  };
+
+  services.uptime-kuma = {
+    enable = true;
   };
 
   environment.systemPackages = with pkgs; [
