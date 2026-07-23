@@ -322,6 +322,17 @@
       host all all ::1/128 trust
     '';
   };
+  systemd.services.smartctl-exporter = {
+    description = "Prometheus SMART exporter";
+
+    wantedBy = [ "multi-user.target" ];
+
+    serviceConfig = {
+      ExecStart = "${pkgs.prometheus-smartctl-exporter}/bin/smartctl_exporter";
+      Restart = "always";
+      User = "root";
+    };
+  };
 
   services.immich = {
     enable = true;
@@ -479,11 +490,21 @@
 
     scrapeConfigs = [
       {
-        job_name = "nico";
+        job_name = "performance";
         static_configs = [
           {
             targets = [
               "127.0.0.1:9100"
+            ];
+          }
+        ];
+      }
+      {
+        job_name = "smartctl";
+        static_configs = [
+          {
+            targets = [
+              "127.0.0.1:9633"
             ];
           }
         ];
@@ -516,8 +537,15 @@
     };
   };
 
+  services.smartd = {
+    enable = true;
+    autodetect = true;
+  };
+
   environment.systemPackages = with pkgs; [
     kitty.terminfo
+    smartmontools
+    prometheus-smartctl-exporter
   ];
 
   system.stateVersion = "25.11";
