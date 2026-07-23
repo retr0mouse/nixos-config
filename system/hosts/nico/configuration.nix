@@ -234,7 +234,7 @@
       };
     };
 
-    virtualHosts."status.voldsoy.duckdns.org" = {
+    virtualHosts."uptime-kuma.voldsoy.duckdns.org" = {
       useACMEHost = "voldsoy.duckdns.org";
       forceSSL = true;
 
@@ -250,6 +250,26 @@
           proxy_set_header Connection "upgrade";
         '';
       };
+    };
+
+    virtualHosts."grafana.voldsoy.duckdns.org" = {
+      useACMEHost = "voldsoy.duckdns.org";
+      forceSSL = true;
+
+      locations."/" = {
+        proxyPass = "http://127.0.0.1:3000";
+      };
+
+      extraConfig = ''
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+      '';
     };
 
     virtualHosts."default" = {
@@ -374,7 +394,8 @@
         "192.168.0.251 prowlarr.voldsoy.duckdns.org"
         "192.168.0.251 movies.voldsoy.duckdns.org"
         "192.168.0.251 shows.voldsoy.duckdns.org"
-        "192.168.0.251 status.voldsoy.duckdns.org"
+        "192.168.0.251 uptime-kuma.voldsoy.duckdns.org"
+        "192.168.0.251 grafana.voldsoy.duckdns.org"
       ];
 
       adlists = [
@@ -451,6 +472,48 @@
 
   services.uptime-kuma = {
     enable = true;
+  };
+
+  services.prometheus = {
+    enable = true;
+
+    scrapeConfigs = [
+      {
+        job_name = "nico";
+        static_configs = [
+          {
+            targets = [
+              "127.0.0.1:9100"
+            ];
+          }
+        ];
+      }
+    ];
+
+    exporters.node = {
+      enable = true;
+      enabledCollectors = [
+        "systemd"
+        "filesystem"
+        "thermal_zone"
+      ];
+    };
+  };
+
+  services.grafana = {
+    enable = true;
+
+    settings = {
+      security = {
+        secret_key = "/etc/secrets/grafana-secret-key";
+      };
+      server = {
+        http_addr = "127.0.0.1";
+        http_port = 3000;
+        domain = "grafana.voldsoy.duckdns.org";
+        root_url = "https://grafana.voldsoy.duckdns.org/";
+      };
+    };
   };
 
   environment.systemPackages = with pkgs; [
