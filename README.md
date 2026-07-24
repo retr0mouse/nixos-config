@@ -125,19 +125,19 @@ Adjust the monitor line for your display(s). See the [Hyprland monitor docs](htt
 
 ---
 
-NICO CONFIG 20/07/2026
+NICO CONFIG 23/07/2026
 ```nix
 {
   config,
   pkgs,
-  user,
   ...
-}: {
+}:
+{
   imports = [
     ../../modules/common.nix
     ./hardware-configuration.nix
   ];
-  
+
   hardware.graphics = {
     enable = true;
     enable32Bit = true;
@@ -148,7 +148,7 @@ NICO CONFIG 20/07/2026
   hardware.nvidia = {
     modesetting.enable = true;
     open = false;
-    package = config.boot.kernelPackages.nvidiaPackages.stable;
+    package = config.boot.kernelPackages.nvidiaPackages.legacy_580;
   };
 
   # IMPORTANT: disable nouveau
@@ -160,10 +160,19 @@ NICO CONFIG 20/07/2026
 
   networking.firewall = {
     enable = true;
-    allowedTCPPorts = [ 25565 443 ];
-    allowedUDPPorts = [ 51820 24454 ];
-    trustedInterfaces = [ "lo" "enp3s0" "wg0" ];
-    filterForward = true;
+    allowedTCPPorts = [
+      25565
+      443
+    ];
+    allowedUDPPorts = [
+      51820
+      24454
+    ];
+    trustedInterfaces = [
+      "lo"
+      "enp3s0"
+      "wg0"
+    ];
     extraCommands = ''
       iptables -A FORWARD -i wg0 -d 192.168.0.0/24 -j ACCEPT
       iptables -A FORWARD -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
@@ -174,16 +183,16 @@ NICO CONFIG 20/07/2026
     '';
   };
 
-  networking.wireguard.interfaces.wg0 = { 
-    ips = [ 
-      "10.10.0.1/24" 
-    ]; 
-    listenPort = 51820; 
-    privateKeyFile = "/etc/wireguard/privatekey"; 
-    peers = [ 
-      { 
-        publicKey = "Q0fqgzyFCBaBUl9R/AByAdj0UmsngUEX9t0c6vc7QBw="; 
-        allowedIPs = [ "10.10.0.2/32" ]; 
+  networking.wireguard.interfaces.wg0 = {
+    ips = [
+      "10.10.0.1/24"
+    ];
+    listenPort = 51820;
+    privateKeyFile = "/etc/wireguard/privatekey";
+    peers = [
+      {
+        publicKey = "Q0fqgzyFCBaBUl9R/AByAdj0UmsngUEX9t0c6vc7QBw=";
+        allowedIPs = [ "10.10.0.2/32" ];
       }
       {
         publicKey = "BCUiOnONmcZEb3Bit6tqfQYXpdPhxYxPP/Ljd8gmxhg=";
@@ -193,12 +202,12 @@ NICO CONFIG 20/07/2026
         publicKey = "LxVWtEAwZUG/Il10eQqE93pnBW/uWWFloGi2E/bG0w4=";
         allowedIPs = [ "10.10.0.6/32" ];
       }
-    ]; 
+    ];
   };
 
   security.acme = {
     acceptTerms = true;
-    defaults.email = "TODO@example.com"; # replace with a real address before rebuilding
+    defaults.email = "daniil.sharin667@gmail.com";
     certs."voldsoy.duckdns.org" = {
       domain = "voldsoy.duckdns.org";
       extraDomainNames = [ "*.voldsoy.duckdns.org" ];
@@ -243,7 +252,6 @@ NICO CONFIG 20/07/2026
     enable = true;
 
     virtualHosts."immich.voldsoy.duckdns.org" = {
-      serverAliases = [ "immich.dema" ];
       useACMEHost = "voldsoy.duckdns.org";
       forceSSL = true;
       locations."/" = {
@@ -262,9 +270,7 @@ NICO CONFIG 20/07/2026
         '';
       };
     };
-
     virtualHosts."pihole.voldsoy.duckdns.org" = {
-      serverAliases = [ "pihole.dema" ];
       useACMEHost = "voldsoy.duckdns.org";
       forceSSL = true;
       locations."/" = {
@@ -280,7 +286,6 @@ NICO CONFIG 20/07/2026
     };
 
     virtualHosts."jellyfin.voldsoy.duckdns.org" = {
-      serverAliases = [ "jellyfin.dema" ];
       useACMEHost = "voldsoy.duckdns.org";
       forceSSL = true;
       locations."/" = {
@@ -303,7 +308,6 @@ NICO CONFIG 20/07/2026
     };
 
     virtualHosts."qbittorrent.voldsoy.duckdns.org" = {
-      serverAliases = [ "qbittorrent.dema" ];
       useACMEHost = "voldsoy.duckdns.org";
       forceSSL = true;
       locations."/" = {
@@ -321,7 +325,6 @@ NICO CONFIG 20/07/2026
     };
 
     virtualHosts."prowlarr.voldsoy.duckdns.org" = {
-      serverAliases = [ "prowlarr.dema" ];
       useACMEHost = "voldsoy.duckdns.org";
       forceSSL = true;
       locations."/" = {
@@ -330,12 +333,12 @@ NICO CONFIG 20/07/2026
           proxy_set_header Host $host;
           proxy_set_header X-Real-IP $remote_addr;
           proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          proxy_set_header X-Forwarded-Proto $scheme;
         '';
       };
     };
 
     virtualHosts."movies.voldsoy.duckdns.org" = {
-      serverAliases = [ "movies.dema" ];
       useACMEHost = "voldsoy.duckdns.org";
       forceSSL = true;
       locations."/" = {
@@ -344,12 +347,12 @@ NICO CONFIG 20/07/2026
           proxy_set_header Host $host;
           proxy_set_header X-Real-IP $remote_addr;
           proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          proxy_set_header X-Forwarded-Proto $scheme;
         '';
       };
     };
 
     virtualHosts."shows.voldsoy.duckdns.org" = {
-      serverAliases = [ "shows.dema" ];
       useACMEHost = "voldsoy.duckdns.org";
       forceSSL = true;
       locations."/" = {
@@ -358,12 +361,52 @@ NICO CONFIG 20/07/2026
           proxy_set_header Host $host;
           proxy_set_header X-Real-IP $remote_addr;
           proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          proxy_set_header X-Forwarded-Proto $scheme;
         '';
       };
     };
+
+    virtualHosts."uptime-kuma.voldsoy.duckdns.org" = {
+      useACMEHost = "voldsoy.duckdns.org";
+      forceSSL = true;
+
+      locations."/" = {
+        proxyPass = "http://127.0.0.1:3001";
+
+        extraConfig = ''
+          proxy_set_header Host $host;
+          proxy_set_header X-Real-IP $remote_addr;
+
+          proxy_http_version 1.1;
+          proxy_set_header Upgrade $http_upgrade;
+          proxy_set_header Connection "upgrade";
+        '';
+      };
+    };
+
+    virtualHosts."grafana.voldsoy.duckdns.org" = {
+      useACMEHost = "voldsoy.duckdns.org";
+      forceSSL = true;
+
+      locations."/" = {
+        proxyPass = "http://127.0.0.1:3000";
+
+        extraConfig = ''
+          proxy_set_header Host $host;
+          proxy_set_header X-Real-IP $remote_addr;
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          proxy_set_header X-Forwarded-Proto $scheme;
+
+          proxy_http_version 1.1;
+          proxy_set_header Upgrade $http_upgrade;
+          proxy_set_header Connection "upgrade";
+        '';
+      };
+    };
+
     virtualHosts."default" = {
       default = true;
-      
+
       locations."/" = {
         return = "444";
       };
@@ -374,7 +417,11 @@ NICO CONFIG 20/07/2026
   fileSystems."/data" = {
     device = "/dev/disk/by-uuid/efee3c35-c283-4091-9a72-5df4cfcb2412";
     fsType = "ext4";
-    options = [ "noatime" "nofail" "x-systemd.device-timeout=5s" ];
+    options = [
+      "noatime"
+      "nofail"
+      "x-systemd.device-timeout=5s"
+    ];
   };
 
   systemd.tmpfiles.rules = [
@@ -387,25 +434,37 @@ NICO CONFIG 20/07/2026
     "d /data/media/movies 0775 root media -"
     "d /data/media/shows 0775 root media -"
     "d /data/downloads 0775 root media -"
+    "d /data/downloads/completed 0775 root media -"
+    "d /data/downloads/incomplete 0775 root media -"
+    "d /data/downloads/torrents 0775 root media -"
+    "d /data/downloads/finished 0775 root media -"
     "d /var/lib/qBittorrent 0750 qbittorrent qbittorrent -"
-    "d /data/qbittorrent 0750 qbittorrent qbittorrent -"
-    "d /data/qbittorrent 0775 qbittorrent media -"
-    "d /data/qbittorrent/downloads 0775 qbittorrent media -"
   ];
-  systemd.services.qbittorrent.serviceConfig = {
-    BindPaths = [ "/var/lib/qBittorrent" ];
-  };
+  systemd.services.qbittorrent.after = [ "data.mount" ];
   systemd.services.radarr.after = [ "data.mount" ];
   systemd.services.sonarr.after = [ "data.mount" ];
+  systemd.services.immich-server.after = [ "data.mount" ];
+  systemd.services.mc-fabric.after = [ "data.mount" ];
   services.postgresql = {
     enable = true;
-    dataDir = "/data/postgres/immich";
+    dataDir = "/data/immich/postgres";
 
     authentication = pkgs.lib.mkOverride 10 ''
       local all all trust
       host all all 127.0.0.1/32 trust
       host all all ::1/128 trust
     '';
+  };
+  systemd.services.smartctl-exporter = {
+    description = "Prometheus SMART exporter";
+
+    wantedBy = [ "multi-user.target" ];
+
+    serviceConfig = {
+      ExecStart = "${pkgs.prometheus-smartctl-exporter}/bin/smartctl_exporter";
+      Restart = "always";
+      User = "root";
+    };
   };
 
   services.immich = {
@@ -416,7 +475,7 @@ NICO CONFIG 20/07/2026
 
     mediaLocation = "/data/immich/library";
 
-    settings.server.externalDomain = "http://immich.dema";
+    settings.server.externalDomain = "https://immich.voldsoy.duckdns.org";
   };
 
   users.users.immich = {
@@ -424,13 +483,16 @@ NICO CONFIG 20/07/2026
     group = "immich";
     home = "/var/lib/immich";
   };
-  users.users.jellyfin.extraGroups = [ "media" "render" ];
+  users.users.jellyfin.extraGroups = [
+    "media"
+    "render"
+  ];
   users.users.radarr.extraGroups = [ "media" ];
   users.users.sonarr.extraGroups = [ "media" ];
   users.users.qbittorrent.extraGroups = [ "media" ];
 
-  users.groups.immich = {};
-  users.groups.media = {};
+  users.groups.immich = { };
+  users.groups.media = { };
 
   services.logind = {
     lidSwitch = "ignore";
@@ -438,11 +500,11 @@ NICO CONFIG 20/07/2026
     lidSwitchExternalPower = "ignore";
   };
 
-  systemd.sleep.extraConfig = ''
-    AllowSuspend=no
-    AllowHibernation=no
-    AllowHybridSleep=no
-  '';
+  systemd.sleep.settings.Sleep = {
+    AllowSuspend = "no";
+    AllowHibernation = "no";
+    AllowHybridSleep = "no";
+  };
 
   services.fail2ban.enable = true;
 
@@ -469,13 +531,15 @@ NICO CONFIG 20/07/2026
       dns.interface = "127.0.0.1";
       dns.upstreams = [ "127.0.0.1#5335" ];
       dns.hosts = [
-        "192.168.0.251 immich.dema"
-        "192.168.0.251 pihole.dema"
-        "192.168.0.251 jellyfin.dema"
-        "192.168.0.251 qbittorrent.dema"
-        "192.168.0.251 prowlarr.dema"
-        "192.168.0.251 movies.dema"
-        "192.168.0.251 shows.dema"
+        "192.168.0.251 immich.voldsoy.duckdns.org"
+        "192.168.0.251 pihole.voldsoy.duckdns.org"
+        "192.168.0.251 jellyfin.voldsoy.duckdns.org"
+        "192.168.0.251 qbittorrent.voldsoy.duckdns.org"
+        "192.168.0.251 prowlarr.voldsoy.duckdns.org"
+        "192.168.0.251 movies.voldsoy.duckdns.org"
+        "192.168.0.251 shows.voldsoy.duckdns.org"
+        "192.168.0.251 uptime-kuma.voldsoy.duckdns.org"
+        "192.168.0.251 grafana.voldsoy.duckdns.org"
       ];
 
       adlists = [
@@ -496,17 +560,19 @@ NICO CONFIG 20/07/2026
 
     servers.fabric = {
       enable = true;
-      jvmOpts = "-Xmx4G -Xms2G";
+      jvmOpts = "-Xmx6G -Xms4G";
       package = pkgs.fabricServers.fabric.override { jre_headless = pkgs.jdk25; };
 
       serverProperties = {
         server-port = 25565;
         difficulty = "normal";
         max-players = 5;
-        motd = "voldsoy";
+        motd = "This is NixOS btw";
         online-mode = false;
         view-distance = 10;
         simulation-distance = 8;
+        enable-rcon = true;
+        "rcon.password" = "minecraft2";
       };
 
       operators = {
@@ -526,18 +592,98 @@ NICO CONFIG 20/07/2026
               url = "https://cdn.modrinth.com/data/9eGKb6K1/versions/bvaEHE2T/voicechat-fabric-2.6.20%2B26.2.jar";
               sha512 = "6d9e16ef5e86b60c637797631f55c5ab3adbb8a8ee1e67f1d6b4f3c70fead800cf5d927a2f5f0eb6de5bc806088ae0d39a8ad3293c98d13936684a03c5d81336";
             };
+            Chunky = pkgs.fetchurl {
+              url = "https://cdn.modrinth.com/data/fALzjamp/versions/4Eotm6ov/Chunky-Fabric-1.5.3.jar";
+              sha512 = "0b3amvi0lq0gkv59mi26s5wj7hghq2nh41vw2k7p7q7wn1yak5yqaxnp0bg8p7nb6vjpl8cwl82py613msawxzr58isc2ld45xzwfxq";
+            };
+            Distant-Horizons = pkgs.fetchurl {
+              url = "https://cdn.modrinth.com/data/uCdwusMi/versions/gBf0SaV1/DistantHorizons-3.2.0-b-26.2-fabric-neoforge.jar";
+              sha512 = "1r9x1aw8lcqi6wdk0qgaakz910hk5zyjjnjqy3hbccjmjf7ls5lsm9i3qvj1bbn4cjf3ax74wqkqpqr96yr3n4750iw40m0frvqbf61";
+            };
+            Lithium = pkgs.fetchurl {
+              url = "https://cdn.modrinth.com/data/gvQqBUqZ/versions/UPNexAfy/lithium-fabric-0.25.2%2Bmc26.2.jar";
+              sha512 = "181rb8szs3h704pdx1m1gbxba8mrdy6i0jbbdik0fx9qyz9k2ndpbi135sridfck52j0axfahaxqnhj3zjxkap5v8n92zjvq1v66ryv";
+            };
+            Krypton = pkgs.fetchurl {
+              url = "https://cdn.modrinth.com/data/fQEb0iXm/versions/5WeL0Nkz/krypton-0.3.1.jar";
+              sha512 = "175c7m2xnb8z261wjffgq8bms0cn41zfyjfpkza82llf0wvzlc47z2zkfxwclvadrgh9dw7i2fslpbqiz5k4qlazcx4jl00rlsazndq";
+            };
           }
         );
       };
     };
   };
 
+  services.uptime-kuma = {
+    enable = true;
+  };
+
+  services.prometheus = {
+    enable = true;
+
+    scrapeConfigs = [
+      {
+        job_name = "performance";
+        static_configs = [
+          {
+            targets = [
+              "127.0.0.1:9100"
+            ];
+          }
+        ];
+      }
+      {
+        job_name = "smartctl";
+        static_configs = [
+          {
+            targets = [
+              "127.0.0.1:9633"
+            ];
+          }
+        ];
+      }
+    ];
+
+    exporters.node = {
+      enable = true;
+      enabledCollectors = [
+        "systemd"
+        "filesystem"
+        "thermal_zone"
+      ];
+    };
+  };
+
+  services.grafana = {
+    enable = true;
+
+    settings = {
+      security = {
+        secret_key = "$__file{/etc/secrets/grafana-secret-key}";
+      };
+      server = {
+        http_addr = "127.0.0.1";
+        http_port = 3000;
+        domain = "grafana.voldsoy.duckdns.org";
+        root_url = "https://grafana.voldsoy.duckdns.org/";
+      };
+    };
+  };
+
+  services.smartd = {
+    enable = true;
+    autodetect = true;
+  };
+
   environment.systemPackages = with pkgs; [
     kitty.terminfo
+    smartmontools
+    prometheus-smartctl-exporter
   ];
 
   system.stateVersion = "25.11";
 }
+
 ```
 
 ## Inspiration
