@@ -15,6 +15,8 @@ local browser = "brave"
 -- source = ~/.config/hypr/monitors.conf -> requires manual conversion
 -- local monitors = require("monitors")
 -- TODO: convert ~/.config/hypr/monitors.conf to .lua and use require()
+--
+require("monitors")
 
 -- Autostart apps
 
