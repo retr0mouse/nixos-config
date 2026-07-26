@@ -204,6 +204,7 @@
           proxy_set_header Host $host;
           proxy_set_header X-Real-IP $remote_addr;
           proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          proxy_set_header X-Forwarded-Proto $scheme;
         '';
       };
     };
@@ -217,6 +218,7 @@
           proxy_set_header Host $host;
           proxy_set_header X-Real-IP $remote_addr;
           proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          proxy_set_header X-Forwarded-Proto $scheme;
         '';
       };
     };
@@ -230,6 +232,7 @@
           proxy_set_header Host $host;
           proxy_set_header X-Real-IP $remote_addr;
           proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          proxy_set_header X-Forwarded-Proto $scheme;
         '';
       };
     };
@@ -258,18 +261,18 @@
 
       locations."/" = {
         proxyPass = "http://127.0.0.1:3000";
+
+        extraConfig = ''
+          proxy_set_header Host $host;
+          proxy_set_header X-Real-IP $remote_addr;
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          proxy_set_header X-Forwarded-Proto $scheme;
+
+          proxy_http_version 1.1;
+          proxy_set_header Upgrade $http_upgrade;
+          proxy_set_header Connection "upgrade";
+        '';
       };
-
-      extraConfig = ''
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection "upgrade";
-      '';
     };
 
     virtualHosts."default" = {
@@ -297,21 +300,21 @@
     "d /data/immich/library 0750 immich immich -"
     "d /data/immich/upload 0750 immich immich -"
     "d /data/immich/thumbs 0750 immich immich -"
-    "d /data/immich/postgres 0700 postgres postgres -"
-    "d /data/media 0775 root media -"
-    "d /data/media/movies 0775 root media -"
-    "d /data/media/shows 0775 root media -"
-    "d /data/downloads 0775 root media -"
+    "d /data/media 2775 root media -"
+    "d /data/media/movies 2775 root media -"
+    "d /data/media/shows 2775 root media -"
+    "d /data/downloads 2775 root media -"
+    "d /data/downloads/complete 2775 root media -"
+    "d /data/downloads/incomplete 2775 root media -"
+    "d /data/downloads/torrents 2775 root media -"
+    "d /data/downloads/finished 2775 root media -"
     "d /var/lib/qBittorrent 0750 qbittorrent qbittorrent -"
-    "d /data/qbittorrent 0750 qbittorrent qbittorrent -"
-    "d /data/qbittorrent 0775 qbittorrent media -"
-    "d /data/qbittorrent/downloads 0775 qbittorrent media -"
   ];
-  systemd.services.qbittorrent.serviceConfig = {
-    BindPaths = [ "/var/lib/qBittorrent" ];
-  };
+  systemd.services.qbittorrent.after = [ "data.mount" ];
+  systemd.services.qbittorrent.serviceConfig.UMask = "0002";
   systemd.services.radarr.after = [ "data.mount" ];
   systemd.services.sonarr.after = [ "data.mount" ];
+  systemd.services.immich-server.after = [ "data.mount" ];
   services.postgresql = {
     enable = true;
     dataDir = "/data/postgres/immich";
@@ -475,6 +478,10 @@
               url = "https://cdn.modrinth.com/data/fQEb0iXm/versions/5WeL0Nkz/krypton-0.3.1.jar";
               sha512 = "175c7m2xnb8z261wjffgq8bms0cn41zfyjfpkza82llf0wvzlc47z2zkfxwclvadrgh9dw7i2fslpbqiz5k4qlazcx4jl00rlsazndq";
             };
+            Spark = pkgs.fetchurl {
+              url = "https://cdn.modrinth.com/data/l6YH9Als/versions/iYFOl6lQ/spark-1.10.173-fabric.jar";
+              sha512 = "3xxphxvc0bx1qyqkyncdbp8hw1mkv6290i6lg2im7nmmjnjkwbsbhjb955fl6khpf4fav6cfy033c156qyzdsps7990gkzadjvz5jqx";
+            };
           }
         );
       };
@@ -526,7 +533,7 @@
 
     settings = {
       security = {
-        secret_key = "/etc/secrets/grafana-secret-key";
+        secret_key = "$__file{/etc/secrets/grafana-secret-key}";
       };
       server = {
         http_addr = "127.0.0.1";
