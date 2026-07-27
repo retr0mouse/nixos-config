@@ -224,11 +224,9 @@ NICO CONFIG 23/07/2026
   };
   services.radarr = {
     enable = true;
-    dataDir = "/var/lib/radarr";
   };
   services.sonarr = {
     enable = true;
-    dataDir = "/var/lib/sonarr";
   };
   services.prowlarr = {
     enable = true;
@@ -429,32 +427,40 @@ NICO CONFIG 23/07/2026
     "d /data/immich/library 0750 immich immich -"
     "d /data/immich/upload 0750 immich immich -"
     "d /data/immich/thumbs 0750 immich immich -"
-    "d /data/immich/postgres 0700 postgres postgres -"
-    "d /data/media 0775 root media -"
-    "d /data/media/movies 0775 root media -"
-    "d /data/media/shows 0775 root media -"
-    "d /data/downloads 0775 root media -"
-    "d /data/downloads/completed 0775 root media -"
-    "d /data/downloads/incomplete 0775 root media -"
-    "d /data/downloads/torrents 0775 root media -"
-    "d /data/downloads/finished 0775 root media -"
-    "d /var/lib/qBittorrent 0750 qbittorrent qbittorrent -"
+    "d /data/media 2775 root media -"
+    "d /data/media/movies 2775 root media -"
+    "d /data/media/shows 2775 root media -"
+    "d /data/downloads 2775 root media -"
+    "d /data/downloads/complete 2775 root media -"
+    "d /data/downloads/incomplete 2775 root media -"
+    "d /data/downloads/torrents 2775 root media -"
+    "d /data/downloads/finished 2775 root media -"
+    "d /data/postgres 0700 postgres postgres -"
+    "d /data/postgres/immich 0700 postgres postgres -"
+    "d /data/minecraft 0755 minecraft minecraft -"
   ];
+
   systemd.services.qbittorrent.after = [ "data.mount" ];
+  systemd.services.qbittorrent.requires = [ "data.mount" ];
+  systemd.services.qbittorrent.serviceConfig.UMask = "0002";
   systemd.services.radarr.after = [ "data.mount" ];
+  systemd.services.radarr.requires = [ "data.mount" ];
   systemd.services.sonarr.after = [ "data.mount" ];
+  systemd.services.sonarr.requires = [ "data.mount" ];
+  systemd.services.jellyfin.after = [ "data.mount" ];
+  systemd.services.jellyfin.requires = [ "data.mount" ];
   systemd.services.immich-server.after = [ "data.mount" ];
+  systemd.services.immich-server.requires = [ "data.mount" ];
+  systemd.services.postgresql.after = [ "data.mount" ];
+  systemd.services.postgresql.requires = [ "data.mount" ];
   systemd.services.mc-fabric.after = [ "data.mount" ];
+  systemd.services.mc-fabric.requires = [ "data.mount" ];
+  
   services.postgresql = {
     enable = true;
-    dataDir = "/data/immich/postgres";
-
-    authentication = pkgs.lib.mkOverride 10 ''
-      local all all trust
-      host all all 127.0.0.1/32 trust
-      host all all ::1/128 trust
-    '';
+    dataDir = "/data/postgres/immich";
   };
+
   systemd.services.smartctl-exporter = {
     description = "Prometheus SMART exporter";
 
@@ -607,6 +613,10 @@ NICO CONFIG 23/07/2026
             Krypton = pkgs.fetchurl {
               url = "https://cdn.modrinth.com/data/fQEb0iXm/versions/5WeL0Nkz/krypton-0.3.1.jar";
               sha512 = "175c7m2xnb8z261wjffgq8bms0cn41zfyjfpkza82llf0wvzlc47z2zkfxwclvadrgh9dw7i2fslpbqiz5k4qlazcx4jl00rlsazndq";
+            };
+            Spark = pkgs.fetchurl {
+              url = "https://cdn.modrinth.com/data/l6YH9Als/versions/iYFOl6lQ/spark-1.10.173-fabric.jar";
+              sha512 = "3xxphxvc0bx1qyqkyncdbp8hw1mkv6290i6lg2im7nmmjnjkwbsbhjb955fl6khpf4fav6cfy033c156qyzdsps7990gkzadjvz5jqx";
             };
           }
         );
