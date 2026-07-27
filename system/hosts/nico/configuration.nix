@@ -95,11 +95,9 @@
   };
   services.radarr = {
     enable = true;
-    dataDir = "/var/lib/radarr";
   };
   services.sonarr = {
     enable = true;
-    dataDir = "/var/lib/sonarr";
   };
   services.prowlarr = {
     enable = true;
@@ -308,23 +306,32 @@
     "d /data/downloads/incomplete 2775 root media -"
     "d /data/downloads/torrents 2775 root media -"
     "d /data/downloads/finished 2775 root media -"
-    "d /var/lib/qBittorrent 0750 qbittorrent qbittorrent -"
+    "d /data/postgres 0700 postgres postgres -"
+    "d /data/postgres/immich 0700 postgres postgres -"
+    "d /data/minecraft 0755 minecraft minecraft -"
   ];
+
   systemd.services.qbittorrent.after = [ "data.mount" ];
+  systemd.services.qbittorrent.requires = [ "data.mount" ];
   systemd.services.qbittorrent.serviceConfig.UMask = "0002";
   systemd.services.radarr.after = [ "data.mount" ];
+  systemd.services.radarr.requires = [ "data.mount" ];
   systemd.services.sonarr.after = [ "data.mount" ];
+  systemd.services.sonarr.requires = [ "data.mount" ];
+  systemd.services.jellyfin.after = [ "data.mount" ];
+  systemd.services.jellyfin.requires = [ "data.mount" ];
   systemd.services.immich-server.after = [ "data.mount" ];
+  systemd.services.immich-server.requires = [ "data.mount" ];
+  systemd.services.postgresql.after = [ "data.mount" ];
+  systemd.services.postgresql.requires = [ "data.mount" ];
+  systemd.services.mc-fabric.after = [ "data.mount" ];
+  systemd.services.mc-fabric.requires = [ "data.mount" ];
+
   services.postgresql = {
     enable = true;
     dataDir = "/data/postgres/immich";
-
-    authentication = pkgs.lib.mkOverride 10 ''
-      local all all trust
-      host all all 127.0.0.1/32 trust
-      host all all ::1/128 trust
-    '';
   };
+
   systemd.services.smartctl-exporter = {
     description = "Prometheus SMART exporter";
 
