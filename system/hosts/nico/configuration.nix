@@ -295,10 +295,12 @@
   };
 
   systemd.tmpfiles.rules = [
-    "d /data/immich 0750 immich immich -"
-    "d /data/immich/library 0750 immich immich -"
-    "d /data/immich/upload 0750 immich immich -"
-    "d /data/immich/thumbs 0750 immich immich -"
+    # SSD-backed application state
+    "d /var/lib/minecraft 0750 minecraft minecraft -"
+    "d /var/lib/postgresql 0700 postgres postgres -"
+    "d /var/lib/postgresql/immich 0700 postgres postgres -"
+
+    # HDD-backed data
     "d /data/media 2775 root media -"
     "d /data/media/movies 2775 root media -"
     "d /data/media/shows 2775 root media -"
@@ -307,8 +309,10 @@
     "d /data/downloads/incomplete 2775 root media -"
     "d /data/downloads/torrents 2775 root media -"
     "d /data/downloads/finished 2775 root media -"
-    "d /data/postgres 0700 postgres postgres -"
-    "d /data/postgres/immich 0700 postgres postgres -"
+    "d /data/immich 0750 immich immich -"
+    "d /data/immich/library 0750 immich immich -"
+    "d /data/immich/upload 0750 immich immich -"
+    "d /data/immich/thumbs 0750 immich immich -"
   ];
 
   systemd.services.qbittorrent.after = [ "data.mount" ];
@@ -322,12 +326,10 @@
   systemd.services.jellyfin.requires = [ "data.mount" ];
   systemd.services.immich-server.after = [ "data.mount" ];
   systemd.services.immich-server.requires = [ "data.mount" ];
-  systemd.services.postgresql.after = [ "data.mount" ];
-  systemd.services.postgresql.requires = [ "data.mount" ];
 
   services.postgresql = {
     enable = true;
-    dataDir = "/data/postgres/immich";
+    dataDir = "/var/lib/postgresql/immich";
   };
 
   systemd.services.smartctl-exporter = {
