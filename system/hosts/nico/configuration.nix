@@ -8,6 +8,7 @@
     ../../modules/common.nix
     ./hardware-configuration.nix
   ];
+  zramSwap.enable = true;
 
   hardware.graphics = {
     enable = true;
@@ -308,7 +309,6 @@
     "d /data/downloads/finished 2775 root media -"
     "d /data/postgres 0700 postgres postgres -"
     "d /data/postgres/immich 0700 postgres postgres -"
-    "d /data/minecraft 0755 minecraft minecraft -"
   ];
 
   systemd.services.qbittorrent.after = [ "data.mount" ];
@@ -324,8 +324,6 @@
   systemd.services.immich-server.requires = [ "data.mount" ];
   systemd.services.postgresql.after = [ "data.mount" ];
   systemd.services.postgresql.requires = [ "data.mount" ];
-  systemd.services.mc-fabric.after = [ "data.mount" ];
-  systemd.services.mc-fabric.requires = [ "data.mount" ];
 
   services.postgresql = {
     enable = true;
@@ -430,7 +428,7 @@
     SystemMaxUse=500M
   '';
   services.minecraft-servers = {
-    dataDir = "/data/minecraft";
+    dataDir = "/var/lib/minecraft";
     enable = true;
     eula = true;
     openFirewall = true;
@@ -489,6 +487,10 @@
               url = "https://cdn.modrinth.com/data/l6YH9Als/versions/iYFOl6lQ/spark-1.10.173-fabric.jar";
               sha512 = "3xxphxvc0bx1qyqkyncdbp8hw1mkv6290i6lg2im7nmmjnjkwbsbhjb955fl6khpf4fav6cfy033c156qyzdsps7990gkzadjvz5jqx";
             };
+            FabricExporter = pkgs.fetchurl {
+              url = "https://cdn.modrinth.com/data/dbVXHSlv/versions/tuPsGk8g/fabricexporter-26.2-1.0.22.jar";
+              sha512 = "1q0hxjjp20mh5pihm5a5girmkjmq2zfxaijxvxy2ysmr1676pm8ia06jqs8zghx3hzvg5igxdsa8svp37fx1wbzfwp1s34hi71mqiw0";
+            };
           }
         );
       };
@@ -519,6 +521,16 @@
           {
             targets = [
               "127.0.0.1:9633"
+            ];
+          }
+        ];
+      }
+      {
+        job_name = "fabric";
+        static_configs = [
+          {
+            targets = [
+              "127.0.0.1:25585"
             ];
           }
         ];
