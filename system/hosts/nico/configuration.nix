@@ -236,6 +236,34 @@
       };
     };
 
+    virtualHosts."lidarr.voldsoy.duckdns.org" = {
+      useACMEHost = "voldsoy.duckdns.org";
+      forceSSL = true;
+      locations."/" = {
+        proxyPass = "http://127.0.0.1:8686";
+        extraConfig = ''
+          proxy_set_header Host $host;
+          proxy_set_header X-Real-IP $remote_addr;
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          proxy_set_header X-Forwarded-Proto $scheme;
+        '';
+      };
+    };
+
+    virtualHosts."music.voldsoy.duckdns.org" = {
+      useACMEHost = "voldsoy.duckdns.org";
+      forceSSL = true;
+      locations."/" = {
+        proxyPass = "http://127.0.0.1:4533";
+        extraConfig = ''
+          proxy_set_header Host $host;
+          proxy_set_header X-Real-IP $remote_addr;
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          proxy_set_header X-Forwarded-Proto $scheme;
+        '';
+      };
+    };
+
     virtualHosts."uptime-kuma.voldsoy.duckdns.org" = {
       useACMEHost = "voldsoy.duckdns.org";
       forceSSL = true;
@@ -304,6 +332,7 @@
     "d /data/media 2775 root media -"
     "d /data/media/movies 2775 root media -"
     "d /data/media/shows 2775 root media -"
+    "d /data/music 2775 root media -"
     "d /data/downloads 2775 root media -"
     "d /data/downloads/complete 2775 root media -"
     "d /data/downloads/incomplete 2775 root media -"
@@ -326,6 +355,10 @@
   systemd.services.jellyfin.requires = [ "data.mount" ];
   systemd.services.immich-server.after = [ "data.mount" ];
   systemd.services.immich-server.requires = [ "data.mount" ];
+  systemd.services.navidrome.after = [ "data.mount" ];
+  systemd.services.navidrome.requires = [ "data.mount" ];
+  systemd.services.lidarr.after = [ "data.mount" ];
+  systemd.services.lidarr.requires = [ "data.mount" ];
 
   services.postgresql = {
     enable = true;
@@ -367,6 +400,8 @@
   users.users.radarr.extraGroups = [ "media" ];
   users.users.sonarr.extraGroups = [ "media" ];
   users.users.qbittorrent.extraGroups = [ "media" ];
+  users.users.navidrome.extraGroups = [ "media" ];
+  users.users.lidarr.extraGroups = [ "media" ];
 
   users.groups.immich = { };
   users.groups.media = { };
@@ -417,6 +452,8 @@
         "192.168.0.251 shows.voldsoy.duckdns.org"
         "192.168.0.251 uptime-kuma.voldsoy.duckdns.org"
         "192.168.0.251 grafana.voldsoy.duckdns.org"
+        "192.168.0.251 music.voldsoy.duckdns.org"
+        "192.168.0.251 lidarr.voldsoy.duckdns.org"
       ];
 
       adlists = [
@@ -568,6 +605,20 @@
   services.smartd = {
     enable = true;
     autodetect = true;
+  };
+
+  services.navidrome = {
+    enable = true;
+
+    settings = {
+      MusicFolder = "/data/music";
+      Address = "127.0.0.1";
+      Port = 4533;
+    };
+  };
+
+  services.lidarr = {
+    enable = true;
   };
 
   environment.systemPackages = with pkgs; [
