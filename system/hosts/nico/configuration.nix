@@ -302,6 +302,16 @@
       };
     };
 
+    virtualHosts."bitwarden.voldsoy.duckdns.org" = {
+      useACMEHost = "voldsoy.duckdns.org";
+      forceSSL = true;
+
+      locations."/" = {
+        proxyPass = "http://127.0.0.1:8222";
+        proxyWebsockets = true;
+      };
+    };
+
     virtualHosts."default" = {
       default = true;
 
@@ -454,6 +464,7 @@
         "192.168.0.251 grafana.voldsoy.duckdns.org"
         "192.168.0.251 music.voldsoy.duckdns.org"
         "192.168.0.251 lidarr.voldsoy.duckdns.org"
+        "192.168.0.251 bitwarden.voldsoy.duckdns.org"
       ];
 
       adlists = [
@@ -619,6 +630,28 @@
 
   services.lidarr = {
     enable = true;
+  };
+
+  services.vaultwarden = {
+    enable = true;
+
+    environmentFile = "/var/lib/vaultwarden/vaultwarden.env";
+
+    config = {
+      DOMAIN = "https://bitwarden.voldsoy.duckdns.org";
+
+      SIGNUPS_ALLOWED = true;
+
+      ROCKET_ADDRESS = "127.0.0.1";
+      ROCKET_PORT = 8222;
+
+      ROCKET_LOG = "critical";
+    };
+  };
+
+  services.flaresolverr = {
+    enable = true;
+    port = 8191;
   };
 
   environment.systemPackages = with pkgs; [
