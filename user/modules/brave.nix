@@ -7,6 +7,9 @@
     ];
     extensions = [
       {id = "mnjggcdmjocbbbhaepdhchncahnbgone";} # SponsorBlock
+      {id = "enboaomnljigfhfjfoalacienlhjlfil";} # UnTrap
+      {id = "hkgfoiooedgoejojocmhlaklaeopbecg";} # Picture-in-Picture
+      {id = "nngceckbapebfimnlniiiahkandclblb";} # Bitwarden Password Manager
     ];
   };
 }
