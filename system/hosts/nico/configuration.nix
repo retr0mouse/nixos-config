@@ -312,6 +312,16 @@
       };
     };
 
+    virtualHosts."seerr.voldsoy.duckdns.org" = {
+      useACMEHost = "voldsoy.duckdns.org";
+      forceSSL = true;
+
+      locations."/" = {
+        proxyPass = "http://127.0.0.1:5055";
+        proxyWebsockets = true;
+      };
+    };
+
     virtualHosts."default" = {
       default = true;
 
@@ -395,12 +405,20 @@
 
     mediaLocation = "/data/immich/library";
 
-    settings.server.externalDomain = "https://immich.voldsoy.duckdns.org";
+    settings = {
+      server.externalDomain = "https://immich.voldsoy.duckdns.org";
+
+      ffmpeg = {
+        accel = "nvenc";
+        accelDecode = true;
+      };
+    };
   };
 
   users.users.immich = {
     isSystemUser = true;
     group = "immich";
+    extraGroups = [ "render" ];
     home = "/var/lib/immich";
   };
   users.users.jellyfin.extraGroups = [
@@ -465,6 +483,7 @@
         "192.168.0.251 music.voldsoy.duckdns.org"
         "192.168.0.251 lidarr.voldsoy.duckdns.org"
         "192.168.0.251 bitwarden.voldsoy.duckdns.org"
+        "192.168.0.251 seerr.voldsoy.duckdns.org"
       ];
 
       adlists = [
@@ -652,6 +671,10 @@
   services.flaresolverr = {
     enable = true;
     port = 8191;
+  };
+
+  services.seerr = {
+    enable = true;
   };
 
   environment.systemPackages = with pkgs; [
