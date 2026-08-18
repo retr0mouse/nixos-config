@@ -1,6 +1,7 @@
 {
   config,
   pkgs,
+  lib,
   ...
 }:
 {
@@ -322,6 +323,16 @@
       };
     };
 
+    virtualHosts."slskd.voldsoy.duckdns.org" = {
+      useACMEHost = "voldsoy.duckdns.org";
+      forceSSL = true;
+
+      locations."/" = {
+        proxyPass = "http://127.0.0.1:5030";
+        proxyWebsockets = true;
+      };
+    };
+
     virtualHosts."default" = {
       default = true;
 
@@ -358,27 +369,54 @@
     "d /data/downloads/incomplete 2775 root media -"
     "d /data/downloads/torrents 2775 root media -"
     "d /data/downloads/finished 2775 root media -"
+    "d /data/downloads/slskd 2775 root media -"
+    "d /data/downloads/slskd/complete 2775 root media -"
+    "d /data/downloads/slskd/incomplete 2775 root media -"
     "d /data/immich 0750 immich immich -"
     "d /data/immich/library 0750 immich immich -"
     "d /data/immich/upload 0750 immich immich -"
     "d /data/immich/thumbs 0750 immich immich -"
   ];
 
+  systemd.services.qbittorrent.serviceConfig.UMask = "0002";
+  systemd.services.radarr.serviceConfig.UMask = lib.mkForce "0002";
+  systemd.services.sonarr.serviceConfig.UMask = lib.mkForce "0002";
+  systemd.services.lidarr.serviceConfig.UMask = "0002";
+
   systemd.services.qbittorrent.after = [ "data.mount" ];
   systemd.services.qbittorrent.requires = [ "data.mount" ];
-  systemd.services.qbittorrent.serviceConfig.UMask = "0002";
+
   systemd.services.radarr.after = [ "data.mount" ];
   systemd.services.radarr.requires = [ "data.mount" ];
+
   systemd.services.sonarr.after = [ "data.mount" ];
   systemd.services.sonarr.requires = [ "data.mount" ];
+
   systemd.services.jellyfin.after = [ "data.mount" ];
   systemd.services.jellyfin.requires = [ "data.mount" ];
+
   systemd.services.immich-server.after = [ "data.mount" ];
   systemd.services.immich-server.requires = [ "data.mount" ];
+
   systemd.services.navidrome.after = [ "data.mount" ];
   systemd.services.navidrome.requires = [ "data.mount" ];
+
   systemd.services.lidarr.after = [ "data.mount" ];
   systemd.services.lidarr.requires = [ "data.mount" ];
+
+  systemd.services.slskd = {
+    after = [
+      "data.mount"
+      "systemd-tmpfiles-setup.service"
+    ];
+
+    requires = [
+      "data.mount"
+      "systemd-tmpfiles-setup.service"
+    ];
+
+    serviceConfig.UMask = "0002";
+  };
 
   services.postgresql = {
     enable = true;
@@ -430,6 +468,7 @@
   users.users.qbittorrent.extraGroups = [ "media" ];
   users.users.navidrome.extraGroups = [ "media" ];
   users.users.lidarr.extraGroups = [ "media" ];
+  users.users.slskd.extraGroups = [ "media" ];
 
   users.groups.immich = { };
   users.groups.media = { };
@@ -484,6 +523,7 @@
         "192.168.0.251 lidarr.voldsoy.duckdns.org"
         "192.168.0.251 bitwarden.voldsoy.duckdns.org"
         "192.168.0.251 seerr.voldsoy.duckdns.org"
+        "192.168.0.251 slskd.voldsoy.duckdns.org"
       ];
 
       adlists = [
@@ -517,6 +557,14 @@
         simulation-distance = 8;
         enable-rcon = true;
         "rcon.password" = "minecraft2";
+        white-list = true;
+
+      };
+
+      whitelist = {
+        Nuacho = "f25c569a-a629-3a07-a3b6-aadbf29cc275";
+        Alopopik = "2c2c1d1f-15ea-3c8f-94c3-96a87ea11c5e";
+        aO_Oa = "fa25df27-d29b-3689-a4e3-1733fd9b0c40";
       };
 
       operators = {
@@ -675,6 +723,32 @@
 
   services.seerr = {
     enable = true;
+  };
+
+  services.slskd = {
+    enable = true;
+
+    environmentFile = "/etc/secrets/slskd.env";
+
+    settings = {
+      directories = {
+        downloads = "/data/downloads/slskd/complete";
+        incomplete = "/data/downloads/slskd/incomplete";
+      };
+
+      shares = {
+        directories = [
+          "/data/music"
+        ];
+      };
+
+      web = {
+        port = 5030;
+        authentication = {
+          disabled = true;
+        };
+      };
+    };
   };
 
   environment.systemPackages = with pkgs; [
