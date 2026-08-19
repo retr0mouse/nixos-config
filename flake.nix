@@ -9,6 +9,7 @@
     xremap-flake.url = "github:xremap/nix-flake";
     wlctl.url = "github:aashish-thapa/wlctl";
     nix-minecraft.url = "github:Infinidoge/nix-minecraft";
+    monique.url = "github:ToRvaLDz/monique";
   };
 
   outputs = inputs @ {
@@ -17,6 +18,7 @@
     home-manager,
     wlctl,
     nix-minecraft,
+    monique,
     ...
   }: let
     system = "x86_64-linux";
@@ -33,6 +35,11 @@
           ./system/hosts/${hostname}/configuration.nix
 
           home-manager.nixosModules.home-manager
+
+          inputs.monique.nixosModules.default
+          {
+            programs.monique.enable = true;
+          }
 
           {
             home-manager.useGlobalPkgs = true;

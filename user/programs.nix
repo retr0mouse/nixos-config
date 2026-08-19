@@ -2,8 +2,7 @@
   pkgs,
   inputs,
   ...
-}:
-{
+}: {
   home.packages = with pkgs; [
     # formatters / linters
     alejandra # Nix formatter
@@ -87,7 +86,6 @@
     prismlauncher # Minecraft launcher
 
     # system / hardware utilities
-    nwg-displays # monitor configuration tool (Wayland)
     bluetui # Bluetooth TUI manager
 
     # password / identity

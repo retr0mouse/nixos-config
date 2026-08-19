@@ -17,6 +17,25 @@
 
   services.hyprpolkitagent.enable = true;
 
+  systemd.user.services.moniqued = {
+    Unit = {
+      Description = "Monique daemon - Auto-apply monitor profiles on hotplug";
+      After = ["graphical-session.target"];
+      PartOf = ["graphical-session.target"];
+    };
+
+    Service = {
+      Type = "simple";
+      ExecStart = "/run/current-system/sw/bin/moniqued";
+      Restart = "on-failure";
+      RestartSec = 5;
+    };
+
+    Install = {
+      WantedBy = ["graphical-session.target"];
+    };
+  };
+
   home = {
     username = user;
     homeDirectory = "/home/${user}";
