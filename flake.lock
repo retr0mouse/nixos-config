@@ -238,9 +238,30 @@
         "monique": "monique",
         "nix-minecraft": "nix-minecraft",
         "nixos-hardware": "nixos-hardware",
-        "nixpkgs": "nixpkgs_4",
+        "nixpkgs": "nixpkgs_3",
+        "soulbrainz": "soulbrainz",
         "wlctl": "wlctl",
         "xremap-flake": "xremap-flake"
+      }
+    },
+    "soulbrainz": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1787262578,
+        "narHash": "sha256-0TEzsqWdwHwd4YKUA+K2dmUdy4oehVghCOqpTXfqfjo=",
+        "owner": "retr0mouse",
+        "repo": "soulbrainz",
+        "rev": "e47d59818a56a1dab0d8815faa770a6a5925f03c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "retr0mouse",
+        "repo": "soulbrainz",
+        "type": "github"
       }
     },
     "systems": {
