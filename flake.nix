@@ -10,10 +10,7 @@
     wlctl.url = "github:aashish-thapa/wlctl";
     nix-minecraft.url = "github:Infinidoge/nix-minecraft";
     monique.url = "github:ToRvaLDz/monique";
-    soulbrainz = {
-      url = "github:retr0mouse/soulbrainz";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    soulbrainz.url = "github:retr0mouse/soulbrainz";
   };
 
   outputs =
@@ -23,6 +20,7 @@
       home-manager,
       wlctl,
       nix-minecraft,
+      monique,
       soulbrainz,
       ...
     }:
@@ -42,6 +40,11 @@
             ./system/hosts/${hostname}/configuration.nix
 
             home-manager.nixosModules.home-manager
+
+            inputs.monique.nixosModules.default
+            {
+              programs.monique.enable = true;
+            }
 
             {
               home-manager.useGlobalPkgs = true;
