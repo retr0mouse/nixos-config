@@ -99,6 +99,15 @@
   services.jellyfin = {
     enable = true;
   };
+
+  services.plex = {
+    enable = true;
+    extraFlags = [
+      "--claim=claim-tt9ctr3x5deF9VuffTUT"
+    ];
+  };
+  users.users.plex.extraGroups = [ "media" ];
+
   services.radarr = {
     enable = true;
   };
@@ -178,6 +187,25 @@
           # WebSockets (Jellyfin UI needs this)
           proxy_set_header Upgrade $http_upgrade;
           proxy_set_header Connection "upgrade";
+        '';
+      };
+    };
+
+    virtualHosts."plex.voldsoy.duckdns.org" = {
+      useACMEHost = "voldsoy.duckdns.org";
+      forceSSL = true;
+
+      locations."/" = {
+        proxyPass = "http://127.0.0.1:32400";
+        proxyWebsockets = true;
+
+        extraConfig = ''
+          proxy_set_header Host $host;
+          proxy_set_header X-Real-IP $remote_addr;
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          proxy_set_header X-Forwarded-Proto $scheme;
+
+          proxy_buffering off;
         '';
       };
     };
@@ -408,6 +436,9 @@
   systemd.services.lidarr.after = [ "data.mount" ];
   systemd.services.lidarr.requires = [ "data.mount" ];
 
+  systemd.services.plex.after = [ "data.mount" ];
+  systemd.services.plex.requires = [ "data.mount" ];
+
   systemd.services.slskd = {
     after = [
       "data.mount"
@@ -528,6 +559,7 @@
         "192.168.0.251 bitwarden.voldsoy.duckdns.org"
         "192.168.0.251 seerr.voldsoy.duckdns.org"
         "192.168.0.251 slskd.voldsoy.duckdns.org"
+        "192.168.0.251 plex.voldsoy.duckdns.org"
       ];
 
       adlists = [
