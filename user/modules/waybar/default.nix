@@ -4,7 +4,7 @@
 
     settings = [
       {
-        position = "bottom";
+        position = "top";
 
         modules-left = [
           "group/workspaces"
