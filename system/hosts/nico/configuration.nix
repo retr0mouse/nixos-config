@@ -75,6 +75,10 @@
         publicKey = "LxVWtEAwZUG/Il10eQqE93pnBW/uWWFloGi2E/bG0w4=";
         allowedIPs = [ "10.10.0.6/32" ];
       }
+      {
+        publicKey = "SF8AXo8cNOcS/NONhMRJ66NDbQDncSqoYYf3JVUt+So=";
+        allowedIPs = [ "10.10.0.8/32" ];
+      }
     ];
   };
 
@@ -550,7 +554,7 @@
       serverProperties = {
         server-port = 25565;
         difficulty = "normal";
-        max-players = 5;
+        max-players = 3;
         motd = "This is NixOS btw";
         online-mode = false;
         view-distance = 10;
@@ -558,7 +562,6 @@
         enable-rcon = true;
         "rcon.password" = "minecraft2";
         white-list = true;
-
       };
 
       whitelist = {
@@ -604,9 +607,17 @@
               url = "https://cdn.modrinth.com/data/l6YH9Als/versions/iYFOl6lQ/spark-1.10.173-fabric.jar";
               sha512 = "3xxphxvc0bx1qyqkyncdbp8hw1mkv6290i6lg2im7nmmjnjkwbsbhjb955fl6khpf4fav6cfy033c156qyzdsps7990gkzadjvz5jqx";
             };
-            FabricExporter = pkgs.fetchurl {
+            Fabric-Exporter = pkgs.fetchurl {
               url = "https://cdn.modrinth.com/data/dbVXHSlv/versions/tuPsGk8g/fabricexporter-26.2-1.0.22.jar";
               sha512 = "1q0hxjjp20mh5pihm5a5girmkjmq2zfxaijxvxy2ysmr1676pm8ia06jqs8zghx3hzvg5igxdsa8svp37fx1wbzfwp1s34hi71mqiw0";
+            };
+            Universal-Graves = pkgs.fetchurl {
+              url = "https://cdn.modrinth.com/data/yn9u3ypm/versions/BZfhXd0q/graves-3.12.0%2B26.2.jar";
+              sha512 = "09k12wyys34dwhcn4ihprv5y3vs4j69lf68zh4b79bb9pa88hv7dckz9jkk3lx60s9d7mzbhik2a3mc8r7wk3qjsx8k6cdicfq557s9";
+            };
+            Polymer = pkgs.fetchurl {
+              url = "https://cdn.modrinth.com/data/xGdtZczs/versions/NTeStfxi/polymer-bundled-0.17.4%2B26.2.jar";
+              sha512 = "3zqvk7kb8ckf5qc91pj7j9fi8znqgfnlj13g98gxnw82i6db1zgg2kwlkmx120krv7rjfv5sqxhg77yqpx3xv3mjvkjfx99zzqriwdv";
             };
           }
         );
