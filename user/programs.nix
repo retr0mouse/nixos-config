@@ -31,20 +31,18 @@
     # desktop / communication apps
     discord # chat/voice platform
     telegram-desktop # Telegram messenger
-    spotify # music streaming client
-    obsidian # markdown note-taking app
     anki-bin # spaced repetition flashcards
     obs-studio # streaming/recording software
     qbittorrent # torrent client
 
     # browsing / internet tools
     chromium # open-source browser
-    chromedriver # automation driver for Chromium
     insomnia # API testing client (Postman alternative)
 
     # development tools / IDEs
     vscode # Visual Studio Code editor
     jetbrains.idea # IntelliJ IDEA IDE
+    jetbrains.pycharm # PyCharm IDE
 
     # system utilities
     gh # GitHub CLI
@@ -58,6 +56,7 @@
     sl # fun terminal animation (train)
     hollywood # “hacker screen” fake terminal effect
     unrar # archive utility
+    inputs.nixpkgs-unstable.legacyPackages.${system}.hyprmoncfg # monitor TUI
 
     # Wayland graphics / screen tools
     slurp # region selector (screenshots)
@@ -89,13 +88,12 @@
     bluetui # Bluetooth TUI manager
 
     # password / identity
-    _1password-gui # password manager
+    # _1password-gui # password manager
 
     # digital signature / gov tools
     qdigidoc # Estonian digital signing tool
 
     # miscellaneous / experiments
-    matugen # Material You theme generator
     waypaper # wallpaper picker frontend
     wireguard-tools # tools for wireguard
   ];

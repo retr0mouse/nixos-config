@@ -1,16 +1,12 @@
-/* colors defined at top for easy configuring */
 @define-color background #101211;
 @define-color second-background #1a1d1b;
 @define-color text #c5c8c5;
 @define-color borders #303630;
 @define-color focused #98a87c;
 @define-color focused2 #a8b98c;
-@define-color color1 #7f9f9f;
-@define-color color2 #a48ead;
-@define-color color3 #98a87c;
+@define-color hover #7f9f9f;
 @define-color urgent #d08770;
 
-/* font declared */
 * {
   font-family: "Iosevka Nerd Font";
   font-size: 15px;
@@ -43,10 +39,9 @@ button {
 }
 
 #custom-powerprofile:hover {
-  color: @color1;
+  color: @hover;
 }
 
-/* workspace panel */
 #workspaces button {
   min-width: 0;
   background-color: transparent;
@@ -75,8 +70,6 @@ button {
   margin-right: 0;
 }
 
-/* Right Island */
-
 #clock:hover,
 #battery:hover,
 #custom-bluetooth:hover,
@@ -84,27 +77,14 @@ button {
 #custom-swaync:hover,
 #backlight:hover,
 #pulseaudio:hover {
-  color: @color1;
-}
-
-#pulseaudio.muted {
-  background-color: @color2;
-}
-
-#custom-swaync {
-  font-size: 16px;
-  /* same scale as other icons */
-  color: @text;
-}
-
-#battery {
-  padding: 0 5px;
+  color: @hover;
 }
 
 #battery.charging,
 #battery.plugged {
   background-color: @focused2;
   color: @background;
+  padding: 0 5px;
 }
 
 #battery.critical:not(.charging) {

@@ -41,7 +41,7 @@
           exec = "powerprofile display";
           on-click = "powerprofile toggle";
           interval = 5;
-          tooltip = true;
+          tooltip = false;
           exec-tooltip = "powerprofile tooltip";
         };
 
@@ -95,17 +95,22 @@
         "custom/igpu" = {
           exec = "igpu_usage";
           interval = 2;
-          format = "iGPU{}";
+          tooltip = false;
+          format = "iGPU:{}";
+          on-click = "kitty -e btop";
         };
 
         "custom/dgpu" = {
           exec = "dgpu_usage";
           interval = 2;
+          tooltip = false;
           format = "dGPU:{}";
+          on-click = "kitty -e btop";
         };
 
         "group/brightvol" = {
           orientation = "horizontal";
+          tooltip = false;
           modules = [
             "custom/openbracket"
             "backlight"
@@ -118,14 +123,8 @@
         pulseaudio = {
           scroll-step = 5;
           format = "{icon} {volume}%";
-          format-muted = "󰝟";
+          format-muted = "MUTED";
           format-icons = {
-            headphone = "";
-            hands-free = "";
-            headset = "";
-            phone = "";
-            portable = "";
-            car = "";
             default = ["" "" ""];
           };
           on-click = "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
@@ -134,7 +133,7 @@
 
         backlight = {
           format = "{icon} {percent}%";
-          format-icons = ["🌙" "" ""];
+          format-icons = ["󰃠"];
         };
 
         "group/system" = {
@@ -143,9 +142,9 @@
             "custom/openbracket"
             "custom/powerprofile"
             "custom/split"
-            "network"
-            "custom/split"
             "custom/bluetooth"
+            "custom/split"
+            "network"
             "custom/split"
             "battery"
             "custom/split"
@@ -164,23 +163,24 @@
             warning = 30;
             critical = 15;
           };
+          events = {
+            on-discharging-warning = "notify-send -u normal 'Low Battery'";
+            on-discharging-critical = "notify-send -u critical 'Very Low Battery'";
+          };
           format = "{icon} {capacity}%";
-          format-full = "{icon} {capacity}%";
-          format-charging = " {capacity}%";
-          format-plugged = " {capacity}%";
-          format-icons = ["" "" "" "" ""];
+          format-charging = "󰂄 {capacity}%";
+          format-icons = ["󰁺" "󰁻" "󰁼" "󰁽" "󰁾" "󰁿" "󰂀" "󰂁" "󰁹"];
           on-click = "wlogout";
         };
 
         "custom/swaync" = {
-          format = "";
-          exec = "swaync-client -swb";
+          format = " ";
+          tooltip = false;
           on-click = "swaync-client --toggle-panel";
-          interval = 0;
         };
 
         network = {
-          format-wifi = "{icon}";
+          format-wifi = "{icon} ";
           format-ethernet = "󰈀 LAN";
           format-disconnected = "󰖪";
           tooltip-format = "{ipaddr}\n{essid} ({signalStrength}%)";
@@ -189,9 +189,9 @@
         };
 
         "custom/bluetooth" = {
-          format = "{}";
           exec = "bluetooth_status";
-          interval = 5;
+          return-type = "json";
+          interval = 2;
           on-click = "kitty -e bluetui";
         };
       }

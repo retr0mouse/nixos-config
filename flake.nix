@@ -1,109 +1,102 @@
 {
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-26.05";
+
+    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+
     home-manager = {
       url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     xremap-flake.url = "github:xremap/nix-flake";
     wlctl.url = "github:aashish-thapa/wlctl";
     nix-minecraft.url = "github:Infinidoge/nix-minecraft";
-    monique.url = "github:ToRvaLDz/monique";
     soulbrainz.url = "github:retr0mouse/soulbrainz";
   };
 
-  outputs =
-    inputs@{
-      self,
-      nixpkgs,
-      home-manager,
-      wlctl,
-      nix-minecraft,
-      monique,
-      soulbrainz,
-      ...
-    }:
-    let
-      system = "x86_64-linux";
-      user = "reisdro";
-      mkDesktopHost =
-        hostname:
-        nixpkgs.lib.nixosSystem {
-          inherit system;
+  outputs = inputs @ {
+    self,
+    nixpkgs,
+    home-manager,
+    wlctl,
+    nix-minecraft,
+    soulbrainz,
+    nixpkgs-unstable,
+    ...
+  }: let
+    system = "x86_64-linux";
+    user = "reisdro";
+    mkDesktopHost = hostname:
+      nixpkgs.lib.nixosSystem {
+        inherit system;
 
-          specialArgs = {
-            inherit inputs user;
-          };
-
-          modules = [
-            ./system/hosts/${hostname}/configuration.nix
-
-            home-manager.nixosModules.home-manager
-
-            inputs.monique.nixosModules.default
-            {
-              programs.monique.enable = true;
-            }
-
-            {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.backupFileExtension = "backup";
-
-              home-manager.extraSpecialArgs = {
-                inherit inputs user;
-              };
-
-              home-manager.users.${user} = import ./user/home.nix;
-            }
-          ];
+        specialArgs = {
+          inherit inputs user;
         };
-      mkServerHost =
-        hostname:
-        nixpkgs.lib.nixosSystem {
-          inherit system;
 
-          specialArgs = {
-            inherit inputs user;
-          };
+        modules = [
+          ./system/hosts/${hostname}/configuration.nix
 
-          modules = [
-            ./system/hosts/${hostname}/configuration.nix
-            home-manager.nixosModules.home-manager
-            nix-minecraft.nixosModules.minecraft-servers
-            soulbrainz.nixosModules.default
+          home-manager.nixosModules.home-manager
 
-            {
-              services.soulbrainz = {
-                enable = true;
-              };
-            }
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.backupFileExtension = "backup";
 
-            {
-              nixpkgs.overlays = [
-                inputs.nix-minecraft.overlay
-              ];
-            }
+            home-manager.extraSpecialArgs = {
+              inherit inputs user;
+            };
 
-            {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.backupFileExtension = "backup";
-
-              home-manager.extraSpecialArgs = {
-                inherit inputs user;
-              };
-
-              home-manager.users.${user} = import ./user/home-server.nix;
-            }
-          ];
-        };
-    in
-    {
-      nixosConfigurations = {
-        clancy = mkDesktopHost "clancy";
-        nico = mkServerHost "nico";
+            home-manager.users.${user} = import ./user/home.nix;
+          }
+        ];
       };
+    mkServerHost = hostname:
+      nixpkgs.lib.nixosSystem {
+        inherit system;
+
+        specialArgs = {
+          inherit inputs user;
+        };
+
+        modules = [
+          ./system/hosts/${hostname}/configuration.nix
+          home-manager.nixosModules.home-manager
+          nix-minecraft.nixosModules.minecraft-servers
+          soulbrainz.nixosModules.default
+
+          {
+            services.soulbrainz = {
+              enable = true;
+            };
+          }
+
+          {
+            nixpkgs.overlays = [
+              inputs.nix-minecraft.overlay
+            ];
+          }
+
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.backupFileExtension = "backup";
+
+            home-manager.extraSpecialArgs = {
+              inherit inputs user;
+            };
+
+            home-manager.users.${user} = import ./user/home-server.nix;
+          }
+        ];
+      };
+  in {
+    nixosConfigurations = {
+      clancy = mkDesktopHost "clancy";
+      nico = mkServerHost "nico";
     };
+  };
 }

@@ -60,7 +60,7 @@ toggle_profile() {
   esac
 }
 
-# Display current profile with icon only
+# Display current profile
 display_profile() {
   current=$(get_current_profile)
   case $current in

@@ -1,6 +1,7 @@
 {
   pkgs,
   user,
+  inputs,
   ...
 }: {
   imports = [
@@ -17,25 +18,22 @@
 
   services.hyprpolkitagent.enable = true;
 
-  systemd.user.services.moniqued = {
+  systemd.user.services.hyprmoncfgd = {
     Unit = {
-      Description = "Monique daemon - Auto-apply monitor profiles on hotplug";
+      Description = "hyprmoncfg monitor configuration daemon";
       After = ["graphical-session.target"];
       PartOf = ["graphical-session.target"];
     };
 
     Service = {
-      Type = "simple";
-      ExecStart = "/run/current-system/sw/bin/moniqued";
+      ExecStart = "${inputs.nixpkgs-unstable.legacyPackages.x86_64-linux.hyprmoncfg}/bin/hyprmoncfgd";
       Restart = "on-failure";
-      RestartSec = 5;
     };
 
     Install = {
       WantedBy = ["graphical-session.target"];
     };
   };
-
   home = {
     username = user;
     homeDirectory = "/home/${user}";
