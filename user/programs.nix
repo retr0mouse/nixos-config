@@ -80,6 +80,8 @@
     vlc # media player
     audacity # audio editor
     jellyfin-desktop # media playback service
+    plex
+    plexamp
 
     # gaming / emulation
     prismlauncher # Minecraft launcher

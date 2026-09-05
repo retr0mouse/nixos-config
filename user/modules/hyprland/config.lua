@@ -109,6 +109,20 @@ hl.window_rule({
 	workspace = "9 silent",
 })
 
+hl.window_rule({
+	match = {
+		class = "^steam_app_[0-9]+$",
+	},
+	workspace = "5 silent",
+})
+
+hl.window_rule({
+	match = {
+		class = "^Minecraft.*$",
+	},
+	workspace = "5 silent",
+})
+
 -- intellij focus fix
 
 hl.window_rule({
