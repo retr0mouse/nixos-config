@@ -26,7 +26,7 @@
     };
 
     Service = {
-      ExecStart = "${inputs.nixpkgs-unstable.legacyPackages.x86_64-linux.hyprmoncfg}/bin/hyprmoncfgd";
+      ExecStart = "${pkgs.hyprmoncfg}/bin/hyprmoncfgd";
       Restart = "on-failure";
     };
 

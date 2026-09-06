@@ -42,6 +42,12 @@
           home-manager.nixosModules.home-manager
 
           {
+            nixpkgs.overlays = [
+              (final: prev: {
+                hyprmoncfg = final.callPackage ./packages/hyprmoncfg.nix {};
+              })
+            ];
+
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.backupFileExtension = "backup";

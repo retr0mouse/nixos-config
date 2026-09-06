@@ -8,6 +8,13 @@ local browser = "brave"
 
 require("monitors")
 
+local hyprmoncfg_monitors = os.getenv("HOME") .. "/.config/hypr/hyprmoncfg-monitors.lua"
+
+local file = io.open(hyprmoncfg_monitors, "r")
+if file then
+	file:close()
+	dofile(hyprmoncfg_monitors)
+end
 -- Autostart apps
 
 hl.config({

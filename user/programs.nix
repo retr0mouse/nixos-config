@@ -56,7 +56,7 @@
     sl # fun terminal animation (train)
     hollywood # “hacker screen” fake terminal effect
     unrar # archive utility
-    inputs.nixpkgs-unstable.legacyPackages.${system}.hyprmoncfg # monitor TUI
+    hyprmoncfg # monitors TUI and daemon
 
     # Wayland graphics / screen tools
     slurp # region selector (screenshots)
@@ -80,8 +80,7 @@
     vlc # media player
     audacity # audio editor
     jellyfin-desktop # media playback service
-    plex
-    plexamp
+    plex-desktop # media and music playback service
 
     # gaming / emulation
     prismlauncher # Minecraft launcher

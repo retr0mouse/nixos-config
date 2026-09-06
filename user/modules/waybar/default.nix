@@ -113,6 +113,8 @@
           tooltip = false;
           modules = [
             "custom/openbracket"
+            "custom/monitors"
+            "custom/split"
             "backlight"
             "custom/split"
             "pulseaudio"
@@ -182,7 +184,7 @@
         network = {
           format-wifi = "{icon} ";
           format-ethernet = "󰈀 LAN";
-          format-disconnected = "󰖪";
+          format-disconnected = "󰖪 ";
           tooltip-format = "{ipaddr}\n{essid} ({signalStrength}%)";
           on-click = "kitty -e wlctl";
           format-icons = ["󰤯" "󰤟" "󰤢" "󰤥" "󰤨"];
@@ -193,6 +195,12 @@
           return-type = "json";
           interval = 2;
           on-click = "kitty -e bluetui";
+        };
+
+        "custom/monitors" = {
+          on-click = "kitty -e hyprmoncfg";
+          format = "󰍹 ";
+          tooltip = false;
         };
       }
     ];
